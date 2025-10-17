@@ -1,0 +1,799 @@
+:root {
+    /* Light Mode Colors */
+    --background-color-light: #f0f2f5;
+    --text-color-light: #333;
+    --box-background-light: #ffffff;
+    --border-color-light: #ddd;
+    --dock-background-light: #e0e2e5;
+    --dock-button-hover-light: #d0d2d5;
+    --dock-button-active-light: #c0c2c5;
+    --button-background-light: #007bff;
+    --button-text-light: #ffffff;
+    --button-hover-light: #0056b3;
+    --icon-color-light: #333;
+
+    /* Dark Mode Colors */
+    --background-color-dark: #282c34;
+    --text-color-dark: #e0e0e0;
+    --box-background-dark: #3c4048;
+    --border-color-dark: #555;
+    --dock-background-dark: #1e2227;
+    --dock-button-hover-dark: #2a2e33;
+    --dock-button-active-dark: #3a3e43;
+    --button-background-dark: #61dafb;
+    --button-text-dark: #282c34;
+    --button-hover-dark: #21a1f1;
+    --icon-color-dark: #e0e0e0;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    flex-grow: 1;
+    transform: scale(0.6); /* Zoom out effect */
+    transform-origin: top center; /* Scale from the top center */
+    margin-top: 5vh; /* Adjust margin to keep it visually centered */
+}
+
+.selection-box {
+    flex: 1;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-box {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start; /* Prevent stretching in height */
+    background-color: var(--box-background-light); /* Default to light mode */
+    border: 1px solid var(--border-color-light); /* Default to light mode */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+body.dark-mode .preview-box {
+    background-color: var(--box-background-dark);
+    border-color: var(--border-color-dark);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+#commandSelection {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px; /* For scrollbar */
+}
+
+
+.command-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.command-item:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue hover */
+}
+
+body.dark-mode .command-item:hover {
+    background-color: rgba(97, 218, 251, 0.1); /* Light cyan hover for dark mode */
+}
+
+.command-item input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.command-item label {
+    flex-grow: 1;
+    cursor: pointer;
+    color: var(--text-color-light);
+    transition: color 0.3s;
+}
+
+
+body.dark-mode .command-item label {
+    color: var(--text-color-dark);
+}
+
+
+#scriptPreview {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color-light);
+    min-height: auto; /* Allow height to adapt to content */
+    height: auto; /* Ensure height adapts */
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode #scriptPreview {
+    background-color: #20232a; /* Slightly darker than box background for code */
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+.button-group-container {
+    display: flex;
+    justify-content: center; /* Center the entire group */
+    align-items: center;
+    gap: 20px; /* Space between button groups and separator */
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; /* Smaller gap for buttons within a group */
+}
+
+.button-separator {
+    width: 2px;
+    height: 40px; /* Height of the separator */
+    background-color: var(--border-color-light); /* Separator color */
+    border-radius: 1px;
+    transition: background-color 0.3s;
+}
+
+body.dark-mode .button-separator {
+    background-color: var(--border-color-dark);
+}
+
+.action-button {
+    background-color: var(--button-background-light);
+    color: var(--button-text-light);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.action-button:hover {
+    background-color: var(--button-hover-light);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.action-button i {
+    font-size: 1.1rem;
+    z-index: 1; /* Ensure icon is above pseudo-element */
+}
+
+.action-button span {
+    z-index: 1; /* Ensure text is above pseudo-element */
+}
+
+body.dark-mode .action-button {
+    background-color: var(--button-background-dark);
+    color: var(--button-text-dark);
+}
+
+body.dark-mode .action-button:hover {
+    background-color: var(--button-hover-dark);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+.command-category-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 10px;
+    background-color: var(--box-background-light);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.command-category-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text-color-light);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--border-color-light);
+    padding-bottom: 10px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color-light);
+    margin-bottom: 15px;
+}
+
+.category-header h3 {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.collapse-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.collapse-icon.collapsed {
+    transform: rotate(-90deg); /* Arrow points right when collapsed */
+}
+
+.command-list {
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    max-height: 1000px; /* Arbitrary large value for expanded state */
+}
+
+.command-list.collapsed {
+    max-height: 0;
+}
+
+/* Dark Mode Specific Styles for index.css collapsible categories */
+body.dark-mode .command-category-section {
+    border-color: var(--border-color-dark);
+    background-color: var(--box-background-dark);
+}
+
+body.dark-mode .command-category-section h3 {
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 8px;
+    background-color: var(--box-background-light);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .search-container {
+    border-color: var(--border-color-dark);
+    background-color: var(--box-background-dark);
+}
+
+.search-container input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .search-container input[type="text"] {
+    background-color: #20232a;
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+.search-container button {
+    background-color: var(--button-background-light);
+    color: var(--button-text-light);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.search-container button:hover {
+    background-color: var(--button-hover-light);
+    transform: translateY(-1px);
+}
+
+body.dark-mode .search-container button {
+    background-color: var(--button-background-dark);
+    color: var(--button-text-dark);
+}
+
+body.dark-mode .search-container button:hover {
+    background-color: var(--button-hover-dark);
+}
+
+.input-group {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 8px;
+    background-color: var(--box-background-light);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .input-group {
+    border-color: var(--border-color-dark);
+    background-color: var(--box-background-dark);
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color-light);
+    transition: color 0.3s;
+}
+
+body.dark-mode .input-group label {
+    color: var(--text-color-dark);
+}
+
+.input-group input[type="text"] {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .input-group input[type="text"] {
+    background-color: #20232a;
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+/* Custom MOTD Pop-up Styles */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background-color: var(--box-background-light);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 99%;
+    max-width: 1300px; /* Increased further from 1100px */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: background-color 0.3s;
+}
+
+body.dark-mode .popup-content {
+    background-color: var(--box-background-dark);
+}
+
+.popup-content h3 {
+    margin-top: 0;
+    color: var(--text-color-light);
+    transition: color 0.3s;
+}
+
+body.dark-mode .popup-content h3 {
+    color: var(--text-color-dark);
+}
+
+.popup-content .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--text-color-light);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+body.dark-mode .popup-content .close-button {
+    color: var(--text-color-dark);
+}
+
+.popup-content .close-button:hover {
+    color: var(--accent-color);
+}
+
+#motdEditor {
+    width: 100%;
+    height: 750px; /* Increased further from 600px */
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    resize: vertical; /* Allow vertical resizing */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode #motdEditor {
+    background-color: #20232a;
+    color: var(--text-color-dark);
+    border-color: var(--border-color-dark);
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 10px;
+}
+
+/* Responsive adjustments for index.html */
+@media (max-width: 768px) {
+    .selection-box, .preview-box {
+        max-width: 100%;
+        width: 100%;
+        min-width: unset; /* Remove min-width constraint for smaller screens */
+    }
+
+    .popup-content {
+        width: 100%; /* Make popup slightly wider on small screens */
+        padding: 20px;
+    }
+
+    #motdEditor {
+        height: 500px; /* Increased height for mobile */
+    }
+
+    .selection-box {
+        order: 1; /* Ensure selection box comes first on mobile */
+    }
+
+    .preview-box {
+        order: 2; /* Ensure preview box comes second on mobile */
+    }
+
+    .button-group-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button-group {
+        flex-direction: row; /* Keep buttons in a row on mobile */
+        justify-content: center; /* Center buttons within their group */
+        width: 100%; /* Take full width */
+    }
+
+    .button-separator {
+        width: 80%; /* Make separator horizontal on mobile */
+        height: 2px;
+    }
+
+    .action-button {
+        width: 100%;
+        margin-bottom: 0; /* Remove extra margin if it's causing issues */
+    }
+
+    /* Ensure search container and select all button are full width and aligned */
+    .search-container {
+        width: 100%;
+        box-sizing: border-box; /* Include padding and border in the element's total width */
+    }
+
+    .action-button#selectAllToggleBtn {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 20px; /* Add some space below it */
+    }
+
+    /* Adjust padding for command selection to prevent horizontal scroll */
+    #commandSelection {
+        padding-right: 0;
+    }
+}
+
+/* Toggle Switch Styles */
+.toggle-switch-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid var(--border-color-light);
+    border-radius: 8px;
+    background-color: var(--box-background-light);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+body.dark-mode .toggle-switch-container {
+    border-color: var(--border-color-dark);
+    background-color: var(--box-background-dark);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-label {
+    color: var(--text-color-light);
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+body.dark-mode .toggle-label {
+    color: var(--text-color-dark);
+}
+:root {
+    /* Light Mode Colors */
+    --background-color-light: #f0f2f5;
+    --text-color-light: #333;
+    --box-background-light: #ffffff;
+    --border-color-light: #ddd;
+    --dock-background-light: #e0e2e5;
+    --dock-button-hover-light: #d0d2d5;
+    --dock-button-active-light: #c0c2c5;
+    --button-background-light: #007bff;
+    --button-text-light: #ffffff;
+    --button-hover-light: #0056b3;
+    --icon-color-light: #333;
+
+    /* Dark Mode Colors */
+    --background-color-dark: #282c34;
+    --text-color-dark: #e0e0e0;
+    --box-background-dark: #3c4048;
+    --border-color-dark: #555;
+    --dock-background-dark: #1e2227;
+    --dock-button-hover-dark: #2a2e33;
+    --dock-button-active-dark: #3a3e43;
+    --button-background-dark: #61dafb;
+    --button-text-dark: #282c34;
+    --button-hover-dark: #21a1f1;
+    --icon-color-dark: #e0e0e0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+/* Main Content Container */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 2000px;
+    flex-grow: 1;
+}
+
+.box {
+    background-color: var(--box-background-light); /* Default to light mode */
+    border: 1px solid var(--border-color-light); /* Default to light mode */
+    border-radius: 10px;;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+h2 {
+    color: var(--text-color-light); /* Default to light mode */
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: color 0.3s;
+}
+
+/* Dark Mode Specific Styles */
+body.dark-mode {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+
+
+body.dark-mode .box {
+    background-color: var(--box-background-dark);
+    border-color: var(--border-color-dark);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode h2 {
+    color: var(--text-color-dark);
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInOut 5s forwards;
+    min-width: 250px;
+    text-align: center;
+}
+
+.toast.error {
+    background-color: #dc3545; /* Red for errors */
+}
+
+.toast.success {
+    background-color: #28a745; /* Green for success */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .box {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+
+/* Scroll-to-top button */
+#scrollToTopBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 20px; /* Place the button 20px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: var(--button-background-light); /* Set a background color */
+    color: var(--button-text-light); /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#scrollToTopBtn:hover {
+    background-color: var(--button-hover-light); /* Add a darker background on hover */
+    transform: translateY(-2px);
+}
+
+body.dark-mode #scrollToTopBtn {
+    background-color: var(--button-background-dark);
+    color: var(--button-text-dark);
+}
+
+body.dark-mode #scrollToTopBtn:hover {
+    background-color: var(--button-hover-dark);
+}

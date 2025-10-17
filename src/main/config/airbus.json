@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "my pay slip",
+        "icon": "images/icons/template.svg",
+        "description": "Access your pay slips.",
+        "link": "https://mypayslip.airbus.com/overview",
+        "loadFav": false
+    },
+    {
+        "id": 2,
+        "name": "airbus Hub",
+        "icon": "images/dock/dock-airbus.jpg",
+        "description": "Airbus internal hub.",
+        "link": "",
+        "loadFav": false
+    },
+    {
+        "id": 3,
+        "name": "Zeitabrechnung",
+        "icon": "images/icons/template.svg",
+        "description": "Time tracking for Airbus.",
+        "link": "",
+        "loadFav": false
+    },
+    {
+        "id": 4,
+        "name": "soon",
+        "icon": "images/icons/template.svg",
+        "description": "Coming soon.",
+        "link": "",
+        "loadFav": false
+    },
+    {
+        "id": 5,
+        "name": "Workday",
+        "icon": "images/icons/template.svg",
+        "description": "Coming soon.",
+        "link": "https://wd3.myworkday.com/wday/authgwy/ag/login.htmld?redirect=n",
+        "loadFav": true
+    },
+    {
+        "id": 6,
+        "name": "BBS-Varel",
+        "icon": "images/icons/template.svg",
+        "description": "Coming soon.",
+        "link": "https://portal.bbs-varel.de/",
+        "loadFav": true
+    }
+]

@@ -1,0 +1,161 @@
+{
+  "folders": [
+    {
+      "id": 1,
+      "name": "Haupt",
+      "folderIconPath": "/shared/images/dock/dock-home.png",
+      "displayInDock": false,
+      "displayOnHome": false,
+      "apps": [
+        {
+          "id": 1,
+          "name": "Openmediavault",
+          "icon": "https://avatars.githubusercontent.com/u/1897994?s=280&v=4",
+          "description": "Web-based network attached storage (NAS) solution.",
+          "link": "https://8s8982nmzl16zprp.myfritz.net:4433"
+        },
+        {
+          "id": 2,
+          "name": "Book Reader",
+          "icon": "/shared/images/icons/books.jpeg",
+          "description": "Your personal e-book reader.",
+          "link": "http://8s8982nmzl16zprp.myfritz.net:7770/"
+        },
+        {
+          "id": 3,
+          "name": "Development Website",
+          "icon": "/shared/images/icons/development.jpeg",
+          "description": "Generate and manage scripts.",
+          "link": "http://8s8982nmzl16zprp.myfritz.net:6660"
+        },
+        {
+          "id": 4,
+          "name": "Aniworld",
+          "icon": "/shared/images/icons/aniworld_1758228614925.png",
+          "link": "https://aniworld.to/"
+        },
+        {
+          "id": 5,
+          "name": "Portfolio",
+          "icon": "/shared/images/icons/portfolio.jpeg",
+          "description": "Generate and manage scripts.",
+          "link": "http://8s8982nmzl16zprp.myfritz.net:5550"
+        },
+        {
+          "id": 6,
+          "name": "Icloud",
+          "icon": "https://help.apple.com/assets/677EB6990E35CFE25809758B/677EB69E5AFECC5ECD0B4978/de_DE/dc4bdf1973030717f16d02d3e44e3793.png",
+          "description": "Apple iCloud services.",
+          "link": "https://www.icloud.com"
+        },
+        {
+          "id": 7,
+          "name": "Onedrive",
+          "icon": "/shared/images/icons/onedrive.png",
+          "description": "Microsoft OneDrive cloud storage.",
+          "link": "https://onedrive.live.com/"
+        },
+        {
+          "id": 8,
+          "name": "Mail",
+          "icon": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Mail_%28iOS%29.svg",
+          "description": "Access your email.",
+          "link": "https://www.icloud.com/mail/"
+        },
+        {
+          "id": 9,
+          "name": "Netflix",
+          "icon": "/shared/images/icons/netflix_1758228124282.jpg",
+          "link": "https://www.netflix.com"
+        },
+        {
+          "id": 10,
+          "name": "Youtube",
+          "icon": "/shared/images/icons/youtube_1758228248039.jpeg",
+          "link": "https://www.youtube.com/"
+        },
+        {
+          "id": 11,
+          "name": "Disney",
+          "icon": "/shared/images/icons/disney_1758228179693.png",
+          "link": "https://www.disneyplus.com/de-de/home"
+        },
+        {
+          "id": 12,
+          "name": "Berichtsheft Seite",
+          "icon": "/shared/images/icons/berichtsheft_seite_1758460726777.jpeg",
+          "link": "http://entry.snenjih.de/"
+        },
+        {
+          "id": 13,
+          "name": "Claude",
+          "icon": "/shared/images/icons/claude_1758228341295.png",
+          "link": "https://claude.ai/new"
+        },
+        {
+          "id": 14,
+          "name": "Admin Panel",
+          "icon": "/shared/images/icons/admin_panel_1759564980439.png",
+          "link": "/admin"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Airbus",
+      "folderIconPath": "/shared/images/dock/dock-airbus.jpg",
+      "displayInDock": true,
+      "displayOnHome": true,
+      "apps": [
+        {
+          "id": 1,
+          "name": "my pay slip",
+          "icon": "/shared/images/icons/template.svg",
+          "description": "Access your pay slips.",
+          "link": "https://mypayslip.airbus.com/overview",
+          "loadFav": false
+        },
+        {
+          "id": 2,
+          "name": "airbus Hub",
+          "icon": "/shared/images/dock/dock-airbus.jpg",
+          "description": "Airbus internal hub.",
+          "link": "",
+          "loadFav": false
+        },
+        {
+          "id": 3,
+          "name": "Zeitabrechnung",
+          "icon": "/shared/images/icons/template.svg",
+          "description": "Time tracking for Airbus.",
+          "link": "",
+          "loadFav": false
+        },
+        {
+          "id": 4,
+          "name": "soon",
+          "icon": "/shared/images/icons/template.svg",
+          "description": "Coming soon.",
+          "link": "",
+          "loadFav": false
+        },
+        {
+          "id": 5,
+          "name": "Workday",
+          "icon": "/shared/images/icons/template.svg",
+          "description": "Coming soon.",
+          "link": "https://wd3.myworkday.com/wday/authgwy/ag/login.htmld?redirect=n",
+          "loadFav": true
+        },
+        {
+          "id": 6,
+          "name": "BBS-Varel",
+          "icon": "/shared/images/icons/template.svg",
+          "description": "Coming soon.",
+          "link": "https://portal.bbs-varel.de/",
+          "loadFav": true
+        }
+      ]
+    }
+  ]
+}

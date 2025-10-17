@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>QuantomOS - Admin Panel</title>
+    <link rel="stylesheet" href="/admin/css/admin.css">
+    <link rel="icon" href="/shared/images/favicon/favicon.ico" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <!-- User Info Box -->
+        <div class="user-info-box" id="user-info-box">
+            <div class="user-info-content">
+                <div class="user-icon">#</div>
+                <div class="user-details">
+                    <div class="user-name">User</div>
+                    <div class="user-email">max.mustermann@example.com</div>
+                </div>
+                <div class="user-dropdown-toggle" id="user-dropdown-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <!-- Dropdown Menu -->
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <button class="dropdown-item" id="change-password-btn">Passwort ändern</button>
+                <button class="dropdown-item" id="logout-btn">Abmelden</button>
+            </div>
+        </div>
+
+        <!-- Back to QuantomOS Button -->
+        <a href="/main" class="sidebar-button back-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Zurück zu QuantomOS
+        </a>
+
+        <!-- Divider -->
+        <div class="sidebar-divider"></div>
+
+        <!-- Navigation Buttons -->
+        <button class="sidebar-button nav-button active" data-tab="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Dashboard
+        </button>
+
+        <button class="sidebar-button nav-button" data-tab="webmanager">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            WebManager
+        </button>
+
+        <button class="sidebar-button nav-button" data-tab="analytics">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg>
+            Analytics
+        </button>
+
+        <button class="sidebar-button nav-button" data-tab="server">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            Server Controll
+        </button>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main-content">
+        <!-- Dashboard Tab -->
+        <div class="content-tab active" id="dashboard-tab">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <h2>Dashboard</h2>
+                <p>Dashboard Inhalte werden hier angezeigt</p>
+            </div>
+        </div>
+
+        <!-- WebManager Tab -->
+        <div class="content-tab" id="webmanager-tab">
+            <div class="webmanager-header">
+                <div class="webmanager-search">
+                    <div class="terminal-search-container">
+                        <div class="terminal-search-wrapper">
+                            <span class="terminal-prompt">></span>
+                            <input
+                                type="text"
+                                class="terminal-search-input"
+                                id="webmanager-search-input"
+                                placeholder="Search servers..."
+                                autocomplete="off"
+                            >
+                            <button class="terminal-clear-btn" id="webmanager-clear-search" style="display: none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div class="search-icon-end">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="action-button add-link-btn" id="add-server-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Link
+                </button>
+            </div>
+
+            <div class="server-list" id="server-list">
+                <!-- Server items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="content-tab" id="analytics-tab">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="20" x2="12" y2="10"></line>
+                    <line x1="18" y1="20" x2="18" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="16"></line>
+                </svg>
+                <h2>Analytics</h2>
+                <p>Analytics Daten werden hier angezeigt</p>
+            </div>
+        </div>
+
+        <!-- Server Controll Tab -->
+        <div class="content-tab" id="server-tab">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                </svg>
+                <h2>Server Controll</h2>
+                <p>Server Einstellungen werden hier angezeigt</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Server Config Popup -->
+    <div class="server-popup" id="server-popup">
+        <div class="popup-header">
+            <h2 id="server-popup-title">Add Server Configuration</h2>
+            <button class="close-button" id="close-server-popup">
+                <svg class="close-icon" viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="popup-content">
+            <form id="server-config-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="server-name">Server Name</label>
+                        <input type="text" id="server-name" placeholder="e.g. example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="server-type">Server Type</label>
+                        <select id="server-type">
+                            <option value="nginx">Nginx</option>
+                            <option value="apache2">Apache2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="server-port">Port</label>
+                        <input type="number" id="server-port" placeholder="80" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="server-root">Root Directory</label>
+                        <input type="text" id="server-root" placeholder="/var/www/html">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="server-domain">Domain</label>
+                    <input type="text" id="server-domain" placeholder="example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="proxy-pass">Proxy Pass (Optional)</label>
+                    <input type="text" id="proxy-pass" placeholder="http://localhost:3000">
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ssl-enabled">
+                        <span class="checkbox-custom"></span>
+                        Enable SSL/TLS
+                    </label>
+                </div>
+
+                <div class="form-divider"></div>
+
+                <div class="form-actions">
+                    <button type="button" class="action-button secondary" id="cancel-server-btn">Cancel</button>
+                    <button type="submit" class="action-button primary" id="save-server-btn">Save Configuration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/admin/js/admin.js"></script>
+</body>
+</html>

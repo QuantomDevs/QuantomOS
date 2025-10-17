@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Swatch colors - base palette */
+    --swatch--transparent: transparent;
+    --swatch--gray-050: #faf9f5;
+    --swatch--gray-100: #f5f4ed;
+    --swatch--gray-200: #e8e6dc;
+    --swatch--gray-250: #dedcd1;
+    --swatch--gray-300: #d1cfc5;
+    --swatch--gray-350: #c2c0b6;
+    --swatch--gray-400: #b0aea5;
+    --swatch--gray-450: #9c9a92;
+    --swatch--gray-500: #87867f;
+    --swatch--gray-550: #73726c;
+    --swatch--gray-600: #5e5d59;
+    --swatch--gray-650: #4d4c48;
+    --swatch--gray-700: #3d3d3a;
+    --swatch--gray-750: #30302e;
+    --swatch--gray-800: #262624;
+    --swatch--gray-850: #1f1e1d;
+    --swatch--gray-900: #1a1918;
+    --swatch--gray-950: #0d0c0c;
+    --swatch--gray-1000: #000;
+    --swatch--gray-000: white;
+    --swatch--clay: #d97757;
+    --swatch--clay-interactive: #c96442;
+    --swatch--clay-light: #ea8c6f;
+    --swatch-clay-light-hover: rgba(217, 119, 87, 0.1);
+    --light-green-primary: #166e3f;
+    --light-green-dark: #125c35;
+    --light-green-light: #26bd6c;
+    --light-green-hover-rgb: rgba(38,189,108, 0.1);
+
+    /* Dark theme colors (default) */
+    --bg-primary: #0a0d0d;
+    --bg-secondary: #1F1E1D;
+    --bg-tertiary: #2F2E2D;
+    --bg-quaternary: var(--swatch--gray-950);
+    --markdown-background: var(--bg-quaternary);
+    --color-canvas-default: #0A0D0D;
+    --border-primary: #404040;
+    --border-secondary: #333333;
+    --border-tertiary: #2a2a2a;
+    --border-color: #404040;
+    --border-accent: var(--swatch--clay);
+    --text-primary: #f5f5f5;
+    --text-secondary: #a8a8a8;
+    --text-tertiary: #8a8a8a;
+    --text-accent: var(--swatch--clay);
+    --text-success: #3fb950;
+    --text-warning: #f97316;
+    --text-error: #f85149;
+    --text-info: #58a6ff;
+    --accent-color: var(--light-green-light);
+    --accent-hover-color: var(--light-green-hover-rgb);
+    --accent-color-dark: var(--light-green-dark);
+    --accent-color-light: var(--light-green-light);
+    --shadow-primary: rgba(0, 0, 0, 0.5);
+    --shadow-secondary: rgba(0, 0, 0, 0.7);
+    --shadow-elevated: rgba(0, 0, 0, 0.8);
+
+    /* Legacy variable mappings for backwards compatibility */
+    --background-color: var(--bg-primary);
+    --card-background-color: var(--bg-secondary);
+    --text-color: var(--text-primary);
+    --secondary-text-color: var(--text-secondary);
+    --warning-color: var(--text-warning);
+    --warning-color-dark: #ea580c;
+    --info-color: var(--text-info);
+
+    /* Design System - Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+
+    /* Design System - Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+
+    /* Design System - Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* Design System - Z-Index */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 1000;
+    --z-modal: 1001;
+    --z-tooltip: 1002;
+
+    /* Design System - Typography */
+    --font-primary: "Google Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-code: 'Fira Code', 'Cascadia Code', 'Monaco', 'Menlo', 'Consolas', monospace;
+
+    /* Font Sizes & Line Heights */
+    --font-size-sm: 0.875rem;      /* 14px */
+    --line-height-sm: 1.25rem;     /* 20px */
+    --font-size-md: 1rem;          /* 16px */
+    --line-height-md: 1.5rem;      /* 24px */
+    --font-size-lg: 1.125rem;      /* 18px */
+    --line-height-lg: 1.75rem;     /* 28px */
+    --font-size-xl: 1.25rem;       /* 20px */
+    --line-height-xl: 1.875rem;    /* 30px */
+    --font-size-2xl: 1.5rem;       /* 24px */
+    --line-height-2xl: 2rem;       /* 32px */
+    --font-size-3xl: 1.875rem;     /* 30px */
+    --line-height-3xl: 2.25rem;    /* 36px */
+    --font-size-4xl: 2.25rem;      /* 36px */
+    --line-height-4xl: 2.5rem;     /* 40px */
+
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Additional Global Variables */
+    --max-width-xs: 320px;
+    --max-width-sm: 640px;
+    --max-width-md: 768px;
+    --max-width-lg: 1024px;
+    --max-width-xl: 1280px;
+    --max-width-2xl: 1536px;
+    --max-width-content: 1200px;
+    --max-width-wide: 1400px;
+
+    /* Box Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.2);
+    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+    /* Opacity Levels */
+    --opacity-disabled: 0.4;
+    --opacity-hover: 0.8;
+    --opacity-active: 0.9;
+
+    /* Search Component Variables */
+    --search-overlay-bg: rgba(0, 0, 0, 0.7);
+    --search-popup-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --search-result-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --search-highlight-bg: rgba(217, 119, 87, 0.2);
+}
+
+/* Light Theme Colors */
+html[data-theme="light"] {
+    /* Light theme colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --bg-quaternary: #dee2e6;
+    --border-primary: #d4d4d8;
+    --border-secondary: #e4e4e7;
+    --border-tertiary: #f4f4f5;
+    --border-color: #d4d4d8;
+    --border-accent: var(--swatch--clay);
+    --text-primary: #18181b;
+    --text-secondary: #52525b;
+    --text-tertiary: #71717a;
+    --text-accent: var(--swatch--clay-interactive);
+    --text-success: #22c55e;
+    --text-warning: #f97316;
+    --text-error: #ef4444;
+    --text-info: #3b82f6;
+    --accent-color: var(--swatch--clay);
+    --accent-hover-color: var(--swatch--clay-interactive);
+    --accent-color-dark: var(--swatch--clay-interactive);
+    --accent-color-light: #ea8c6f;
+    --shadow-primary: rgba(0, 0, 0, 0.08);
+    --shadow-secondary: rgba(0, 0, 0, 0.12);
+    --shadow-elevated: rgba(0, 0, 0, 0.16);
+
+    /* Legacy variable mappings for backwards compatibility */
+    --background-color: var(--bg-primary);
+    --card-background-color: var(--bg-secondary);
+    --text-color: var(--text-primary);
+    --secondary-text-color: var(--text-secondary);
+    --warning-color: var(--text-warning);
+    --warning-color-dark: #ea580c;
+    --info-color: var(--text-info);
+}
