@@ -1,0 +1,27 @@
+{
+  "id": "welcome-widget",
+  "name": "Welcome Widget",
+  "title": "Willkommen",
+  "version": "2.0.0",
+  "author": "System",
+  "description": "Eine personalisierbare Willkommensnachricht mit optionalem Datum.",
+  "settings": [
+    {
+      "id": "welcomeText",
+      "name": "Willkommenstext",
+      "type": "text",
+      "defaultValue": "Dies ist dein persönliches, modulares Dashboard. Die Inhalte werden dynamisch aus JSON-Dateien geladen.",
+      "description": "Der Text, der im Welcome Widget angezeigt wird"
+    },
+    {
+      "id": "showDate",
+      "name": "Datum anzeigen",
+      "type": "boolean",
+      "defaultValue": true,
+      "description": "Zeigt das aktuelle Datum unterhalb des Willkommenstexts an"
+    }
+  ],
+  "html": "<div class='welcome-content'><p id='welcome-text'>{{welcomeText}}</p><p id='date-display' class='date-display' style='display: {{showDate ? \"block\" : \"none\"}};'></p></div>",
+  "css": ".welcome-content { padding: var(--spacing-md); } p { margin: 0; line-height: 1.6; } .date-display { margin-top: var(--spacing-md); font-weight: var(--font-weight-bold); color: var(--color-primary); }",
+  "javascript": "if ({{showDate}}) { shadowRoot.getElementById('date-display').textContent = 'Heutiges Datum: ' + new Date().toLocaleDateString('de-DE'); }"
+}

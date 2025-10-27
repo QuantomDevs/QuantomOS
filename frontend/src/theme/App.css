@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'Earth Orbiter';
+  src: url('earthorbiter.ttf') format('truetype');
+}
+
+* {
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important; /* Remove blue highlight */
+  touch-action: manipulation !important; /* Prevents long-press actions */
+}
+
+html {
+  min-height: 100vh;
+  width: 100vw;
+}
+
+body {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+a, img {
+  -webkit-user-drag: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+#root {
+  user-select: none !important;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+  -webkit-touch-callout: none !important;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.swal2-container {
+  z-index: 9999999 !important;
+  user-select: auto;
+}
+
+.scale {
+  transition: all .15s ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translate(0.3px, 0.3px) rotate(0deg); }
+  10% { transform: translate(-0.3px, -0.5px) rotate(-0.2deg); }
+  20% { transform: translate(-0.7px, 0px) rotate(0.2deg); }
+  30% { transform: translate(0.7px, 0.5px) rotate(0deg); }
+  40% { transform: translate(0.3px, -0.3px) rotate(0.2deg); }
+  50% { transform: translate(-0.3px, 0.5px) rotate(-0.2deg); }
+  60% { transform: translate(-0.7px, 0.3px) rotate(0deg); }
+  70% { transform: translate(0.7px, 0.3px) rotate(-0.2deg); }
+  80% { transform: translate(-0.3px, -0.3px) rotate(0.2deg); }
+  90% { transform: translate(0.3px, 0.5px) rotate(0deg); }
+  100% { transform: translate(0.3px, -0.5px) rotate(-0.2deg); }
+}
+
+.wiggle-container {
+  animation: shake 1s infinite ease-in-out;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  pointer-events: none; /* Allows smooth scrolling */
+  transform-origin: center;
+  will-change: transform;
+  contain: layout;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .scale:hover {
+    transform: scale(1.05);
+  }
+}
+

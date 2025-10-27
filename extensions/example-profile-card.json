@@ -1,0 +1,55 @@
+{
+  "id": "profile-card",
+  "name": "Profile Card",
+  "title": "Profilkarte",
+  "version": "1.0.0",
+  "author": "System",
+  "description": "Eine umfassende Profilkarte, die alle Einstellungstypen demonstriert: Text, Datei-Upload, Zahl und Boolean.",
+  "settings": [
+    {
+      "id": "profileName",
+      "name": "Name",
+      "type": "text",
+      "defaultValue": "Max Mustermann",
+      "description": "Ihr vollständiger Name"
+    },
+    {
+      "id": "profileImage",
+      "name": "Profilbild",
+      "type": "file",
+      "defaultValue": "",
+      "description": "Ein Profilbild (wird in /extensions/files gespeichert)"
+    },
+    {
+      "id": "age",
+      "name": "Alter",
+      "type": "number",
+      "defaultValue": 25,
+      "description": "Ihr Alter in Jahren"
+    },
+    {
+      "id": "showEmail",
+      "name": "E-Mail anzeigen",
+      "type": "boolean",
+      "defaultValue": true,
+      "description": "Bestimmt, ob die E-Mail-Adresse sichtbar ist"
+    },
+    {
+      "id": "email",
+      "name": "E-Mail",
+      "type": "text",
+      "defaultValue": "max@example.com",
+      "description": "Ihre E-Mail-Adresse"
+    },
+    {
+      "id": "bio",
+      "name": "Biografie",
+      "type": "text",
+      "defaultValue": "Hallo, ich bin neu hier!",
+      "description": "Eine kurze Beschreibung über Sie"
+    }
+  ],
+  "html": "<div class='profile-card'><div class='profile-header'><div class='profile-image-container'><img src='{{profileImage}}' alt='{{profileName}}' class='profile-image' onerror='this.src=\"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27%3E%3Crect fill=%27%23ddd%27 width=%27100%27 height=%27100%27/%3E%3Ctext fill=%27%23999%27 x=%2750%%27 y=%2750%%27 font-size=%2718%27 text-anchor=%27middle%27 dy=%27.3em%27%3EKein Bild%3C/text%3E%3C/svg%3E\"'/></div><div class='profile-info'><h3 class='profile-name'>{{profileName}}</h3><p class='profile-age'>Alter: {{age}} Jahre</p></div></div><div class='profile-body'><p class='profile-bio'>{{bio}}</p><p class='profile-email' style='display: {{showEmail ? \"block\" : \"none\"}};'>📧 {{email}}</p></div></div>",
+  "css": ".profile-card { padding: var(--spacing-md); } .profile-header { display: flex; gap: var(--spacing-md); align-items: center; margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--border-color); } .profile-image-container { flex-shrink: 0; } .profile-image { width: 80px; height: 80px; border-radius: var(--radius-full); object-fit: cover; border: 2px solid var(--color-primary); } .profile-info { flex: 1; } .profile-name { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); margin: 0 0 var(--spacing-xs) 0; } .profile-age { margin: 0; color: var(--color-text-secondary); font-size: var(--font-size-sm); } .profile-body { } .profile-bio { margin: 0 0 var(--spacing-md) 0; line-height: 1.6; } .profile-email { margin: 0; color: var(--color-text-secondary); font-size: var(--font-size-sm); }",
+  "javascript": ""
+}

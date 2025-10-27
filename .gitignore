@@ -1,21 +1,32 @@
-# Claude and IDE files
-.claude/
-.claude.md
-.vscode/
-.idea/
-
-# Dependencies
-node_modules/
-venv/
-
-# Project-specific
-project-informations/
-config/servers.json
-trash/
-
-# System files
-.DS_Store
+# Logs
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Environment
-.env
+node_modules
+dist
+dist-ssr
+*.local
+project-informations
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+build
+backend/src/config/config.json
+backend/src/config/users.json
+backend/src/config/backups
+backend/src/public/uploads
+backend/public/uploads/*
+package-lock.json

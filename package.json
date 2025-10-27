@@ -1,17 +1,25 @@
 {
-  "name": "quantom-cloud-server",
-  "version": "1.0.0",
-  "description": "Backend server for Quantom Cloud application",
-  "main": "server.js",
+  "name": "lab-dash",
+  "version": "1.3.2",
+  "description": "This is an open-source user interface designed to manage your server and homelab",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "build": "concurrently \"cd backend && npm run build\" \"cd frontend && npm run build\"",
+    "preinstall": "cd ./backend && npm install && cd .. && cd ./frontend && npm install",
+    "docker:build:dev": "docker build . --no-cache -t ghcr.io/snenjih/lab-dash:latest",
+    "docker:build": "docker build --platform linux/amd64 . -t ghcr.io/snenjih/lab-dash:latest",
+    "docker:build:multi": "docker buildx build --platform linux/amd64,linux/arm64 . -t ghcr.io/snenjih/lab-dash:latest",
+    "docker:run": "docker run --platform=linux/amd64 -p 2022:80 -p 2525:2525 ghcr.io/snenjih/lab-dash:latest",
+    "docker:run:dev": "docker run -p 2022:2022 ghcr.io/snenjih/lab-dash:latest",
+    "clean": "rimraf node_modules package-lock.json frontend/node_modules frontend/package-lock.json backend/node_modules backend/package-lock.json",
+    "lint": "concurrently \"cd frontend && npm run lint\" \"cd backend && npm run lint\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "multer": "^2.0.2"
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "rimraf": "^5.0.5"
   }
 }

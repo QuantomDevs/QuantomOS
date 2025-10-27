@@ -1,0 +1,19 @@
+# Claude and IDE files
+.claude/
+.claude.md
+.vscode/
+.idea/
+
+# Dependencies
+node_modules/
+venv/
+
+# Project-specific
+project-informations/
+
+# System files
+.DS_Store
+*.log
+
+# Environment
+.env
