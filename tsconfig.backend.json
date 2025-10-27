@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "CommonJS",
+    "outDir": "./dist/backend",
+    "rootDir": "./src/backend",
+    "baseUrl": ".",
+    "paths": {
+      "@backend/*": ["src/backend/*"]
+    }
+  },
+  "include": [
+    "src/backend/**/*",
+    "src/backend/config/config.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

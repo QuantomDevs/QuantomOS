@@ -1,0 +1,94 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Color Theme - CSS Custom Properties */
+  /* These will be dynamically updated by ThemeContext */
+
+  /* Background Colors */
+  --color-background: #0a0a0f;
+  --color-widget-background: #2e2e2e;
+  --color-header-background: #2e2e2e;
+  --color-sidebar-background: #242424;
+
+  /* Accent Colors */
+  --color-primary-accent: #734CDE;
+  --color-secondary-accent: #242424;
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-error: #C6112E;
+
+  /* Text Colors */
+  --color-primary-text: #C9C9C9;
+  --color-secondary-text: #000000;
+  --color-muted-text: rgba(255, 255, 255, 0.5);
+
+  /* Border Colors */
+  --color-border: #424242;
+  --color-hover-border: #767676;
+
+  /* Transparency & Effects */
+  --widget-background-opacity: 0.7;
+  --backdrop-blur: 6px;
+
+  /* Computed Transparent Colors */
+  --color-widget-background-transparent: rgba(46, 46, 46, 0.7);
+  --color-header-background-transparent: rgba(46, 46, 46, 0.7);
+
+  /* Apply theme colors */
+  color: var(--color-primary-text);
+  background-color: var(--color-background);
+}
+
+/* Smooth scrolling for the entire page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Completely hide all native scrollbars */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+  display: none;
+}
+
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+div {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}

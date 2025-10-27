@@ -1,0 +1,62 @@
+{
+  "name": "quantomos-backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development PORT=2525 nodemon",
+    "start": "node ./index.js",
+    "build": "NODE_ENV=production node esbuild.config.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "docker:build:dev": "docker build . -t ghcr.io/snenjih/quantomos-backend:latest",
+    "docker:build": "docker build --platform linux/amd64 . -t ghcr.io/snenjih/quantomos-backend:latest",
+    "docker:run": "docker run --platform=linux/amd64 -p 2022:80 -p 2525:2525 ghcr.io/snenjih/quantomos-backend:latest",
+    "docker:run:dev": "docker run -p 2022:80 -p 2525:2525 ghcr.io/snenjih/quantomos-backend:latest",
+    "docker:push": "docker push ghcr.io/snenjih/quantomos-backend:latest",
+    "docker:stop": "docker ps -q --filter 'ancestor=ghcr.io/snenjih/quantomos-backend:latest' | xargs -r docker stop",
+    "docker:rm": "docker ps -a -q --filter 'ancestor=ghcr.io/snenjih/quantomos-backend:latest' | xargs -r docker rm",
+    "docker:clean": "npm run docker:stop && npm run docker:rm",
+    "docker:restart": "npm run docker:stop && npm run docker:rm && npm run docker:run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@loganmarchione/homelab-svg-assets": "^0.4.14",
+    "axios": "^1.8.3",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "geo-tz": "^8.1.4",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "systeminformation": "^5.27.8",
+    "wol": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.13.1",
+    "@types/wol": "^1.0.4",
+    "esbuild": "^0.25.0",
+    "esbuild-node-externals": "^1.18.0",
+    "esbuild-plugin-copy": "^2.1.1",
+    "eslint": "^9.17.0",
+    "eslint-plugin-import": "^2.28.1",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.18.2"
+  },
+  "optionalDependencies": {
+    "osx-temperature-sensor": "^1.0.8"
+  }
+}

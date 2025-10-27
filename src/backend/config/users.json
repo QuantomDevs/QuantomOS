@@ -1,0 +1,10 @@
+[
+  {
+    "username": "Snenjih",
+    "passwordHash": "$2b$10$GcImyizjiTRqmnFYM0A/sOWZHOqGo8pYl6iYt1kaLIGor/bx0tnZ2",
+    "refreshTokens": [
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNuZW5qaWgiLCJpYXQiOjE3NjE1Njc4ODEsImV4cCI6MTc2MjE3MjY4MX0.l0oetCwKuBu7-pH-k40AYInP_nlvD1GHucNPfAm1Z6Y"
+    ],
+    "role": "admin"
+  }
+]
