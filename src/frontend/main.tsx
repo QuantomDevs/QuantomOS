@@ -14,6 +14,7 @@ import { ThemeProvider as ColorThemeProvider } from './context/ThemeContext.tsx'
 import { theme } from './theme/theme.ts';
 import './theme/index.css';
 import 'react-grid-layout/css/styles.css';
+import './styles/gridLayout.css';
 
 DashApi.setupAxiosInterceptors();
 

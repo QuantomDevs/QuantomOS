@@ -1,6 +1,6 @@
 import { Box, useMediaQuery } from '@mui/material';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import GridLayout, { Layout } from 'react-grid-layout';
+import { Responsive as ResponsiveGridLayout, Layout, Layouts } from 'react-grid-layout';
 import shortid from 'shortid';
 
 import { SortableSabnzbd } from './sortable-items/widgets/SortableSabnzbd';
@@ -33,7 +33,7 @@ import { SortableWeatherWidget } from './sortable-items/widgets/SortableWeather'
 import { SortableCustomExtension } from './sortable-items/widgets/SortableCustomExtension';
 import { theme } from '../../theme/theme';
 import { GRID_CONFIG } from '../../config/gridConfig';
-import { getDefaultHeight, getDefaultWidth } from '../../utils/gridPositioning';
+import { getDefaultHeight, getDefaultWidth, getWidgetConstraints } from '../../utils/gridPositioning';
 
 export const DashboardGrid: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState<DashboardItem | null>(null);
@@ -42,6 +42,7 @@ export const DashboardGrid: React.FC = () => {
     const isMed = useMediaQuery(theme.breakpoints.down('md'));
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [containerWidth, setContainerWidth] = useState<number>(1200);
+    const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('lg');
 
     // Filter out admin-only items if user is not an admin
     const items = useMemo(() => {
@@ -77,26 +78,35 @@ export const DashboardGrid: React.FC = () => {
 
     // Convert DashboardItems to GridLayout format
     const convertToGridLayout = useCallback((dashboardItems: DashboardItem[]): GridLayoutItem[] => {
-        return dashboardItems.map(item => ({
-            i: item.id,
-            x: item.gridPosition?.x ?? 0,
-            y: item.gridPosition?.y ?? 0,
-            w: item.gridPosition?.w ?? getDefaultWidth(item.type),
-            h: item.gridPosition?.h ?? getDefaultHeight(item.type),
-            minW: item.gridPosition?.minW,
-            maxW: item.gridPosition?.maxW,
-            minH: item.gridPosition?.minH,
-            maxH: item.gridPosition?.maxH,
-            static: item.gridPosition?.static ?? false
-        }));
+        return dashboardItems.map(item => {
+            const constraints = getWidgetConstraints(item.type);
+
+            return {
+                i: item.id,
+                x: item.gridPosition?.x ?? 0,
+                y: item.gridPosition?.y ?? 0,
+                w: item.gridPosition?.w ?? getDefaultWidth(item.type),
+                h: item.gridPosition?.h ?? getDefaultHeight(item.type),
+                minW: item.gridPosition?.minW ?? constraints.minW,
+                maxW: item.gridPosition?.maxW ?? constraints.maxW,
+                minH: item.gridPosition?.minH ?? constraints.minH,
+                maxH: item.gridPosition?.maxH ?? constraints.maxH,
+                static: item.gridPosition?.static ?? false
+            };
+        });
     }, []);
 
-    // Handle layout changes
-    const handleLayoutChange = useCallback((newLayout: Layout[]) => {
+    // Handle breakpoint changes
+    const handleBreakpointChange = useCallback((breakpoint: string) => {
+        setCurrentBreakpoint(breakpoint);
+    }, []);
+
+    // Handle layout changes for responsive grid
+    const handleLayoutChange = useCallback((currentLayout: Layout[], allLayouts: Layouts) => {
         if (!editMode) return;
 
         const updatedItems = dashboardLayout.map(item => {
-            const layoutItem = newLayout.find(l => l.i === item.id);
+            const layoutItem = currentLayout.find(l => l.i === item.id);
             if (layoutItem) {
                 return {
                     ...item,
@@ -424,16 +434,26 @@ export const DashboardGrid: React.FC = () => {
 
     const layout = convertToGridLayout(items);
 
+    // Create layouts object for responsive grid
+    const layouts: Layouts = {
+        lg: layout,
+        md: layout,
+        sm: layout,
+        xs: layout,
+        xxs: layout
+    };
+
     return (
         <>
             <Box
                 ref={containerRef}
                 sx={{ width: '100%', maxWidth: '100vw', boxSizing: 'border-box', px: 2, paddingBottom: 4 }}
             >
-                <GridLayout
+                <ResponsiveGridLayout
                     className="dashboard-grid"
-                    layout={layout}
-                    cols={GRID_CONFIG.cols.lg}
+                    layouts={layouts}
+                    breakpoints={GRID_CONFIG.breakpoints}
+                    cols={GRID_CONFIG.cols}
                     rowHeight={GRID_CONFIG.rowHeight}
                     width={containerWidth}
                     margin={GRID_CONFIG.margin}
@@ -444,6 +464,7 @@ export const DashboardGrid: React.FC = () => {
                     isResizable={editMode}
                     useCSSTransforms={GRID_CONFIG.useCSSTransforms}
                     onLayoutChange={handleLayoutChange}
+                    onBreakpointChange={handleBreakpointChange}
                     onDragStop={handleDragStop}
                     onResizeStop={handleResizeStop}
                 >
@@ -452,7 +473,7 @@ export const DashboardGrid: React.FC = () => {
                             {renderItem(item)}
                         </div>
                     ))}
-                </GridLayout>
+                </ResponsiveGridLayout>
             </Box>
 
             <CenteredModal open={openEditModal} handleClose={() => setOpenEditModal(false)} title='Edit Item'>

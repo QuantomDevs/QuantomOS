@@ -5,7 +5,7 @@ export const GRID_CONFIG = {
     margin: [16, 16] as [number, number],
     containerPadding: [16, 16] as [number, number],
     compactType: 'vertical' as const,
-    preventCollision: false,
+    preventCollision: true, // Enable collision detection
     isDraggable: true,
     isResizable: true,
     useCSSTransforms: true

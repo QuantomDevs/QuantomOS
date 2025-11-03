@@ -1,67 +1,23 @@
-import { DashboardItem, ITEM_TYPE } from '../types';
+import { DashboardItem } from '../types';
 import { GRID_CONFIG } from '../config/gridConfig';
+import { getWidgetSize } from '../config/widgetSizes';
 
-// Temporary default sizes - will be replaced with comprehensive sizing in Subphase 1.4.9
 export const getDefaultWidth = (type: string): number => {
-    // Simple mapping for now
-    switch (type) {
-    case ITEM_TYPE.APP_SHORTCUT:
-    case ITEM_TYPE.BLANK_APP:
-        return 2;
-    case ITEM_TYPE.WEATHER_WIDGET:
-    case ITEM_TYPE.DATE_TIME_WIDGET:
-        return 4;
-    case ITEM_TYPE.SYSTEM_MONITOR_WIDGET:
-    case ITEM_TYPE.DISK_MONITOR_WIDGET:
-    case ITEM_TYPE.PIHOLE_WIDGET:
-    case ITEM_TYPE.ADGUARD_WIDGET:
-    case ITEM_TYPE.DOWNLOAD_CLIENT:
-    case ITEM_TYPE.TORRENT_CLIENT:
-    case ITEM_TYPE.MEDIA_SERVER_WIDGET:
-    case ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET:
-    case ITEM_TYPE.NOTES_WIDGET:
-    case ITEM_TYPE.SONARR_WIDGET:
-    case ITEM_TYPE.RADARR_WIDGET:
-    case ITEM_TYPE.CUSTOM_EXTENSION:
-    case ITEM_TYPE.DUAL_WIDGET:
-        return 6;
-    case ITEM_TYPE.GROUP_WIDGET:
-    case ITEM_TYPE.BLANK_ROW:
-        return 12;
-    default:
-        return 4;
-    }
+    return getWidgetSize(type).w;
 };
 
 export const getDefaultHeight = (type: string): number => {
-    // Simple mapping for now
-    switch (type) {
-    case ITEM_TYPE.APP_SHORTCUT:
-    case ITEM_TYPE.BLANK_APP:
-    case ITEM_TYPE.WEATHER_WIDGET:
-    case ITEM_TYPE.DATE_TIME_WIDGET:
-        return 2;
-    case ITEM_TYPE.SYSTEM_MONITOR_WIDGET:
-    case ITEM_TYPE.DISK_MONITOR_WIDGET:
-    case ITEM_TYPE.PIHOLE_WIDGET:
-    case ITEM_TYPE.ADGUARD_WIDGET:
-    case ITEM_TYPE.DOWNLOAD_CLIENT:
-    case ITEM_TYPE.TORRENT_CLIENT:
-    case ITEM_TYPE.GROUP_WIDGET:
-    case ITEM_TYPE.SONARR_WIDGET:
-    case ITEM_TYPE.RADARR_WIDGET:
-    case ITEM_TYPE.CUSTOM_EXTENSION:
-        return 3;
-    case ITEM_TYPE.MEDIA_SERVER_WIDGET:
-    case ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET:
-    case ITEM_TYPE.NOTES_WIDGET:
-    case ITEM_TYPE.DUAL_WIDGET:
-        return 4;
-    case ITEM_TYPE.BLANK_ROW:
-        return 1;
-    default:
-        return 2;
-    }
+    return getWidgetSize(type).h;
+};
+
+export const getWidgetConstraints = (type: string) => {
+    const size = getWidgetSize(type);
+    return {
+        minW: size.minW,
+        maxW: size.maxW,
+        minH: size.minH,
+        maxH: size.maxH
+    };
 };
 
 export const calculateNextAvailablePosition = (
