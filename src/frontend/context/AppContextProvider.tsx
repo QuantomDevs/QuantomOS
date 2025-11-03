@@ -428,18 +428,69 @@ export const AppContextProvider = ({ children }: Props) => {
             // Use provided pageId or fall back to currentPageId
             const targetPageId = pageId !== undefined ? pageId : currentPageId;
 
+            // Import migration utilities
+            const { needsMigration, migrateToGridLayout } = await import('../utils/layoutMigration');
+
+            let selectedLayout: DashboardItem[] = [];
+            let needsSave = false;
+
             // If we're on a specific page, load that page's layout
             if (targetPageId) {
                 const currentPage = res.pages?.find(page => page.id === targetPageId);
                 if (currentPage) {
-                    const selectedLayout = isMobile ? currentPage.layout.mobile : currentPage.layout.desktop;
+                    selectedLayout = isMobile ? currentPage.layout.mobile : currentPage.layout.desktop;
+
+                    // Check if migration is needed for this page
+                    if (needsMigration(selectedLayout)) {
+                        console.log('Migrating page layout to grid system...');
+                        selectedLayout = migrateToGridLayout(selectedLayout);
+                        needsSave = true;
+
+                        // Update the page with migrated layout
+                        const updatedPages = res.pages?.map(page => {
+                            if (page.id === targetPageId) {
+                                return {
+                                    ...page,
+                                    layout: {
+                                        desktop: migrateToGridLayout(page.layout.desktop),
+                                        mobile: migrateToGridLayout(page.layout.mobile)
+                                    }
+                                };
+                            }
+                            return page;
+                        });
+
+                        // Save migrated layout
+                        await DashApi.saveConfig({ pages: updatedPages });
+                        ToastManager.success('Dashboard layout migrated to new grid system');
+                    }
+
                     setDashboardLayout(selectedLayout);
                     return selectedLayout;
                 }
             }
 
             // Otherwise load the main dashboard layout
-            const selectedLayout = isMobile ? res.layout.mobile : res.layout.desktop;
+            selectedLayout = isMobile ? res.layout.mobile : res.layout.desktop;
+
+            // Check if migration is needed for main dashboard
+            if (needsMigration(selectedLayout)) {
+                console.log('Migrating main dashboard layout to grid system...');
+                const migratedDesktop = migrateToGridLayout(res.layout.desktop);
+                const migratedMobile = migrateToGridLayout(res.layout.mobile);
+
+                // Save migrated layout
+                await DashApi.saveConfig({
+                    layout: {
+                        desktop: migratedDesktop,
+                        mobile: migratedMobile
+                    }
+                });
+
+                selectedLayout = isMobile ? migratedMobile : migratedDesktop;
+                ToastManager.success('Dashboard layout migrated to new grid system');
+            }
+
             setDashboardLayout(selectedLayout || []);
             return selectedLayout || [];
         }
@@ -511,6 +562,9 @@ export const AppContextProvider = ({ children }: Props) => {
     };
 
     const addItem = async (itemToAdd: NewItem) => {
+        // Calculate next available position for the new item
+        const { calculateNextAvailablePosition, getDefaultWidth, getDefaultHeight } = await import('../utils/gridPositioning');
+        const nextPosition = calculateNextAvailablePosition(dashboardLayout);
 
         const newItem: DashboardItem = {
             id: `item-${shortid.generate()}`,
@@ -520,7 +574,13 @@ export const AppContextProvider = ({ children }: Props) => {
             type: itemToAdd.type,
             showLabel: itemToAdd.showLabel,
             adminOnly: itemToAdd.adminOnly,
-            config: itemToAdd.config
+            config: itemToAdd.config,
+            gridPosition: itemToAdd.gridPosition || {
+                x: nextPosition.x,
+                y: nextPosition.y,
+                w: getDefaultWidth(itemToAdd.type),
+                h: getDefaultHeight(itemToAdd.type)
+            }
         };
 
         // Add to current view's layout (affects UI immediately)

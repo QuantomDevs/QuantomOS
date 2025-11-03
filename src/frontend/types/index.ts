@@ -1,3 +1,5 @@
+import { Layout } from 'react-grid-layout';
+
 export enum ITEM_TYPE {
     WEATHER_WIDGET = 'weather-widget',
     DATE_TIME_WIDGET = 'date-time-widget',
@@ -23,6 +25,10 @@ export enum ITEM_TYPE {
     BLANK_ROW = 'blank-row',
     PAGE = 'page'
 }
+
+export type GridLayoutItem = Layout & {
+    i: string; // Item ID (maps to DashboardItem.id)
+};
 
 export enum DOWNLOAD_CLIENT_TYPE {
     QBITTORRENT = 'qbittorrent',
@@ -55,6 +61,18 @@ export type NewItem = {
         _hasApiToken?: boolean;
         _hasPassword?: boolean;
         [key: string]: any;
+    };
+    // New grid layout properties
+    gridPosition?: {
+        x: number;        // Grid column position (0-based)
+        y: number;        // Grid row position (0-based)
+        w: number;        // Width in grid columns
+        h: number;        // Height in grid rows
+        minW?: number;    // Minimum width constraint
+        maxW?: number;    // Maximum width constraint
+        minH?: number;    // Minimum height constraint
+        maxH?: number;    // Maximum height constraint
+        static?: boolean; // Whether widget is locked in place
     };
 }
 
@@ -124,6 +142,18 @@ export type DashboardItem = {
         _hasApiToken?: boolean;
         _hasPassword?: boolean;
         [key: string]: any;
+    };
+    // New grid layout properties
+    gridPosition?: {
+        x: number;        // Grid column position (0-based)
+        y: number;        // Grid row position (0-based)
+        w: number;        // Width in grid columns
+        h: number;        // Height in grid rows
+        minW?: number;    // Minimum width constraint
+        maxW?: number;    // Maximum width constraint
+        minH?: number;    // Minimum height constraint
+        maxH?: number;    // Maximum height constraint
+        static?: boolean; // Whether widget is locked in place
     };
 };
 
