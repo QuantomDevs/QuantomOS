@@ -54,17 +54,17 @@ export const WidgetContainer: React.FC<Props> = ({
                 justifyContent: 'center',
                 backgroundColor: isHighlighted ? 'rgba(255, 255, 255, 0.13)' :
                     isPreview ? 'rgba(76, 175, 80, 0.05)' :
-                        placeholder || groupItem ? 'transparent' : COLORS.TRANSPARENT_GRAY,
+                        placeholder || groupItem ? 'transparent' : 'var(--color-widget-background-transparent)',
                 borderRadius: 2,
-                border: isPreview ? `2px dashed ${COLORS.LIGHT_GRAY_HOVER}` :
-                    placeholder && editMode ? 'none' : !placeholder ? `1px solid ${COLORS.BORDER}` : 'none',
+                border: isPreview ? `2px dashed var(--color-hover-border)` :
+                    placeholder && editMode ? 'none' : !placeholder ? `1px solid var(--color-border)` : 'none',
                 padding: 0,
                 cursor: editMode ? 'grab' : !placeholder ? 'auto' : 'auto',
                 boxShadow: placeholder ? 0 : 2,
                 position: 'relative',
                 overflow: 'hidden',
                 boxSizing: 'border-box',
-                backdropFilter: placeholder || groupItem ? 'none' : '6px',
+                backdropFilter: placeholder || groupItem ? 'none' : 'blur(var(--backdrop-blur))',
                 transition: 'background-color 0.3s ease, outline 0.3s ease',
                 ...(isPreview && {
                     animation: 'pulse 2s infinite ease-in-out',

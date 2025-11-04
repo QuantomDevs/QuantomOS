@@ -383,7 +383,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
             setIsLoading(false);
             // Handle API rate limit errors
             if (err?.response?.status === 429 && err?.response?.data?.error_source === 'labdash_api') {
-                console.error(`Lab-Dash API rate limit: ${err.response?.data?.message}`);
+                console.error(`QuantomOS API rate limit: ${err.response?.data?.message}`);
                 setErrorMessage(`API Rate limit: ${err.response?.data?.message}`);
             } else if (err?.response?.status >= 400) {
                 // Handle other API errors

@@ -278,8 +278,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     return (
         <>
             <AppBar position='fixed' sx={{
-                backgroundColor: COLORS.TRANSPARENT_GRAY,
-                backdropFilter: 'blur(6px)',
+                backgroundColor: 'var(--color-header-background-transparent)',
+                backdropFilter: 'blur(var(--backdrop-blur))',
                 width: '100vw', // Use full viewport width to cover scrollbar area
                 maxWidth: 'none', // Override any max-width constraints
                 left: 0, // Ensure it starts from the left edge

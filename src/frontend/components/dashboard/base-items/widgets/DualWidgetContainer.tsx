@@ -40,16 +40,16 @@ export const DualWidgetContainer: React.FC<DualWidgetContainerProps> = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: COLORS.TRANSPARENT_GRAY,
+                backgroundColor: 'var(--color-widget-background-transparent)',
                 borderRadius: 2,
-                border: `1px solid ${COLORS.BORDER}`,
+                border: `1px solid var(--color-border)`,
                 padding: 0,
                 cursor: editMode ? 'grab' : 'auto',
                 boxShadow: 2,
                 position: 'relative',
                 overflow: 'hidden',
                 boxSizing: 'border-box',
-                backdropFilter: '6px'
+                backdropFilter: 'blur(var(--backdrop-blur))'
             }}
         >
             <EditMenu editMode={editMode} itemId={id} onEdit={onEdit} onDelete={onDelete} onDuplicate={onDuplicate} />

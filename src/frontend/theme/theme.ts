@@ -127,8 +127,8 @@ export const theme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: COLORS.TRANSPARENT_DARK_GRAY,
-                    backdropFilter: 'blur(6px)',
+                    backgroundColor: 'var(--color-sidebar-background)',
+                    backdropFilter: 'blur(var(--backdrop-blur))',
                 },
             },
         },

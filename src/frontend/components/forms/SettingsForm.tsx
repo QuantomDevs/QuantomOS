@@ -348,7 +348,7 @@ export const SettingsForm = () => {
         // Check if there are changes that would be saved
         const checkForChanges = () => {
             // Title change
-            if (title !== (config?.title || 'Lab Dash')) return true;
+            if (title !== (config?.title || 'QuantomOS')) return true;
 
             // Background image change
             if (backgroundFile) return true;
@@ -423,7 +423,7 @@ export const SettingsForm = () => {
             if (data.title.trim()) {
                 updatedConfig.title = data.title;
             } else {
-                updatedConfig.title = 'Lab Dash';
+                updatedConfig.title = 'QuantomOS';
             }
 
             if (data.search !== undefined) {
@@ -875,7 +875,7 @@ export const SettingsForm = () => {
                                             text: 'Are you sure you want to reset all settings? This cannot be undone.',
                                             confirmAction: async () => {
                                                 await updateConfig({
-                                                    title: 'Lab Dash',
+                                                    title: 'QuantomOS',
                                                     backgroundImage: '',
                                                     search: false,
                                                     searchProvider: undefined,

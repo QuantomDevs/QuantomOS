@@ -185,7 +185,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                         Your Personal Dashboard
                     </Typography>
                     <Typography paragraph align='center'>
-                        Welcome to Quantomos, a customizable dashboard for your lab environment.
+                        Welcome to Quantomos, a customizable dashboard for your Quantom environment.
                         This wizard will help you set up your system and get started.
                     </Typography>
                     <Typography align='center'>

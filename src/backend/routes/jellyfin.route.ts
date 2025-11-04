@@ -92,7 +92,7 @@ jellyfinRoute.get('/sessions', async (req: Request, res: Response) => {
                         'Authorization': `MediaBrowser Token="${apiKey}"`,
                         'X-MediaBrowser-Token': apiKey,
                         'Accept': 'application/json',
-                        'User-Agent': 'Lab-Dash/1.0'
+                        'User-Agent': 'QuantomOS/1.0'
                     },
                     timeout: 10000,
                     // Allow self-signed certificates for HTTPS requests
@@ -209,7 +209,7 @@ jellyfinRoute.get('/library-stats', async (req: Request, res: Response) => {
                         'Authorization': `MediaBrowser Token="${apiKey}"`,
                         'X-MediaBrowser-Token': apiKey,
                         'Accept': 'application/json',
-                        'User-Agent': 'Lab-Dash/1.0'
+                        'User-Agent': 'QuantomOS/1.0'
                     },
                     timeout: 15000,
                     rejectUnauthorized: false

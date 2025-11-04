@@ -130,7 +130,7 @@ export const SearchBar = ({
                             key={nanoid()}
                             sx={{
                                 '&:hover': {
-                                    backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
+                                    backgroundColor: `var(--color-hover-border) !important`,
                                 }
                             }}
                         >
@@ -172,11 +172,11 @@ export const SearchBar = ({
                                 },
                                 height: '60px',
                                 '& .MuiOutlinedInput-root': {
-                                    backgroundColor: { xs: COLORS.TRANSPARENT_GRAY, sm: 'transparent' },
+                                    backgroundColor: { xs: 'var(--color-widget-background-transparent)', sm: 'transparent' },
                                     borderRadius: 2,
-                                    backdropFilter: { xs: 'blur(6px)', sm: 'none' },
+                                    backdropFilter: { xs: 'blur(var(--backdrop-blur))', sm: 'none' },
                                     // (Optional) Include the -webkit- prefix for Safari support:
-                                    WebkitBackdropFilter: { xs: 'blur(6px)', sm: 'none' },
+                                    WebkitBackdropFilter: { xs: 'blur(var(--backdrop-blur))', sm: 'none' },
                                 },
                                 '& .MuiOutlinedInput-notchedOutline': {
                                     border: '1px solid rgba(255, 255, 255, 0.3) !important',

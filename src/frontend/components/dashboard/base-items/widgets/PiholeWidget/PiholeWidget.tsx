@@ -300,7 +300,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                     // Check if this is a rate limit from our backend API
                     if (err.response?.data?.error_source === 'labdash_api') {
                         setAuthFailed(true);
-                        setError(`Lab-Dash API rate limit exceeded: ${err.response?.data?.message}`);
+                        setError(`QuantomOS API rate limit exceeded: ${err.response?.data?.message}`);
                     } else {
                         // This is a rate limit from Pi-hole itself
                         setAuthFailed(true);
@@ -688,7 +688,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 // Check if this is a rate limit from our backend API
                 if (err.response?.data?.error_source === 'labdash_api') {
                     setAuthFailed(true);
-                    setError(`Lab-Dash API rate limit exceeded: ${err.response?.data?.message}`);
+                    setError(`QuantomOS API rate limit exceeded: ${err.response?.data?.message}`);
                 } else {
                     // This is a rate limit from Pi-hole itself
                     setAuthFailed(true);
@@ -755,7 +755,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 // Check if this is a rate limit from our backend API
                 if (err.response?.data?.error_source === 'labdash_api') {
                     setAuthFailed(true);
-                    setError(`Lab-Dash API rate limit exceeded: ${err.response?.data?.message}`);
+                    setError(`QuantomOS API rate limit exceeded: ${err.response?.data?.message}`);
                 } else {
                     // This is a rate limit from Pi-hole itself
                     setAuthFailed(true);

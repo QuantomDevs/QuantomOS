@@ -304,7 +304,7 @@ export class DashApi {
 
             // Get the filename from headers if available, or use default
             const contentDisposition = response.headers['content-disposition'];
-            let filename = 'lab-dash-backup.json';
+            let filename = 'QuantomOS-backup.json';
 
             if (contentDisposition) {
                 const filenameMatch = contentDisposition.match(/filename=(.+)/);
