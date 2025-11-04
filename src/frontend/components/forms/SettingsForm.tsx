@@ -2,8 +2,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { CheckboxElement, FormContainer, SelectElement, TextFieldElement, useForm } from 'react-hook-form-mui';
-import { FaCog } from 'react-icons/fa';
-import { FaImage, FaTrashCan } from 'react-icons/fa6';
+import { FaCog, FaLock, FaGlobe, FaTh } from 'react-icons/fa';
+import { FaTrashCan, FaImage, FaPalette } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
 import { FileInput } from './FileInput';
@@ -16,6 +16,9 @@ import { Config, SearchProvider } from '../../types';
 import { PopupManager } from '../modals/PopupManager';
 import { ToastManager } from '../toast/ToastManager';
 import { ColorCustomization } from '../sidebar/ColorCustomization';
+import { GridSettings } from '../sidebar/GridSettings';
+import { CollapsibleSection } from '../settings/CollapsibleSection';
+import { PasswordChange } from '../settings/PasswordChange';
 
 // Predefined search providers
 const SEARCH_PROVIDERS = [
@@ -685,34 +688,38 @@ export const SettingsForm = () => {
                         sx={{
                             borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
                             px: 2,
-                            minHeight: '64px',
+                            minHeight: '72px',
                             '& .MuiTabs-indicator': {
                                 backgroundColor: 'var(--color-primary-accent)',
-                                height: '3px'
+                                height: '4px'
                             },
                             '& .MuiTab-root': {
                                 alignItems: 'center',
                                 textAlign: 'center',
                                 justifyContent: 'center',
-                                fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                                fontSize: { xs: '1rem', sm: '1.1rem' },
+                                fontWeight: 600,
                                 color: 'var(--color-primary-text)',
-                                minHeight: '64px',
+                                minHeight: '72px',
                                 transition: 'all 0.3s ease',
                                 '&.Mui-selected': {
                                     color: 'var(--color-primary-accent)',
-                                    backgroundColor: 'var(--color-secondary-background)'
+                                    backgroundColor: 'var(--color-secondary-background)',
+                                    fontWeight: 700
                                 },
                                 '&:hover': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.05)'
+                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                    transform: 'translateY(-2px)'
                                 },
                                 flexDirection: 'row',
-                                gap: 1,
-                                px: 3
+                                gap: 1.5,
+                                px: 4,
+                                flex: 1
                             }
                         }}
                     >
-                        <Tab icon={<FaCog style={{ fontSize: '1.2rem' }} />} label='General' {...a11yProps(0)} />
-                        <Tab icon={<FaImage style={{ fontSize: '1.2rem' }} />} label='Appearance' {...a11yProps(1)} />
+                        <Tab icon={<FaCog style={{ fontSize: '1.5rem' }} />} label='General' {...a11yProps(0)} />
+                        <Tab icon={<FaImage style={{ fontSize: '1.5rem' }} />} label='Appearance' {...a11yProps(1)} />
                     </Tabs>
 
                     <TabPanel value={tabValue} index={0}>
@@ -1076,6 +1083,16 @@ export const SettingsForm = () => {
                                 </Box>
                             </Box>
 
+                            {/* Security Section - Password Change */}
+                            <CollapsibleSection
+                                title='Security'
+                                description='Manage your account security settings'
+                                icon={<FaLock />}
+                                defaultExpanded={false}
+                            >
+                                <PasswordChange />
+                            </CollapsibleSection>
+
                             <Box sx={{
                                 gridColumn: { xs: '1', sm: '1 / -1' },
                                 justifySelf: 'start',
@@ -1117,135 +1134,157 @@ export const SettingsForm = () => {
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 3
+                            gap: 2
                         }}>
-                            <Typography variant='h6'>Appearance Settings</Typography>
+                            <Typography variant='h6' sx={{ mb: 2 }}>Appearance Settings</Typography>
 
-                            <Box sx={{
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
-                                gap: { xs: 1, sm: 2 },
-                                alignItems: 'center'
-                            }}>
-                                <Typography variant='body1' sx={{
-                                    alignSelf: 'center',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}>Background Image</Typography>
-                                <Box sx={{ position: 'relative' }}>
-                                    <FileInput
-                                        name='backgroundFile'
-                                        sx={{ width: '95%' }}
-                                    />
-                                    {backgroundFile && (
-                                        <Tooltip title='Clear'>
-                                            <CloseIcon
-                                                onClick={() => formContext.resetField('backgroundFile')}
-                                                sx={{
-                                                    position: 'absolute',
-                                                    right: '10px',
-                                                    top: '50%',
-                                                    transform: 'translateY(-50%)',
-                                                    cursor: 'pointer',
-                                                    fontSize: 22,
-                                                    color: 'rgba(255, 255, 255, 0.7)',
-                                                }}
-                                            />
-                                        </Tooltip>
-                                    )}
-                                </Box>
-
-                                <Typography variant='body1' sx={{
-                                    alignSelf: 'center',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' }
-                                }}>Upload App Icons</Typography>
-                                <Box sx={{ position: 'relative' }}>
-                                    <MultiFileInput
-                                        name='appIconFiles'
-                                        maxFiles={20}
-                                        sx={{ width: '95%' }}
-                                    />
-                                    {appIconFiles && appIconFiles.length > 0 && (
-                                        <Tooltip title='Clear'>
-                                            <CloseIcon
-                                                onClick={() => formContext.resetField('appIconFiles')}
-                                                sx={{
-                                                    position: 'absolute',
-                                                    right: '10px',
-                                                    top: '50%',
-                                                    transform: 'translateY(-50%)',
-                                                    cursor: 'pointer',
-                                                    fontSize: 22,
-                                                    color: 'rgba(255, 255, 255, 0.7)',
-                                                }}
-                                            />
-                                        </Tooltip>
-                                    )}
-                                </Box>
-
-                            </Box>
-                            <Box sx={{
-                                gridColumn: { xs: '1', sm: '1 / -1' },
-                                justifySelf: 'start',
-                                mt: 2,
-                                display: 'flex',
-                                gap: 2,
-                                flexDirection: { xs: 'column', sm: 'row' }
-                            }}>
-                                <Button
-                                    variant='contained'
-                                    color='error'
-                                    onClick={async () => {
-                                        try {
-                                            const response = await DashApi.clearIconCache();
-                                            ToastManager.success(response.message || 'Icon cache cleared successfully');
-                                        } catch (error) {
-                                            console.error('Error clearing icon cache:', error);
-                                            ToastManager.error('Failed to clear icon cache');
-                                        }
-                                    }}
-                                >
-                                    Clear Icon Cache
-                                </Button>
-                                <Button variant='contained' onClick={resetBackground} color='error'>
-                                        Reset Background
-                                </Button>
-                            </Box>
-
-                            {/* Image Management Section */}
-                            <Box>
-                                <Typography variant='h6' sx={{ mb: 2 }}>Uploaded Images</Typography>
-
-                                {loadingImages ? (
-                                    <Typography>Loading images...</Typography>
-                                ) : uploadedImages.length === 0 ? (
-                                    <Typography variant='body2' sx={{ fontStyle: 'italic' }}>
-                                        No uploaded images found.
-                                    </Typography>
-                                ) : (
-                                    <Box sx={{
-                                        display: 'grid',
-                                        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-                                        gap: 2,
-                                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                                        borderRadius: 1,
-                                        p: 2
-                                    }}>
-                                        {uploadedImages.map((image, index) => (
-                                            <ImagePreviewCard
-                                                key={index}
-                                                image={image}
-                                                onDelete={() => deleteUploadedImage(image.path, image.name, image.type)}
-                                                formatFileSize={formatFileSize}
-                                            />
-                                        ))}
+                            {/* Background & Icons Section */}
+                            <CollapsibleSection
+                                title='Background & Icons'
+                                description='Set your dashboard background image and upload custom app icons'
+                                icon={<FaImage />}
+                                defaultExpanded={true}
+                            >
+                                <Box sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
+                                    gap: { xs: 1, sm: 2 },
+                                    alignItems: 'center'
+                                }}>
+                                    <Typography variant='body1' sx={{
+                                        alignSelf: 'center',
+                                        fontSize: { xs: '0.875rem', sm: '1rem' }
+                                    }}>Background Image</Typography>
+                                    <Box sx={{ position: 'relative' }}>
+                                        <FileInput
+                                            name='backgroundFile'
+                                            sx={{ width: '95%' }}
+                                        />
+                                        {backgroundFile && (
+                                            <Tooltip title='Clear'>
+                                                <CloseIcon
+                                                    onClick={() => formContext.resetField('backgroundFile')}
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        right: '10px',
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                        cursor: 'pointer',
+                                                        fontSize: 22,
+                                                        color: 'rgba(255, 255, 255, 0.7)',
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        )}
                                     </Box>
-                                )}
-                            </Box>
+
+                                    <Typography variant='body1' sx={{
+                                        alignSelf: 'center',
+                                        fontSize: { xs: '0.875rem', sm: '1rem' }
+                                    }}>Upload App Icons</Typography>
+                                    <Box sx={{ position: 'relative' }}>
+                                        <MultiFileInput
+                                            name='appIconFiles'
+                                            maxFiles={20}
+                                            sx={{ width: '95%' }}
+                                        />
+                                        {appIconFiles && appIconFiles.length > 0 && (
+                                            <Tooltip title='Clear'>
+                                                <CloseIcon
+                                                    onClick={() => formContext.resetField('appIconFiles')}
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        right: '10px',
+                                                        top: '50%',
+                                                        transform: 'translateY(-50%)',
+                                                        cursor: 'pointer',
+                                                        fontSize: 22,
+                                                        color: 'rgba(255, 255, 255, 0.7)',
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        )}
+                                    </Box>
+                                </Box>
+
+                                <Box sx={{
+                                    display: 'flex',
+                                    gap: 2,
+                                    flexDirection: { xs: 'column', sm: 'row' },
+                                    mt: 2
+                                }}>
+                                    <Button
+                                        variant='contained'
+                                        color='error'
+                                        onClick={async () => {
+                                            try {
+                                                const response = await DashApi.clearIconCache();
+                                                ToastManager.success(response.message || 'Icon cache cleared successfully');
+                                            } catch (error) {
+                                                console.error('Error clearing icon cache:', error);
+                                                ToastManager.error('Failed to clear icon cache');
+                                            }
+                                        }}
+                                    >
+                                        Clear Icon Cache
+                                    </Button>
+                                    <Button variant='contained' onClick={resetBackground} color='error'>
+                                        Reset Background
+                                    </Button>
+                                </Box>
+
+                                {/* Uploaded Images Subsection */}
+                                <Box sx={{ mt: 3 }}>
+                                    <Typography variant='subtitle1' sx={{ mb: 2, fontWeight: 600 }}>
+                                        Uploaded Images
+                                    </Typography>
+                                    {loadingImages ? (
+                                        <Typography>Loading images...</Typography>
+                                    ) : uploadedImages.length === 0 ? (
+                                        <Typography variant='body2' sx={{ fontStyle: 'italic', opacity: 0.7 }}>
+                                            No uploaded images found.
+                                        </Typography>
+                                    ) : (
+                                        <Box sx={{
+                                            display: 'grid',
+                                            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+                                            gap: 2,
+                                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                                            borderRadius: 1,
+                                            p: 2
+                                        }}>
+                                            {uploadedImages.map((image, index) => (
+                                                <ImagePreviewCard
+                                                    key={index}
+                                                    image={image}
+                                                    onDelete={() => deleteUploadedImage(image.path, image.name, image.type)}
+                                                    formatFileSize={formatFileSize}
+                                                />
+                                            ))}
+                                        </Box>
+                                    )}
+                                </Box>
+                            </CollapsibleSection>
+
+                            {/* Grid Customization Section */}
+                            <CollapsibleSection
+                                title='Grid Customization'
+                                description='Customize widget size, spacing, and border radius'
+                                icon={<FaTh />}
+                                defaultExpanded={false}
+                            >
+                                <GridSettings />
+                            </CollapsibleSection>
 
                             {/* Color Customization Section */}
-                            <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                            <CollapsibleSection
+                                title='Color Customization'
+                                description='Customize all color aspects of your dashboard interface'
+                                icon={<FaPalette />}
+                                defaultExpanded={false}
+                            >
                                 <ColorCustomization />
-                            </Box>
+                            </CollapsibleSection>
                         </Box>
                     </TabPanel>
                 </Box>

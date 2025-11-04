@@ -28,6 +28,17 @@ export interface ColorTheme {
     // Transparency & Effects
     widgetBackgroundOpacity: number; // 0-1
     backdropBlur: number; // px value
+    headerOpacity: number; // 0-1
+    uiElementsOpacity: number; // 0-1
+
+    // Background Mode
+    backgroundMode: 'color' | 'image';
+    backgroundImage?: string;
+
+    // Grid Customization
+    widgetBorderRadius: number; // 0-48 pixels
+    gridRowHeight: number; // Base row height in pixels
+    gridMargin: number; // Gap between widgets in pixels
 }
 
 // Default theme with enhanced contrast
@@ -58,6 +69,17 @@ export const DEFAULT_THEME: ColorTheme = {
     // Transparency & Effects
     widgetBackgroundOpacity: 0.75,      // Slightly more opaque
     backdropBlur: 8,                    // Slightly more blur
+    headerOpacity: 0.7,                 // Header transparency
+    uiElementsOpacity: 0.7,             // UI elements transparency
+
+    // Background Mode
+    backgroundMode: 'color',
+    backgroundImage: undefined,
+
+    // Grid Customization
+    widgetBorderRadius: 12,             // Default border radius
+    gridRowHeight: 80,                  // Default row height
+    gridMargin: 12,                     // Default margin between widgets
 };
 
 interface ThemeContextType {
@@ -103,17 +125,42 @@ const applyCSSVariables = (theme: ColorTheme) => {
     // Transparency & Effects
     root.style.setProperty('--widget-background-opacity', theme.widgetBackgroundOpacity.toString());
     root.style.setProperty('--backdrop-blur', `${theme.backdropBlur}px`);
+    root.style.setProperty('--header-opacity', theme.headerOpacity.toString());
+    root.style.setProperty('--ui-elements-opacity', theme.uiElementsOpacity.toString());
+
+    // Background Mode
+    root.style.setProperty('--background-mode', theme.backgroundMode);
+    if (theme.backgroundMode === 'image' && theme.backgroundImage) {
+        document.body.style.backgroundImage = `url(${theme.backgroundImage})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    } else {
+        document.body.style.backgroundImage = 'none';
+        document.body.style.backgroundColor = theme.backgroundColor;
+    }
+
+    // Grid Customization
+    root.style.setProperty('--widget-border-radius', `${theme.widgetBorderRadius}px`);
+    root.style.setProperty('--grid-row-height', `${theme.gridRowHeight}px`);
+    root.style.setProperty('--grid-margin', `${theme.gridMargin}px`);
 
     // Computed transparent colors
     const widgetRgb = hexToRgb(theme.widgetBackground);
     const headerRgb = hexToRgb(theme.headerBackground);
+    const sidebarRgb = hexToRgb(theme.sidebarBackground);
+
     if (widgetRgb) {
         root.style.setProperty('--color-widget-background-transparent',
             `rgba(${widgetRgb.r}, ${widgetRgb.g}, ${widgetRgb.b}, ${theme.widgetBackgroundOpacity})`);
     }
     if (headerRgb) {
         root.style.setProperty('--color-header-background-transparent',
-            `rgba(${headerRgb.r}, ${headerRgb.g}, ${headerRgb.b}, 0.7)`);
+            `rgba(${headerRgb.r}, ${headerRgb.g}, ${headerRgb.b}, ${theme.headerOpacity})`);
+    }
+    if (sidebarRgb) {
+        root.style.setProperty('--color-ui-elements-transparent',
+            `rgba(${sidebarRgb.r}, ${sidebarRgb.g}, ${sidebarRgb.b}, ${theme.uiElementsOpacity})`);
     }
 };
 

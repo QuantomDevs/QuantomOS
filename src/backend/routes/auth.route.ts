@@ -458,3 +458,65 @@ authRoute.get('/check-cookies', (req: Request, res: Response) => {
         hasRefreshToken: !!req.cookies.refresh_token
     });
 });
+
+// Change password route (requires authentication)
+authRoute.post('/change-password', [authenticateToken], async (req: Request, res: Response) => {
+    try {
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+        const username = req.user?.username;
+
+        // Validate input
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            res.status(400).json({ message: 'All fields are required' });
+            return;
+        }
+
+        if (!username) {
+            res.status(401).json({ message: 'User not authenticated' });
+            return;
+        }
+
+        // Validate new password and confirm password match
+        if (newPassword !== confirmPassword) {
+            res.status(400).json({ message: 'New password and confirmation do not match' });
+            return;
+        }
+
+        // Validate new password strength (at least 8 characters)
+        if (newPassword.length < 8) {
+            res.status(400).json({ message: 'New password must be at least 8 characters long' });
+            return;
+        }
+
+        // Find the user
+        const users = readUsers();
+        const userIndex = users.findIndex(user => user.username === username);
+
+        if (userIndex === -1) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+
+        // Verify current password
+        const passwordMatch = await bcrypt.compare(currentPassword, users[userIndex].passwordHash);
+
+        if (!passwordMatch) {
+            res.status(401).json({ message: 'Current password is incorrect' });
+            return;
+        }
+
+        // Hash the new password
+        const saltRounds = 10;
+        const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+        // Update the password
+        users[userIndex].passwordHash = newPasswordHash;
+        writeUsers(users);
+
+        console.log(`Password changed successfully for user: ${username}`);
+        res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Change password error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});

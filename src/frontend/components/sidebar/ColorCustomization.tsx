@@ -292,9 +292,13 @@ export const ColorCustomization: React.FC = () => {
             <Typography variant='subtitle1' sx={{ mt: 3, mb: 2, fontWeight: 600 }}>
                 Transparency & Effects
             </Typography>
+
             <Box sx={{ mb: 3 }}>
-                <Typography variant='body2' sx={{ mb: 1 }}>
+                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
                     Widget Background Opacity: {Math.round(colorTheme.widgetBackgroundOpacity * 100)}%
+                </Typography>
+                <Typography variant='caption' sx={{ display: 'block', mb: 1, opacity: 0.7 }}>
+                    Controls transparency of widget backgrounds
                 </Typography>
                 <Slider
                     value={colorTheme.widgetBackgroundOpacity}
@@ -311,9 +315,59 @@ export const ColorCustomization: React.FC = () => {
                     valueLabelFormat={(value) => `${Math.round(value * 100)}%`}
                 />
             </Box>
+
             <Box sx={{ mb: 3 }}>
-                <Typography variant='body2' sx={{ mb: 1 }}>
+                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
+                    Header Opacity: {Math.round(colorTheme.headerOpacity * 100)}%
+                </Typography>
+                <Typography variant='caption' sx={{ display: 'block', mb: 1, opacity: 0.7 }}>
+                    Controls transparency of the top navigation bar
+                </Typography>
+                <Slider
+                    value={colorTheme.headerOpacity}
+                    onChange={(_, value) => updateColor('headerOpacity', value as number)}
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    marks={[
+                        { value: 0, label: '0%' },
+                        { value: 0.5, label: '50%' },
+                        { value: 1, label: '100%' }
+                    ]}
+                    valueLabelDisplay='auto'
+                    valueLabelFormat={(value) => `${Math.round(value * 100)}%`}
+                />
+            </Box>
+
+            <Box sx={{ mb: 3 }}>
+                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
+                    UI Elements Opacity: {Math.round(colorTheme.uiElementsOpacity * 100)}%
+                </Typography>
+                <Typography variant='caption' sx={{ display: 'block', mb: 1, opacity: 0.7 }}>
+                    Controls transparency of sidebars, modals, and dropdowns
+                </Typography>
+                <Slider
+                    value={colorTheme.uiElementsOpacity}
+                    onChange={(_, value) => updateColor('uiElementsOpacity', value as number)}
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    marks={[
+                        { value: 0, label: '0%' },
+                        { value: 0.5, label: '50%' },
+                        { value: 1, label: '100%' }
+                    ]}
+                    valueLabelDisplay='auto'
+                    valueLabelFormat={(value) => `${Math.round(value * 100)}%`}
+                />
+            </Box>
+
+            <Box sx={{ mb: 3 }}>
+                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
                     Backdrop Blur: {colorTheme.backdropBlur}px
+                </Typography>
+                <Typography variant='caption' sx={{ display: 'block', mb: 1, opacity: 0.7 }}>
+                    Controls the blur effect behind translucent elements
                 </Typography>
                 <Slider
                     value={colorTheme.backdropBlur}
@@ -328,6 +382,55 @@ export const ColorCustomization: React.FC = () => {
                     ]}
                     valueLabelDisplay='auto'
                 />
+            </Box>
+
+            {/* Background Mode */}
+            <Typography variant='subtitle1' sx={{ mt: 3, mb: 2, fontWeight: 600 }}>
+                Background Mode
+            </Typography>
+
+            <Box sx={{ mb: 3 }}>
+                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
+                    Background Type
+                </Typography>
+                <Typography variant='caption' sx={{ display: 'block', mb: 2, opacity: 0.7 }}>
+                    Choose between a solid color background or a custom background image
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Button
+                        variant={colorTheme.backgroundMode === 'color' ? 'contained' : 'outlined'}
+                        onClick={() => updateColor('backgroundMode', 'color')}
+                        sx={{ flex: 1 }}
+                    >
+                        Solid Color
+                    </Button>
+                    <Button
+                        variant={colorTheme.backgroundMode === 'image' ? 'contained' : 'outlined'}
+                        onClick={() => updateColor('backgroundMode', 'image')}
+                        sx={{ flex: 1 }}
+                    >
+                        Background Image
+                    </Button>
+                </Box>
+
+                {colorTheme.backgroundMode === 'image' && (
+                    <Box sx={{ mt: 2 }}>
+                        <Typography variant='caption' sx={{ display: 'block', mb: 1, opacity: 0.7 }}>
+                            Note: Use the "Background Image" option in the Appearance Settings tab above to upload your background image.
+                        </Typography>
+                        {colorTheme.backgroundImage && (
+                            <Button
+                                variant='outlined'
+                                size='small'
+                                color='error'
+                                onClick={() => updateColor('backgroundImage', '')}
+                                sx={{ mt: 1 }}
+                            >
+                                Remove Background Image
+                            </Button>
+                        )}
+                    </Box>
+                )}
             </Box>
         </Box>
     );

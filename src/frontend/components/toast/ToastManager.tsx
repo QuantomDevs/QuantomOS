@@ -26,7 +26,7 @@ interface ToastContextType {
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 function SlideTransition(props: SlideProps) {
-    return <Slide {...props} direction='down' />;
+    return <Slide {...props} direction='left' />;
 }
 
 interface ToastProviderProps {
@@ -82,14 +82,15 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                     autoHideDuration={toast.duration}
                     onClose={() => handleClose(toast.id)}
                     TransitionComponent={SlideTransition}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     sx={{
-                        top: `${68 + (index * 60)}px !important`, // Stack toasts vertically with moderate spacing
+                        bottom: `${16 + (index * 72)}px !important`, // Stack toasts vertically from bottom
+                        right: '16px !important',
                         zIndex: theme.zIndex.snackbar + 1000, // Ensure it's above everything
-                        width: isMobile ? '90vw' : '600px',
-                        maxWidth: isMobile ? '90vw' : '600px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                        width: isMobile ? '90vw' : '400px',
+                        maxWidth: isMobile ? '90vw' : '400px',
+                        left: 'auto',
+                        transform: 'none',
                         '& .MuiSnackbarContent-root': {
                             width: '100%',
                             maxWidth: '100%'
