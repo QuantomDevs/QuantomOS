@@ -3,7 +3,7 @@ import { Box, Button, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } 
 import React, { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { CheckboxElement, FormContainer, SelectElement, TextFieldElement, useForm } from 'react-hook-form-mui';
 import { FaCog } from 'react-icons/fa';
-import { FaClockRotateLeft, FaImage, FaKeyboard, FaTrashCan } from 'react-icons/fa6';
+import { FaImage, FaTrashCan } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
 import { FileInput } from './FileInput';
@@ -655,64 +655,64 @@ export const SettingsForm = () => {
     return (
         <FormContainer onSuccess={handleSubmit} formContext={formContext}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant='h4' sx={{ p: 2 }}>Settings</Typography>
-                    <Box sx={{ p: 2 }}>
-                        <Button
-                            variant='contained'
-                            type='submit'
-                            disabled={!hasChanges && !configFile && (!appIconFiles || appIconFiles.length === 0)}
-                            sx={{
-                                '&.Mui-disabled': {
-                                    color: 'rgba(255, 255, 255, 0.5)'
-                                }
-                            }}
-                        >
-                            Save Changes
-                        </Button>
-                    </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: 2, pt: 2 }}>
+                    <Typography variant='h5' sx={{ fontWeight: 600 }}>Settings</Typography>
+                    <Button
+                        variant='contained'
+                        type='submit'
+                        disabled={!hasChanges && !configFile && (!appIconFiles || appIconFiles.length === 0)}
+                        sx={{
+                            '&.Mui-disabled': {
+                                color: 'rgba(255, 255, 255, 0.5)'
+                            }
+                        }}
+                    >
+                        Save Changes
+                    </Button>
                 </Box>
                 <Box sx={{
                     display: 'flex',
-                    flexDirection: { xs: 'column', md: 'row' },
+                    flexDirection: 'column',
                     minHeight: { xs: 'auto', md: '550px', lg: '700px' },
                     width: '100%'
                 }}>
                     <Tabs
-                        orientation={isMobile ? 'horizontal' : 'vertical'}
+                        orientation='horizontal'
                         variant='scrollable'
                         value={tabValue}
                         onChange={handleTabChange}
                         aria-label='Settings tabs'
                         sx={{
-                            borderRight: {
-                                xs: 'none',
-                                md: '1px solid rgba(0, 0, 0, 0.12)'
+                            borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+                            px: 2,
+                            minHeight: '64px',
+                            '& .MuiTabs-indicator': {
+                                backgroundColor: 'var(--color-primary-accent)',
+                                height: '3px'
                             },
-                            borderBottom: {
-                                xs: '1px solid rgba(0, 0, 0, 0.12)',
-                                md: 'none'
-                            },
-                            minWidth: { xs: '100%', md: '160px' },
-                            mb: { xs: 2, md: 0 },
                             '& .MuiTab-root': {
                                 alignItems: 'center',
-                                textAlign: 'left',
-                                justifyContent: { xs: 'center', md: 'flex-start' },
-                                fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                                color: 'text.primary',
+                                textAlign: 'center',
+                                justifyContent: 'center',
+                                fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                                color: 'var(--color-primary-text)',
+                                minHeight: '64px',
+                                transition: 'all 0.3s ease',
                                 '&.Mui-selected': {
-                                    color: 'primary.main'
+                                    color: 'var(--color-primary-accent)',
+                                    backgroundColor: 'var(--color-secondary-background)'
+                                },
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.05)'
                                 },
                                 flexDirection: 'row',
-                                gap: 1.5
+                                gap: 1,
+                                px: 3
                             }
                         }}
                     >
                         <Tab icon={<FaCog style={{ fontSize: '1.2rem' }} />} label='General' {...a11yProps(0)} />
                         <Tab icon={<FaImage style={{ fontSize: '1.2rem' }} />} label='Appearance' {...a11yProps(1)} />
-                        <Tab icon={<FaClockRotateLeft style={{ fontSize: '1.2rem' }} />} label='Backup' {...a11yProps(2)} />
-                        <Tab icon={<FaKeyboard style={{ fontSize: '1.2rem' }} />} label='Hotkeys' {...a11yProps(3)} />
                     </Tabs>
 
                     <TabPanel value={tabValue} index={0}>
@@ -858,10 +858,228 @@ export const SettingsForm = () => {
                                     </>
                                 )}
                             </Box>
+
+                            {/* Backup & Data Section */}
+                            <Typography variant='h6' sx={{ mt: 4, mb: 2 }}>Backup & Data</Typography>
+                            <Box sx={{
+                                display: 'grid',
+                                gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
+                                gap: { xs: 1, sm: 2 },
+                                alignItems: 'center'
+                            }}>
+                                <Typography variant='body1' sx={{
+                                    alignSelf: 'center',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                                    width: '10rem'
+
+                                }}>Export Configuration</Typography>
+                                <Box ml={2}>
+                                    <Button
+                                        variant='contained'
+                                        size={isMobile ? 'small' : 'medium'}
+                                        onClick={async () => {
+                                            try {
+                                                await DashApi.exportConfig();
+                                                PopupManager.success('Configuration exported successfully!');
+                                            } catch (error) {
+                                                PopupManager.failure('Failed to export configuration');
+                                                console.error('Error exporting configuration:', error);
+                                            }
+                                        }}
+                                    >
+                                        Export
+                                    </Button>
+                                </Box>
+
+                                <Typography variant='body1' sx={{
+                                    alignSelf: 'center',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                                    width: '10rem'
+                                }}>Restore Configuration</Typography>
+                                <Box ml={2}>
+                                    <FileInput
+                                        name='configFile'
+                                        accept='.json'
+                                        sx={{ width: '95%' }}
+                                    />
+                                </Box>
+                            </Box>
+
+                            {/* Desktop to Mobile Layout Sync */}
+                            <Box sx={{
+                                display: 'grid',
+                                gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
+                                gap: { xs: 1, sm: 2 },
+                                alignItems: 'center',
+                                mt: 2
+                            }}>
+                                <Typography variant='body1' sx={{
+                                    alignSelf: 'center',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                                    width: '10rem'
+                                }}>Layout Sync</Typography>
+                                <Box ml={2}>
+                                    <Button
+                                        variant='contained'
+                                        size={isMobile ? 'small' : 'medium'}
+                                        onClick={async () => {
+                                            try {
+                                                PopupManager.deleteConfirmation({
+                                                    title: 'Copy Desktop Layout to Mobile',
+                                                    text: 'This will overwrite your current mobile layout with your desktop layout. Continue?',
+                                                    confirmText: 'Yes, Copy',
+                                                    confirmAction: async () => {
+                                                        if (!config?.layout?.desktop) {
+                                                            PopupManager.failure('No desktop layout found to copy');
+                                                            return;
+                                                        }
+
+                                                        const updatedLayout = {
+                                                            layout: {
+                                                                desktop: config.layout.desktop,
+                                                                mobile: [...config.layout.desktop]
+                                                            }
+                                                        };
+
+                                                        await updateConfig(updatedLayout);
+                                                        await refreshDashboard();
+
+                                                        PopupManager.success('Desktop layout successfully copied to mobile');
+                                                    }
+                                                });
+                                            } catch (error) {
+                                                PopupManager.failure('Failed to copy desktop layout to mobile');
+                                                console.error('Error copying layout:', error);
+                                            }
+                                        }}
+                                    >
+                                        Copy Desktop Layout to Mobile
+                                    </Button>
+                                </Box>
+                            </Box>
+
+                            {/* Keyboard Shortcuts Section */}
+                            <Typography variant='h6' sx={{ mt: 4, mb: 2 }}>Keyboard Shortcuts</Typography>
+                            <Typography variant='body1' sx={{ mb: 2 }}>
+                                Use these keyboard shortcuts to quickly navigate and control your dashboard.
+                            </Typography>
+
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 2
+                            }}>
+                                {/* Search Hotkeys */}
+                                <Box>
+                                    <Typography variant='subtitle1' sx={{ mb: 1, fontWeight: 600 }}>
+                                        Search
+                                    </Typography>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        p: 1.5,
+                                        bgcolor: 'background.paper',
+                                        borderRadius: 1,
+                                        border: '1px solid rgba(255, 255, 255, 0.12)'
+                                    }}>
+                                        <Typography variant='body1'>Focus search bar</Typography>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            gap: 0.5,
+                                            alignItems: 'center'
+                                        }}>
+                                            <KeyBadge>{commandKey}</KeyBadge>
+                                            <Typography variant='body1'>+</Typography>
+                                            <KeyBadge>K</KeyBadge>
+                                        </Box>
+                                    </Box>
+                                </Box>
+
+                                {/* Page Navigation Hotkeys */}
+                                <Box>
+                                    <Typography variant='subtitle1' sx={{ mb: 1, fontWeight: 600 }}>
+                                        Page Navigation
+                                    </Typography>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: 1
+                                    }}>
+                                        {/* Home page shortcut */}
+                                        <Box sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            p: 1.5,
+                                            bgcolor: 'background.paper',
+                                            borderRadius: 1,
+                                            border: '1px solid rgba(255, 255, 255, 0.12)'
+                                        }}>
+                                            <Typography variant='body1'>Go to Home page</Typography>
+                                            <Box sx={{
+                                                display: 'flex',
+                                                gap: 0.5,
+                                                alignItems: 'center'
+                                            }}>
+                                                <KeyBadge>{commandKey}</KeyBadge>
+                                                <Typography variant='body1'>+</Typography>
+                                                <KeyBadge>1</KeyBadge>
+                                            </Box>
+                                        </Box>
+
+                                        {/* Custom pages shortcuts */}
+                                        {pages && pages.length > 0 && pages.map((page, index) => (
+                                            <Box key={page.id} sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                p: 1.5,
+                                                bgcolor: 'background.paper',
+                                                borderRadius: 1,
+                                                border: '1px solid rgba(255, 255, 255, 0.12)'
+                                            }}>
+                                                <Typography variant='body1'>Go to {page.name}</Typography>
+                                                <Box sx={{
+                                                    display: 'flex',
+                                                    gap: 0.5,
+                                                    alignItems: 'center'
+                                                }}>
+                                                    <KeyBadge>{commandKey}</KeyBadge>
+                                                    <Typography variant='body1'>+</Typography>
+                                                    <KeyBadge>{index + 2}</KeyBadge>
+                                                </Box>
+                                            </Box>
+                                        ))}
+                                        {/* Settings page shortcut */}
+                                        <Box sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            p: 1.5,
+                                            bgcolor: 'background.paper',
+                                            borderRadius: 1,
+                                            border: '1px solid rgba(255, 255, 255, 0.12)'
+                                        }}>
+                                            <Typography variant='body1'>Go to Settings page</Typography>
+                                            <Box sx={{
+                                                display: 'flex',
+                                                gap: 0.5,
+                                                alignItems: 'center'
+                                            }}>
+                                                <KeyBadge>{commandKey}</KeyBadge>
+                                                <Typography variant='body1'>+</Typography>
+                                                <KeyBadge>9</KeyBadge>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            </Box>
+
                             <Box sx={{
                                 gridColumn: { xs: '1', sm: '1 / -1' },
                                 justifySelf: 'start',
-                                mt: 2,
+                                mt: 4,
                                 display: 'flex',
                                 gap: 2,
                                 flexDirection: { xs: 'column', sm: 'row' }
@@ -1027,246 +1245,6 @@ export const SettingsForm = () => {
                             {/* Color Customization Section */}
                             <Box sx={{ mt: 4, pt: 3, borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}>
                                 <ColorCustomization />
-                            </Box>
-                        </Box>
-                    </TabPanel>
-
-                    <TabPanel value={tabValue} index={2}>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 3
-                        }}>
-                            <Typography variant='h6'>Backup Settings</Typography>
-
-                            <Box sx={{
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
-                                gap: { xs: 1, sm: 2 },
-                                alignItems: 'center'
-                            }}>
-                                <Typography variant='body1' sx={{
-                                    alignSelf: 'center',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' },
-                                    width: '10rem'
-
-                                }}>Export Configuration</Typography>
-                                <Box ml={2}>
-                                    <Button
-                                        variant='contained'
-                                        size={isMobile ? 'small' : 'medium'}
-                                        onClick={async () => {
-                                            try {
-                                                // Use the server-side export API instead of client-side JSON generation
-                                                await DashApi.exportConfig();
-                                                PopupManager.success('Configuration exported successfully!');
-                                            } catch (error) {
-                                                PopupManager.failure('Failed to export configuration');
-                                                console.error('Error exporting configuration:', error);
-                                            }
-                                        }}
-                                    >
-                                        Export
-                                    </Button>
-                                </Box>
-
-                                <Typography variant='body1' sx={{
-                                    alignSelf: 'center',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' },
-                                    width: '10rem'
-                                }}>Restore Configuration</Typography>
-                                <Box ml={2}>
-                                    <FileInput
-                                        name='configFile'
-                                        accept='.json'
-                                        sx={{ width: '95%' }}
-                                    />
-                                </Box>
-                            </Box>
-
-                            {/* Desktop to Mobile Layout Sync */}
-                            <Box sx={{
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
-                                gap: { xs: 1, sm: 2 },
-                                alignItems: 'center',
-                            }}>
-                                <Typography variant='body1' sx={{
-                                    alignSelf: 'center',
-                                    fontSize: { xs: '0.875rem', sm: '1rem' },
-                                    width: '10rem'
-                                }}>Layout Sync</Typography>
-                                <Box ml={2}>
-                                    <Button
-                                        variant='contained'
-                                        size={isMobile ? 'small' : 'medium'}
-                                        onClick={async () => {
-                                            try {
-                                                PopupManager.deleteConfirmation({
-                                                    title: 'Copy Desktop Layout to Mobile',
-                                                    text: 'This will overwrite your current mobile layout with your desktop layout. Continue?',
-                                                    confirmText: 'Yes, Copy',
-                                                    confirmAction: async () => {
-                                                        if (!config?.layout?.desktop) {
-                                                            PopupManager.failure('No desktop layout found to copy');
-                                                            return;
-                                                        }
-
-                                                        // Create updated config with desktop layout copied to mobile
-                                                        const updatedLayout = {
-                                                            layout: {
-                                                                desktop: config.layout.desktop,
-                                                                mobile: [...config.layout.desktop]
-                                                            }
-                                                        };
-
-                                                        // Save the updated layout
-                                                        await updateConfig(updatedLayout);
-                                                        await refreshDashboard();
-
-                                                        PopupManager.success('Desktop layout successfully copied to mobile');
-                                                    }
-                                                });
-                                            } catch (error) {
-                                                PopupManager.failure('Failed to copy desktop layout to mobile');
-                                                console.error('Error copying layout:', error);
-                                            }
-                                        }}
-                                    >
-                                        Copy Desktop Layout to Mobile
-                                    </Button>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </TabPanel>
-
-                    <TabPanel value={tabValue} index={3}>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 3
-                        }}>
-                            <Typography variant='h6'>Keyboard Shortcuts</Typography>
-                            <Typography variant='body1' sx={{ mb: 2 }}>
-                                Use these keyboard shortcuts to quickly navigate and control your dashboard.
-                            </Typography>
-
-                            <Box sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 2
-                            }}>
-                                {/* Search Hotkeys */}
-                                <Box>
-                                    <Typography variant='subtitle1' sx={{ mb: 1, fontWeight: 600 }}>
-                                        Search
-                                    </Typography>
-                                    <Box sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 1
-                                    }}>
-                                        <Box sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            p: 1.5,
-                                            bgcolor: 'background.paper',
-                                            borderRadius: 1,
-                                            border: '1px solid rgba(255, 255, 255, 0.12)'
-                                        }}>
-                                            <Typography variant='body1'>Focus search bar</Typography>
-                                            <Box sx={{
-                                                display: 'flex',
-                                                gap: 0.5,
-                                                alignItems: 'center'
-                                            }}>
-                                                <KeyBadge>{commandKey}</KeyBadge>
-                                                <Typography variant='body1'>+</Typography>
-                                                <KeyBadge>K</KeyBadge>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                </Box>
-
-                                {/* Page Navigation Hotkeys */}
-                                <Box>
-                                    <Typography variant='subtitle1' sx={{ mb: 1, fontWeight: 600 }}>
-                                        Page Navigation
-                                    </Typography>
-                                    <Box sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 1
-                                    }}>
-                                        {/* Home page shortcut */}
-                                        <Box sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            p: 1.5,
-                                            bgcolor: 'background.paper',
-                                            borderRadius: 1,
-                                            border: '1px solid rgba(255, 255, 255, 0.12)'
-                                        }}>
-                                            <Typography variant='body1'>Go to Home page</Typography>
-                                            <Box sx={{
-                                                display: 'flex',
-                                                gap: 0.5,
-                                                alignItems: 'center'
-                                            }}>
-                                                <KeyBadge>{commandKey}</KeyBadge>
-                                                <Typography variant='body1'>+</Typography>
-                                                <KeyBadge>1</KeyBadge>
-                                            </Box>
-                                        </Box>
-
-                                        {/* Custom pages shortcuts */}
-                                        {pages && pages.length > 0 && pages.map((page, index) => (
-                                            <Box key={page.id} sx={{
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                p: 1.5,
-                                                bgcolor: 'background.paper',
-                                                borderRadius: 1,
-                                                border: '1px solid rgba(255, 255, 255, 0.12)'
-                                            }}>
-                                                <Typography variant='body1'>Go to {page.name}</Typography>
-                                                <Box sx={{
-                                                    display: 'flex',
-                                                    gap: 0.5,
-                                                    alignItems: 'center'
-                                                }}>
-                                                    <KeyBadge>{commandKey}</KeyBadge>
-                                                    <Typography variant='body1'>+</Typography>
-                                                    <KeyBadge>{index + 2}</KeyBadge>
-                                                </Box>
-                                            </Box>
-                                        ))}
-                                        {/* Settings page shortcut */}
-                                        <Box sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            p: 1.5,
-                                            bgcolor: 'background.paper',
-                                            borderRadius: 1,
-                                            border: '1px solid rgba(255, 255, 255, 0.12)'
-                                        }}>
-                                            <Typography variant='body1'>Go to Settings page</Typography>
-                                            <Box sx={{
-                                                display: 'flex',
-                                                gap: 0.5,
-                                                alignItems: 'center'
-                                            }}>
-                                                <KeyBadge>{commandKey}</KeyBadge>
-                                                <Typography variant='body1'>+</Typography>
-                                                <KeyBadge>9</KeyBadge>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                </Box>
                             </Box>
                         </Box>
                     </TabPanel>

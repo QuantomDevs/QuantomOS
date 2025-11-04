@@ -212,6 +212,12 @@ export const ColorCustomization: React.FC = () => {
                 value={colorTheme.sidebarBackground}
                 onChange={(color) => updateColor('sidebarBackground', color)}
             />
+            <ColorInput
+                label='Secondary Background'
+                description='Used for highlighted UI elements, cards, and emphasized sections'
+                value={colorTheme.secondaryBackground}
+                onChange={(color) => updateColor('secondaryBackground', color)}
+            />
 
             {/* Accent Colors */}
             <Typography variant='subtitle1' sx={{ mt: 3, mb: 2, fontWeight: 600 }}>

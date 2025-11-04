@@ -10,9 +10,10 @@ export const SettingsSidebar: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+    const isLargeDesktop = useMediaQuery(theme.breakpoints.up('xl'));
 
-    // Determine sidebar width based on screen size
-    const sidebarWidth = isMobile ? '90%' : isTablet ? '480px' : '550px';
+    // Determine sidebar width based on screen size with enhanced widths for larger screens
+    const sidebarWidth = isMobile ? '95%' : isTablet ? '480px' : isLargeDesktop ? '640px' : '560px';
 
     // Handle ESC key to close sidebar
     useEffect(() => {

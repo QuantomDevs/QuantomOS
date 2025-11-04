@@ -14,30 +14,31 @@
   /* These will be dynamically updated by ThemeContext */
 
   /* Background Colors */
-  --color-background: #0a0a0f;
+  --color-background: #050508;
   --color-widget-background: #2e2e2e;
-  --color-header-background: #2e2e2e;
-  --color-sidebar-background: #242424;
+  --color-header-background: #1a1a1f;
+  --color-sidebar-background: #0f0f14;
+  --color-secondary-background: #252530;
 
   /* Accent Colors */
-  --color-primary-accent: #734CDE;
-  --color-secondary-accent: #242424;
-  --color-success: #4caf50;
-  --color-warning: #ff9800;
-  --color-error: #C6112E;
+  --color-primary-accent: #8b5cf6;
+  --color-secondary-accent: #6366f1;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 
   /* Text Colors */
-  --color-primary-text: #C9C9C9;
-  --color-secondary-text: #000000;
-  --color-muted-text: rgba(255, 255, 255, 0.5);
+  --color-primary-text: #f3f4f6;
+  --color-secondary-text: #9ca3af;
+  --color-muted-text: rgba(255, 255, 255, 0.4);
 
   /* Border Colors */
-  --color-border: #424242;
-  --color-hover-border: #767676;
+  --color-border: #374151;
+  --color-hover-border: #6b7280;
 
   /* Transparency & Effects */
-  --widget-background-opacity: 0.7;
-  --backdrop-blur: 6px;
+  --widget-background-opacity: 0.75;
+  --backdrop-blur: 8px;
 
   /* Computed Transparent Colors */
   --color-widget-background-transparent: rgba(46, 46, 46, 0.7);

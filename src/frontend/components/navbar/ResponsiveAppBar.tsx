@@ -1,7 +1,6 @@
 import { Add } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar, Badge, Button, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
+import { Badge, Button, IconButton } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -10,10 +9,9 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaHeart, FaInfoCircle, FaSync } from 'react-icons/fa';
-import { FaArrowRightFromBracket, FaGear, FaHouse, FaTrashCan, FaUser } from 'react-icons/fa6';
-import { PiGlobeSimple, PiGlobeSimpleX } from 'react-icons/pi';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { FaEdit } from 'react-icons/fa';
+import { FaGear } from 'react-icons/fa6';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { DashApi } from '../../api/dash-api';
 import { useAppContext } from '../../context/useAppContext';
@@ -30,32 +28,20 @@ import { UpdateModal } from '../modals/UpdateModal';
 import { VersionModal } from '../modals/VersionModal';
 import { GlobalSearch } from '../search/GlobalSearch';
 import { ToastManager } from '../toast/ToastManager';
-
-const DrawerHeader = styled('div')(({ theme: muiTheme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    ...muiTheme.mixins.toolbar,
-    justifyContent: 'flex-end',
-    paddingLeft: muiTheme.spacing(2),
-    paddingRight: muiTheme.spacing(1.5), // Increased padding to move close icon more to the right on mobile
-    [muiTheme.breakpoints.up('sm')]: {
-        paddingRight: muiTheme.spacing(4), // Match menu button margin on desktop (sm: 2) + some alignment
-    },
-}));
+import { UserDropdownMenu } from '../header/UserDropdownMenu';
 
 type Props = {
     children: React.ReactNode;
 }
 
 export const ResponsiveAppBar = ({ children }: Props) => {
-    const [openDrawer, setOpenDrawer] = useState(false);
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openEditPageModal, setOpenEditPageModal] = useState(false);
     const [selectedPageForEdit, setSelectedPageForEdit] = useState<any>(null);
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
     const [openVersionModal, setOpenVersionModal] = useState(false);
-    const [internetTooltipOpen, setInternetTooltipOpen] = useState(false);
     const [originalLayoutSnapshot, setOriginalLayoutSnapshot] = useState<DashboardItem[] | null>(null);
+    const [userMenuAnchor, setUserMenuAnchor] = useState<HTMLElement | null>(null);
 
     const { internetStatus } = useInternetStatus();
     const { openSidebar } = useSettingsSidebar();
@@ -90,28 +76,6 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     const navigate = useNavigate();
     const currentPath = location.pathname;
 
-    // Close internet tooltip when clicking outside
-    useEffect(() => {
-        const handleClickOutside = () => {
-            if (internetTooltipOpen) {
-                setInternetTooltipOpen(false);
-            }
-        };
-
-        if (internetTooltipOpen) {
-            document.addEventListener('click', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [internetTooltipOpen]);
-
-    // Reset internet tooltip when edit mode changes
-    useEffect(() => {
-        setInternetTooltipOpen(false);
-    }, [editMode]);
-
     const handleClose = () => setOpenAddModal(false);
     const handleCloseEditPage = () => {
         setOpenEditPageModal(false);
@@ -120,7 +84,6 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     const handleOpenEditPage = (page: any) => {
         setSelectedPageForEdit(page);
         setOpenEditPageModal(true);
-        handleCloseDrawer();
     };
     const handleCloseUpdateModal = () => setOpenUpdateModal(false);
     const handleCloseVersionModal = async () => {
@@ -130,28 +93,21 @@ export const ResponsiveAppBar = ({ children }: Props) => {
         }
     };
 
-    const handleEditCancel = () => {
-        handleCloseDrawer();
-        setEditMode(false);
-        refreshDashboard();
-    };
-
     const handleSave = async () => {
-        handleCloseDrawer();
         setEditMode(false);
         setOpenAddModal(false);
 
         // Only save if there were actual changes made
         if (originalLayoutSnapshot) {
             const hasChanges = JSON.stringify(originalLayoutSnapshot) !== JSON.stringify(dashboardLayout);
-            
+
             if (hasChanges) {
                 console.log('Layout changes detected, saving...');
                 saveLayout(dashboardLayout);
             } else {
                 console.log('No layout changes detected, skipping save');
             }
-            
+
             // Clear the snapshot
             setOriginalLayoutSnapshot(null);
         } else {
@@ -161,12 +117,12 @@ export const ResponsiveAppBar = ({ children }: Props) => {
         }
     };
 
-    const handleOpenDrawer = () => {
-        setOpenDrawer(true);
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setUserMenuAnchor(event.currentTarget);
     };
 
-    const handleCloseDrawer = () => {
-        setOpenDrawer(false);
+    const handleCloseUserMenu = () => {
+        setUserMenuAnchor(null);
     };
 
     const handleMenuClose = () => {
@@ -200,7 +156,6 @@ export const ResponsiveAppBar = ({ children }: Props) => {
 
             // Navigate to home page
             navigate('/');
-            handleCloseDrawer();
             ToastManager.success('Logged out');
         } catch (error) {
             console.error('Logout error:', error);
@@ -216,17 +171,14 @@ export const ResponsiveAppBar = ({ children }: Props) => {
 
     const handleOpenUpdateModal = () => {
         setOpenUpdateModal(true);
-        handleCloseDrawer();
     };
 
     const handleOpenVersionModal = () => {
         setOpenVersionModal(true);
-        handleCloseDrawer();
     };
 
     const handleSetEditMode = (value: boolean) => {
         setEditMode(value);
-        handleCloseDrawer();
 
         if (window.location.pathname.includes('/settings')) {
             navigate('/');
@@ -422,51 +374,10 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         </Tooltip>
                                     </>
                                 )}
-                                {!editMode && showInternetIndicator && (
-                                    <Tooltip
-                                        key='internet-tooltip'
-                                        title={internetStatus === 'online' ? 'Internet Connected' : internetStatus === 'offline' ? 'No Internet Connection' : 'Checking Internet...'}
-                                        placement='left'
-                                        arrow
-                                        open={Boolean(internetTooltipOpen)}
-                                        onClose={() => {
-                                            // Add a small delay to prevent immediate closing
-                                            setTimeout(() => setInternetTooltipOpen(false), 100);
-                                        }}
-                                        disableHoverListener
-                                        disableFocusListener
-                                        disableTouchListener
-                                        PopperProps={{
-                                            disablePortal: true,
-                                        }}
-                                        slotProps={{
-                                            tooltip: {
-                                                sx: {
-                                                    fontSize: 14,
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        <IconButton
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setInternetTooltipOpen(!internetTooltipOpen);
-                                            }}
-                                        >
-                                            {internetStatus === 'online' ? (
-                                                <PiGlobeSimple style={{ color: 'white', fontSize: '1.7rem' }} />
-                                            ) : internetStatus === 'offline' ? (
-                                                <PiGlobeSimpleX style={{ color: 'white', fontSize: '1.7rem' }} />
-                                            ) : (
-                                                <PiGlobeSimple style={{ color: 'gray', fontSize: '1.7rem' }} />
-                                            )}
-                                        </IconButton>
-                                    </Tooltip>
-                                )}
 
                                 {/* Hamburger Menu Button */}
                                 <IconButton
-                                    onClick={handleOpenDrawer}
+                                    onClick={handleOpenUserMenu}
                                     sx={{
                                         ml: { xs: 0, sm: 1 }, // Consistent left margin
                                         mr: { xs: 0, sm: 2 }, // No right margin on mobile, normal on desktop
@@ -511,268 +422,18 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                 </IconButton>
                             </Box>
 
-                            <Drawer
-                                open={openDrawer}
-                                onClose={handleCloseDrawer}
-                                anchor='right'
-                                sx={{
-                                    '& .MuiDrawer-paper': {
-                                        width: 225,
-                                        boxSizing: 'border-box',
-                                        right: 0,
-                                        marginRight: 0,
-                                        borderRight: 'none',
-                                    }
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        width: '100%',
-                                        height: '100%',
-                                        display: 'flex',
-                                        flexDirection: 'column'
-                                    }}
-                                    role='presentation'
-                                >
-                                    <DrawerHeader>
-                                        <IconButton onClick={handleCloseDrawer}>
-                                            <CloseIcon sx={{ fontSize: 34, color: 'text.primary' }} />
-                                        </IconButton>
-                                    </DrawerHeader>
-                                    <Divider />
-
-                                    {/* Main Navigation */}
-                                    <List>
-                                        <ListItem disablePadding>
-                                            <ListItemButton
-                                                onClick={() => {
-                                                    navigate('/');
-                                                    handleCloseDrawer();
-                                                }}
-                                                sx={{
-                                                    backgroundColor: (currentPageId === null || currentPageId === '') ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
-                                                }}
-                                            >
-                                                <ListItemIcon>
-                                                    {<FaHouse style={{ color: theme.palette.text.primary, fontSize: 22 }}/> }
-                                                </ListItemIcon>
-                                                <ListItemText primary={'Home'} />
-                                            </ListItemButton>
-                                        </ListItem>
-
-                                        {isLoggedIn && isAdmin && (
-                                            <ListItem disablePadding>
-                                                <ListItemButton onClick={() => {
-                                                    handleSetEditMode(true);
-                                                    handleCloseDrawer();
-                                                }}>
-                                                    <ListItemIcon>
-                                                        {<FaEdit style={{ color: theme.palette.text.primary, fontSize: 22 }}/> }
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={'Edit Dashboard'} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        )}
-                                        {/* Pages Section */}
-                                        {pages.length > 0 && (
-                                            <>
-                                                <Divider sx={{ my: 1 }} />
-                                                {pages.map((page) => (
-                                                    <ListItem key={page.id} disablePadding>
-                                                        <ListItemButton
-                                                            onClick={() => {
-                                                                const slug = pageNameToSlug(page.name);
-                                                                navigate(`/${slug}`);
-                                                                handleCloseDrawer();
-                                                            }}
-                                                            sx={{
-                                                                backgroundColor: currentPageId === page.id ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
-                                                            }}
-                                                        >
-                                                            <ListItemText primary={page.name} />
-                                                            {isLoggedIn && isAdmin && editMode && (
-                                                                <>
-                                                                    <IconButton
-                                                                        size='small'
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            handleOpenEditPage(page);
-                                                                        }}
-                                                                        sx={{ ml: 1 }}
-                                                                    >
-                                                                        <FaEdit style={{ fontSize: 18, color: 'white' }} />
-                                                                    </IconButton>
-                                                                    <IconButton
-                                                                        size='small'
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            deletePage(page.id);
-                                                                        }}
-                                                                        sx={{ ml: 1 }}
-                                                                    >
-                                                                        <FaTrashCan style={{ fontSize: 18, color: 'white' }} />
-                                                                    </IconButton>
-                                                                </>
-                                                            )}
-                                                        </ListItemButton>
-                                                    </ListItem>
-                                                ))}
-                                            </>
-                                        )}
-                                    </List>
-
-                                    {/* Spacer to push account info to bottom */}
-                                    <Box sx={{ flexGrow: 1 }} />
-
-                                    {/* Bottom */}
-                                    <List sx={{ mt: 'auto', mb: 1 }}>
-                                        <Divider />
-
-                                        {isLoggedIn && isAdmin && (
-                                            <NavLink to='/settings' style={{ width: '100%', color: 'white' }} onClick={() => {handleCloseDrawer(); setEditMode(false);}}>
-                                                <ListItem disablePadding>
-                                                    <ListItemButton>
-                                                        <ListItemIcon>
-                                                            {<FaGear style={{ color: theme.palette.text.primary, fontSize: 22 }}/> }
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={'Settings'} />
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            </NavLink>
-                                        )}
-
-                                        {/* Donate Option */}
-                                        <ListItem disablePadding>
-                                            <ListItemButton
-                                                onClick={() => {
-                                                    handleCloseDrawer();
-                                                    window.open('https://buymeacoffee.com/snenjih', '_blank', 'noopener,noreferrer');
-                                                }}
-                                            >
-                                                <ListItemIcon>
-                                                    <FaHeart style={{ color: 'red', fontSize: 22 }} />
-                                                </ListItemIcon>
-                                                <ListItemText primary={'Donate'} secondary={'Support this project'} slotProps={{
-                                                    secondary: {
-                                                        color: 'text.primary'
-                                                    }
-                                                }}/>
-                                            </ListItemButton>
-                                        </ListItem>
-
-                                        {/* Update Available Item */}
-                                        {updateAvailable && (
-                                            <ListItem disablePadding>
-                                                <ListItemButton onClick={isLoggedIn ? handleOpenUpdateModal : () => {}}>
-                                                    <ListItemIcon>
-                                                        <FaSync style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
-                                                    </ListItemIcon>
-                                                    <ListItemText
-                                                        primary={'Update Available'}
-                                                        secondary={`Version ${latestVersion}`}
-                                                        slotProps={{
-                                                            secondary: {
-                                                                color: 'text.primary'
-                                                            }
-                                                        }}
-                                                    />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        )}
-                                        {/* Version Info */}
-                                        <ListItem disablePadding>
-                                            <ListItemButton onClick={handleOpenVersionModal}>
-                                                <ListItemIcon>
-                                                    {recentlyUpdated ? (
-                                                        <Badge
-                                                            sx={{
-                                                                '& .MuiBadge-badge': {
-                                                                    backgroundColor: '#2196f3', // Blue color
-                                                                    top: -2,
-                                                                    right: -3
-                                                                }
-                                                            }}
-                                                            variant='dot'
-                                                            overlap='circular'
-                                                        >
-                                                            <FaInfoCircle style={{ color: theme.palette.text.primary, fontSize: 22 }} />
-                                                        </Badge>
-                                                    ) : (
-                                                        <FaInfoCircle style={{ color: theme.palette.text.primary, fontSize: 22 }} />
-                                                    )}
-                                                </ListItemIcon>
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography>
-                                                            {recentlyUpdated ? 'Recently Updated' : 'Version'}
-                                                        </Typography>
-                                                    }
-                                                    secondary={`v${getAppVersion()}`}
-                                                    slotProps={{
-                                                        secondary: {
-                                                            color: 'text.primary'
-                                                        }
-                                                    }}
-                                                />
-                                            </ListItemButton>
-                                        </ListItem>
-                                        {/* Conditional Account Info */}
-                                        {isLoggedIn ? (
-                                            <>
-                                                {/* User Info */}
-                                                <ListItem
-                                                    disablePadding
-                                                >
-                                                    <ListItemButton onClick={handleProfile}>
-                                                        <ListItemIcon>
-                                                            <Avatar
-                                                                sx={{
-                                                                    width: 26,
-                                                                    height: 26,
-                                                                    bgcolor: 'primary.main',
-                                                                    fontSize: 18,
-                                                                    ml: '-1px'
-                                                                }}
-                                                            >
-                                                                {username ? username.charAt(0).toUpperCase() : <FaUser style={{ fontSize: 16 }} />}
-                                                            </Avatar>
-                                                        </ListItemIcon>
-                                                        <ListItemText
-                                                            primary={username || 'User'}
-                                                            secondary={isAdmin ? 'Administrator' : 'User'}
-                                                            slotProps={{
-                                                                secondary: {
-                                                                    color: 'text.primary'
-                                                                }
-                                                            }}
-                                                        />
-                                                    </ListItemButton>
-                                                </ListItem>
-
-                                                {/* Logout Button */}
-                                                <ListItem disablePadding>
-                                                    <ListItemButton onClick={() => {handleCloseDrawer(); handleLogout();}}>
-                                                        <ListItemIcon>
-                                                            <FaArrowRightFromBracket style={{ color: theme.palette.text.primary, fontSize: 22 }} />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary='Logout' />
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            </>
-                                        ) : (
-                                            // Login Button for Non-Logged in Users
-                                            <ListItem disablePadding>
-                                                <ListItemButton onClick={() => {handleCloseDrawer(); setEditMode(false); handleLogin();}}>
-                                                    <ListItemIcon>
-                                                        <FaUser style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={'Login'} />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        )}
-                                    </List>
-                                </Box>
-                            </Drawer>
+                            {/* User Dropdown Menu */}
+                            <UserDropdownMenu
+                                anchorEl={userMenuAnchor}
+                                isOpen={Boolean(userMenuAnchor)}
+                                onClose={handleCloseUserMenu}
+                                internetStatus={internetStatus}
+                                username={username}
+                                isAdmin={isAdmin}
+                                onEditDashboard={() => handleSetEditMode(true)}
+                                onOpenSettings={openSidebar}
+                                onLogout={handleLogout}
+                            />
                         </Box>
                     </Toolbar>
                 </Container>

@@ -7,6 +7,7 @@ export interface ColorTheme {
     widgetBackground: string;
     headerBackground: string;
     sidebarBackground: string;
+    secondaryBackground: string;
 
     // Accent Colors
     primaryAccent: string;
@@ -29,33 +30,34 @@ export interface ColorTheme {
     backdropBlur: number; // px value
 }
 
-// Default theme matching current implementation
+// Default theme with enhanced contrast
 export const DEFAULT_THEME: ColorTheme = {
-    // Background Colors
-    backgroundColor: '#0a0a0f',
-    widgetBackground: '#2e2e2e',
-    headerBackground: '#2e2e2e',
-    sidebarBackground: '#242424',
+    // Background Colors - Enhanced contrast
+    backgroundColor: '#050508',          // Darker main background
+    widgetBackground: '#2e2e2e',        // Medium dark for widgets
+    headerBackground: '#1a1a1f',         // Slightly lighter than main bg
+    sidebarBackground: '#0f0f14',       // Dark for sidebars
+    secondaryBackground: '#252530',     // Medium dark for highlighted elements
 
-    // Accent Colors
-    primaryAccent: '#734CDE',
-    secondaryAccent: '#242424',
-    successColor: '#4caf50',
-    warningColor: '#ff9800',
-    errorColor: '#C6112E',
+    // Accent Colors - More vibrant
+    primaryAccent: '#8b5cf6',           // Brighter purple
+    secondaryAccent: '#6366f1',         // Vibrant indigo
+    successColor: '#10b981',            // Brighter green
+    warningColor: '#f59e0b',            // Brighter orange
+    errorColor: '#ef4444',              // Brighter red
 
-    // Text Colors
-    primaryText: '#C9C9C9',
-    secondaryText: '#000000',
-    mutedText: 'rgba(255, 255, 255, 0.5)',
+    // Text Colors - Better readability
+    primaryText: '#f3f4f6',             // Brighter white for main text
+    secondaryText: '#9ca3af',           // Light gray for secondary text
+    mutedText: 'rgba(255, 255, 255, 0.4)',
 
-    // Border Colors
-    borderColor: '#424242',
-    hoverBorderColor: '#767676',
+    // Border Colors - More visible
+    borderColor: '#374151',             // More visible border
+    hoverBorderColor: '#6b7280',        // Brighter hover state
 
     // Transparency & Effects
-    widgetBackgroundOpacity: 0.7,
-    backdropBlur: 6,
+    widgetBackgroundOpacity: 0.75,      // Slightly more opaque
+    backdropBlur: 8,                    // Slightly more blur
 };
 
 interface ThemeContextType {
@@ -80,6 +82,7 @@ const applyCSSVariables = (theme: ColorTheme) => {
     root.style.setProperty('--color-widget-background', theme.widgetBackground);
     root.style.setProperty('--color-header-background', theme.headerBackground);
     root.style.setProperty('--color-sidebar-background', theme.sidebarBackground);
+    root.style.setProperty('--color-secondary-background', theme.secondaryBackground);
 
     // Accent Colors
     root.style.setProperty('--color-primary-accent', theme.primaryAccent);
