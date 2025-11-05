@@ -55,7 +55,7 @@ export const WidgetContainer: React.FC<Props> = ({
                 backgroundColor: isHighlighted ? 'rgba(255, 255, 255, 0.13)' :
                     isPreview ? 'rgba(76, 175, 80, 0.05)' :
                         placeholder || groupItem ? 'transparent' : 'var(--color-widget-background-transparent)',
-                borderRadius: 2,
+                borderRadius: 'var(--widget-border-radius)',
                 border: isPreview ? `2px dashed var(--color-hover-border)` :
                     placeholder && editMode ? 'none' : !placeholder ? `1px solid var(--color-border)` : 'none',
                 padding: 0,

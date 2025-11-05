@@ -154,12 +154,12 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
 
     // App shortcuts - small
     [ITEM_TYPE.APP_SHORTCUT]: {
-        w: 2,
-        h: 2,
+        w: 1,
+        h: 1,
         minW: 1,
-        maxW: 4,
+        maxW: 1,
         minH: 1,
-        maxH: 3
+        maxH: 1
     },
 
     // Placeholders

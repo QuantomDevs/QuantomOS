@@ -128,16 +128,15 @@ const applyCSSVariables = (theme: ColorTheme) => {
     root.style.setProperty('--header-opacity', theme.headerOpacity.toString());
     root.style.setProperty('--ui-elements-opacity', theme.uiElementsOpacity.toString());
 
-    // Background Mode
+    // Background Mode - Applied to #background-container instead of body to not conflict with existing system
     root.style.setProperty('--background-mode', theme.backgroundMode);
-    if (theme.backgroundMode === 'image' && theme.backgroundImage) {
-        document.body.style.backgroundImage = `url(${theme.backgroundImage})`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundAttachment = 'fixed';
-    } else {
-        document.body.style.backgroundImage = 'none';
-        document.body.style.backgroundColor = theme.backgroundColor;
+    const backgroundContainer = document.getElementById('background-container');
+    if (backgroundContainer) {
+        if (theme.backgroundMode === 'image' && theme.backgroundImage) {
+            backgroundContainer.style.backgroundImage = `url(${theme.backgroundImage})`;
+        }
+        // Note: The default background is managed by App.tsx via config.backgroundImage
+        // We only override if theme.backgroundMode is explicitly set to 'image' with a custom image
     }
 
     // Grid Customization

@@ -34,11 +34,13 @@ import { SortableCustomExtension } from './sortable-items/widgets/SortableCustom
 import { theme } from '../../theme/theme';
 import { GRID_CONFIG } from '../../config/gridConfig';
 import { getDefaultHeight, getDefaultWidth, getWidgetConstraints } from '../../utils/gridPositioning';
+import { useTheme as useColorTheme } from '../../context/ThemeContext';
 
 export const DashboardGrid: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState<DashboardItem | null>(null);
     const [openEditModal, setOpenEditModal] = useState(false);
     const { dashboardLayout, setDashboardLayout, refreshDashboard, editMode, isAdmin, isLoggedIn, saveLayout } = useAppContext();
+    const { colorTheme } = useColorTheme();
     const isMed = useMediaQuery(theme.breakpoints.down('md'));
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [containerWidth, setContainerWidth] = useState<number>(1200);
@@ -454,9 +456,9 @@ export const DashboardGrid: React.FC = () => {
                     layouts={layouts}
                     breakpoints={GRID_CONFIG.breakpoints}
                     cols={GRID_CONFIG.cols}
-                    rowHeight={GRID_CONFIG.rowHeight}
+                    rowHeight={colorTheme.gridRowHeight}
                     width={containerWidth}
-                    margin={GRID_CONFIG.margin}
+                    margin={[colorTheme.gridMargin, colorTheme.gridMargin]}
                     containerPadding={GRID_CONFIG.containerPadding}
                     compactType={GRID_CONFIG.compactType}
                     preventCollision={GRID_CONFIG.preventCollision}

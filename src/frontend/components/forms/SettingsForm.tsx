@@ -2,7 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Button, Tab, Tabs, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { CheckboxElement, FormContainer, SelectElement, TextFieldElement, useForm } from 'react-hook-form-mui';
-import { FaCog, FaLock, FaGlobe, FaTh } from 'react-icons/fa';
+import { FaCog, FaLock, FaGlobe, FaTh, FaDatabase, FaKeyboard } from 'react-icons/fa';
 import { FaTrashCan, FaImage, FaPalette } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
@@ -708,8 +708,7 @@ export const SettingsForm = () => {
                                     fontWeight: 700
                                 },
                                 '&:hover': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                    transform: 'translateY(-2px)'
+                                    backgroundColor: 'rgba(255, 255, 255, 0.05)'
                                 },
                                 flexDirection: 'row',
                                 gap: 1.5,
@@ -726,16 +725,23 @@ export const SettingsForm = () => {
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 3
+                            gap: 2
                         }}>
-                            <Typography variant='h6'>General Settings</Typography>
+                            <Typography variant='h6' sx={{ mb: 2 }}>General Settings</Typography>
 
-                            <Box sx={{
-                                display: 'grid',
-                                gridTemplateColumns: { xs: '120px 1fr', sm: '180px 1fr' },
-                                gap: { xs: 1, sm: 2 },
-                                alignItems: 'center'
-                            }}>
+                            {/* General Settings Section */}
+                            <CollapsibleSection
+                                title='General Settings'
+                                description='Configure basic dashboard settings like title, search, and internet indicator'
+                                icon={<FaCog />}
+                                defaultExpanded={true}
+                            >
+                                <Box sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: { xs: '120px 1fr', sm: '180px 1fr' },
+                                    gap: { xs: 1, sm: 2 },
+                                    alignItems: 'center'
+                                }}>
                                 <Typography variant='body1' sx={{
                                     alignSelf: 'center',
                                     fontSize: { xs: '0.875rem', sm: '1rem' }
@@ -864,11 +870,17 @@ export const SettingsForm = () => {
                                         )}
                                     </>
                                 )}
-                            </Box>
+                                </Box>
+                            </CollapsibleSection>
 
                             {/* Backup & Data Section */}
-                            <Typography variant='h6' sx={{ mt: 4, mb: 2 }}>Backup & Data</Typography>
-                            <Box sx={{
+                            <CollapsibleSection
+                                title='Backup & Data'
+                                description='Export and restore dashboard configuration, sync layouts between devices'
+                                icon={<FaDatabase />}
+                                defaultExpanded={false}
+                            >
+                                <Box sx={{
                                 display: 'grid',
                                 gridTemplateColumns: { xs: '120px 1fr', sm: '150px 1fr' },
                                 gap: { xs: 1, sm: 2 },
@@ -963,15 +975,21 @@ export const SettingsForm = () => {
                                         Copy Desktop Layout to Mobile
                                     </Button>
                                 </Box>
-                            </Box>
+                                </Box>
+                            </CollapsibleSection>
 
                             {/* Keyboard Shortcuts Section */}
-                            <Typography variant='h6' sx={{ mt: 4, mb: 2 }}>Keyboard Shortcuts</Typography>
-                            <Typography variant='body1' sx={{ mb: 2 }}>
-                                Use these keyboard shortcuts to quickly navigate and control your dashboard.
-                            </Typography>
+                            <CollapsibleSection
+                                title='Keyboard Shortcuts'
+                                description='View available keyboard shortcuts for quick navigation and control'
+                                icon={<FaKeyboard />}
+                                defaultExpanded={false}
+                            >
+                                <Typography variant='body2' sx={{ mb: 3, opacity: 0.8 }}>
+                                    Use these keyboard shortcuts to quickly navigate and control your dashboard.
+                                </Typography>
 
-                            <Box sx={{
+                                <Box sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
                                 gap: 2
@@ -1081,7 +1099,8 @@ export const SettingsForm = () => {
                                         </Box>
                                     </Box>
                                 </Box>
-                            </Box>
+                                </Box>
+                            </CollapsibleSection>
 
                             {/* Security Section - Password Change */}
                             <CollapsibleSection

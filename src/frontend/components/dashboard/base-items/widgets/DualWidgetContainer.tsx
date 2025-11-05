@@ -41,7 +41,7 @@ export const DualWidgetContainer: React.FC<DualWidgetContainerProps> = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: 'var(--color-widget-background-transparent)',
-                borderRadius: 2,
+                borderRadius: 'var(--widget-border-radius)',
                 border: `1px solid var(--color-border)`,
                 padding: 0,
                 cursor: editMode ? 'grab' : 'auto',

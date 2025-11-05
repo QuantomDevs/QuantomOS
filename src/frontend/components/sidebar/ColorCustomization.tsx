@@ -384,53 +384,18 @@ export const ColorCustomization: React.FC = () => {
                 />
             </Box>
 
-            {/* Background Mode */}
+            {/* Background Information */}
             <Typography variant='subtitle1' sx={{ mt: 3, mb: 2, fontWeight: 600 }}>
-                Background Mode
+                Background Image
             </Typography>
 
             <Box sx={{ mb: 3 }}>
-                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
-                    Background Type
+                <Typography variant='body2' sx={{ mb: 1, opacity: 0.8 }}>
+                    To upload or change your dashboard background image, please use the <strong>"Background & Icons"</strong> section above in the Appearance Settings tab.
                 </Typography>
-                <Typography variant='caption' sx={{ display: 'block', mb: 2, opacity: 0.7 }}>
-                    Choose between a solid color background or a custom background image
+                <Typography variant='caption' sx={{ display: 'block', mt: 1, opacity: 0.6 }}>
+                    The background color set above will be used as the overlay color behind widgets and UI elements.
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                    <Button
-                        variant={colorTheme.backgroundMode === 'color' ? 'contained' : 'outlined'}
-                        onClick={() => updateColor('backgroundMode', 'color')}
-                        sx={{ flex: 1 }}
-                    >
-                        Solid Color
-                    </Button>
-                    <Button
-                        variant={colorTheme.backgroundMode === 'image' ? 'contained' : 'outlined'}
-                        onClick={() => updateColor('backgroundMode', 'image')}
-                        sx={{ flex: 1 }}
-                    >
-                        Background Image
-                    </Button>
-                </Box>
-
-                {colorTheme.backgroundMode === 'image' && (
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant='caption' sx={{ display: 'block', mb: 1, opacity: 0.7 }}>
-                            Note: Use the "Background Image" option in the Appearance Settings tab above to upload your background image.
-                        </Typography>
-                        {colorTheme.backgroundImage && (
-                            <Button
-                                variant='outlined'
-                                size='small'
-                                color='error'
-                                onClick={() => updateColor('backgroundImage', '')}
-                                sx={{ mt: 1 }}
-                            >
-                                Remove Background Image
-                            </Button>
-                        )}
-                    </Box>
-                )}
             </Box>
         </Box>
     );
