@@ -35,6 +35,8 @@ import { theme } from '../../theme/theme';
 import { GRID_CONFIG } from '../../config/gridConfig';
 import { getDefaultHeight, getDefaultWidth, getWidgetConstraints } from '../../utils/gridPositioning';
 import { useTheme as useColorTheme } from '../../context/ThemeContext';
+import { GridGuidelines } from './GridGuidelines';
+import { LazyLoadWidget } from './LazyLoadWidget';
 
 export const DashboardGrid: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState<DashboardItem | null>(null);
@@ -465,8 +467,18 @@ export const DashboardGrid: React.FC = () => {
         <>
             <Box
                 ref={containerRef}
-                sx={{ width: '100%', maxWidth: '100vw', boxSizing: 'border-box', px: 2, paddingBottom: 4 }}
+                sx={{ width: '100%', maxWidth: '100vw', boxSizing: 'border-box', px: 2, paddingBottom: 4, position: 'relative' }}
             >
+                {/* Grid Guidelines - Only visible in edit mode */}
+                {editMode && (
+                    <GridGuidelines
+                        containerWidth={containerWidth}
+                        rowHeight={calculateSquareRowHeight}
+                        currentBreakpoint={currentBreakpoint}
+                        numRows={30}
+                    />
+                )}
+
                 <ResponsiveGridLayout
                     className={`dashboard-grid ${editMode ? 'edit-mode' : ''}`}
                     layouts={layouts}
@@ -486,11 +498,31 @@ export const DashboardGrid: React.FC = () => {
                     onDragStop={handleDragStop}
                     onResizeStop={handleResizeStop}
                 >
-                    {items.map(item => (
-                        <div key={item.id}>
-                            {renderItem(item)}
-                        </div>
-                    ))}
+                    {items.map((item, index) => {
+                        // Disable lazy loading for:
+                        // 1. Edit mode (users need to see all items)
+                        // 2. App shortcuts (lightweight, load quickly)
+                        // 3. First 6 items (likely in viewport on load)
+                        const shouldLazyLoad = !editMode &&
+                                               item.type !== ITEM_TYPE.APP_SHORTCUT &&
+                                               item.type !== ITEM_TYPE.BLANK_APP &&
+                                               index >= 6;
+
+                        return (
+                            <div key={item.id}>
+                                {shouldLazyLoad ? (
+                                    <LazyLoadWidget
+                                        placeholderType="skeleton"
+                                        triggerOnce={true}
+                                    >
+                                        {renderItem(item)}
+                                    </LazyLoadWidget>
+                                ) : (
+                                    renderItem(item)
+                                )}
+                            </div>
+                        );
+                    })}
                 </ResponsiveGridLayout>
             </Box>
 
