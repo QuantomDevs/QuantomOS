@@ -86,33 +86,33 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.MEDIA_SERVER_WIDGET]: {
         w: 6,
         h: 4,
-        minW: 4,
+        minW: 2,
         maxW: 12,
-        minH: 3,
+        minH: 2,
         maxH: 6
     },
     [ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET]: {
         w: 6,
         h: 4,
-        minW: 4,
+        minW: 2,
         maxW: 12,
-        minH: 3,
+        minH: 2,
         maxH: 6
     },
     [ITEM_TYPE.SONARR_WIDGET]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 8,
-        minH: 2,
+        minH: 1,
         maxH: 5
     },
     [ITEM_TYPE.RADARR_WIDGET]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 8,
-        minH: 2,
+        minH: 1,
         maxH: 5
     },
 
@@ -130,25 +130,25 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.DUAL_WIDGET]: {
         w: 6,
         h: 4,
-        minW: 4,
+        minW: 2,
         maxW: 12,
-        minH: 4,
+        minH: 2,
         maxH: 8
     },
     [ITEM_TYPE.GROUP_WIDGET]: {
         w: 12, // Full width by default
         h: 3,
-        minW: 6,
+        minW: 3,
         maxW: 12,
-        minH: 2,
+        minH: 1,
         maxH: 8
     },
     [ITEM_TYPE.CUSTOM_EXTENSION]: {
         w: 6,
         h: 3,
-        minW: 3,
+        minW: 2,
         maxW: 12,
-        minH: 2,
+        minH: 1,
         maxH: 10
     },
 

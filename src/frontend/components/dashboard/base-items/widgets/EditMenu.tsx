@@ -64,6 +64,9 @@ export const EditMenu: React.FC<EditMenuProps> = ({ editMode, itemId, onEdit, on
                     zIndex: 99
                 }}
                 onClick={handleMenuOpen}
+                onMouseDown={(e) => e.stopPropagation()} // Prevent drag on mouse
+                onTouchStart={(e) => e.stopPropagation()} // Prevent drag on touch
+                onPointerDown={(e) => e.stopPropagation()} // Prevent drag on pointer
             >
                 <MoreVertIcon sx={{ color: 'text.primary' }}/>
             </IconButton>
