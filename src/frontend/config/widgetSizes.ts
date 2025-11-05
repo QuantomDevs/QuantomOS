@@ -14,17 +14,17 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.WEATHER_WIDGET]: {
         w: 4,
         h: 2,
-        minW: 3,
+        minW: 2,
         maxW: 6,
-        minH: 2,
+        minH: 1,
         maxH: 4
     },
     [ITEM_TYPE.DATE_TIME_WIDGET]: {
         w: 4,
         h: 2,
-        minW: 3,
+        minW: 2,
         maxW: 6,
-        minH: 2,
+        minH: 1,
         maxH: 3
     },
 
@@ -32,17 +32,17 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.SYSTEM_MONITOR_WIDGET]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 12,
-        minH: 2,
+        minH: 1,
         maxH: 6
     },
     [ITEM_TYPE.DISK_MONITOR_WIDGET]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 12,
-        minH: 2,
+        minH: 1,
         maxH: 6
     },
 
@@ -50,17 +50,17 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.PIHOLE_WIDGET]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 8,
-        minH: 2,
+        minH: 1,
         maxH: 5
     },
     [ITEM_TYPE.ADGUARD_WIDGET]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 8,
-        minH: 2,
+        minH: 1,
         maxH: 5
     },
 
@@ -68,17 +68,17 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.DOWNLOAD_CLIENT]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 8,
-        minH: 2,
+        minH: 1,
         maxH: 5
     },
     [ITEM_TYPE.TORRENT_CLIENT]: {
         w: 6,
         h: 3,
-        minW: 4,
+        minW: 2,
         maxW: 8,
-        minH: 2,
+        minH: 1,
         maxH: 5
     },
 
@@ -120,9 +120,9 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
     [ITEM_TYPE.NOTES_WIDGET]: {
         w: 6,
         h: 4,
-        minW: 3,
+        minW: 2,
         maxW: 12,
-        minH: 2,
+        minH: 1,
         maxH: 10
     },
 
@@ -152,14 +152,14 @@ export const WIDGET_SIZES: Record<string, WidgetSize> = {
         maxH: 10
     },
 
-    // App shortcuts - small
+    // App shortcuts - small and resizable
     [ITEM_TYPE.APP_SHORTCUT]: {
         w: 1,
         h: 1,
         minW: 1,
-        maxW: 1,
+        maxW: 6,
         minH: 1,
-        maxH: 1
+        maxH: 6
     },
 
     // Placeholders

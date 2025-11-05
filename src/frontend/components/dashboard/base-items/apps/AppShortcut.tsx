@@ -22,17 +22,17 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isWolShortcut = config?.isWol === true;
 
-    // Calculate font size based on name length
+    // Calculate font size based on name length - uses clamp for responsive sizing
     const fontSize = useMemo(() => {
-        if (!name) return isMobile ? '0.8rem' : '0.9rem';
+        if (!name) return 'clamp(0.7rem, 2vw, 1.2rem)';
 
         // Adjust font size based on text length - reduced all sizes to prevent overlap with status indicator
-        if (name.length > 20) return isMobile ? '0.55rem' : '0.65rem';
-        if (name.length > 15) return isMobile ? '0.65rem' : '0.75rem';
-        if (name.length > 10) return isMobile ? '0.75rem' : '0.85rem';
+        if (name.length > 20) return 'clamp(0.55rem, 1.5vw, 0.9rem)';
+        if (name.length > 15) return 'clamp(0.65rem, 1.8vw, 1rem)';
+        if (name.length > 10) return 'clamp(0.7rem, 1.9vw, 1.1rem)';
 
-        return isMobile ? '0.8rem' : '0.9rem';
-    }, [name, isMobile]);
+        return 'clamp(0.7rem, 2vw, 1.2rem)';
+    }, [name]);
 
     // Calculate text width based on size prop to prevent overlap with status icons
     const textWidth = useMemo(() => {
@@ -81,19 +81,24 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                // Fixed height for icon container based on device
-                height: { xs: '60px', sm: '70px', md: '40px', lg: '50px', xl: '60px' },
+                // Dynamic height based on container - takes most of the space
+                flex: showLabel ? '1' : '1',
                 width: '100%',
                 padding: '10px',
                 marginTop: showLabel ? '5px' : '0',
                 position: 'relative',
-                mt: isMobile ? -1.5 : 0
+                mt: isMobile ? -1.5 : 0,
+                // Ensure icon container fills available space
+                minHeight: 0
 
             }}>
                 <Box
                     sx={{
-                        width: { xs: '45px', sm: '50px', md: '45px', lg: '50px', xl: '55px' },
-                        height: { xs: '45px', sm: '50px', md: '45px', lg: '50px', xl: '55px' },
+                        // Icon size scales with container - uses percentage of container height
+                        width: showLabel ? '70%' : '80%',
+                        height: showLabel ? '70%' : '80%',
+                        maxWidth: '100%',
+                        maxHeight: '100%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -158,7 +163,7 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
                 </Box>
             ) : isWolShortcut ? (
                 <a href='#' onClick={handleWakeOnLan} style={{ width: '100%', height: '100%' }}>
-                    <Box sx={{ ...styles.center }} className='scale'>
+                    <Box sx={{ ...styles.center, width: '100%', height: '100%' }} className='scale'>
                         {shortcutContent}
                     </Box>
                 </a>
@@ -168,7 +173,7 @@ export const AppShortcut = ({ url, name, iconName, showLabel, editMode, config, 
                 </Box>
             ) : (
                 <a href={url} rel='noopener noreferrer' target='_blank' style={{ width: '100%', height: '100%' }}>
-                    <Box sx={{ ...styles.center }} className='scale'>
+                    <Box sx={{ ...styles.center, width: '100%', height: '100%' }} className='scale'>
                         {shortcutContent}
                     </Box>
                 </a>
