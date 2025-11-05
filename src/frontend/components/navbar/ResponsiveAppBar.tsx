@@ -154,8 +154,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
             // Force refresh dashboard
             refreshDashboard();
 
-            // Navigate to home page
-            navigate('/');
+            // Navigate to login page
+            navigate('/login');
             ToastManager.success('Logged out');
         } catch (error) {
             console.error('Logout error:', error);

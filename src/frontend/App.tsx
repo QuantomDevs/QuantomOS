@@ -2,7 +2,7 @@ import './theme/App.css';
 import { GlobalStyles } from '@mui/material';
 import { Box, Paper } from '@mui/material';
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { SetupForm } from './components/forms/SetupForm';
 import { GlobalCustomScrollbar } from './components/GlobalCustomScrollbar';
@@ -43,11 +43,13 @@ export const App = () => {
         isFirstTimeSetup,
         setupComplete,
         setSetupComplete,
-        pages
+        pages,
+        isLoggedIn
     } = useAppContext();
 
     const navigate = useNavigate();
     const isMobilePointer = useMobilePointer();
+    const location = useLocation();
 
     // Check if setup is complete based on the config
     useEffect(() => {
@@ -65,6 +67,35 @@ export const App = () => {
             document.title = 'Quantomos';
         }
     }, [config?.title]);
+
+    // Authentication guard - redirect to login if not authenticated
+    useEffect(() => {
+        // Skip authentication check if we're still checking first time setup status
+        if (isFirstTimeSetup === null) {
+            return;
+        }
+
+        // Allow access to login and signup pages without authentication
+        const publicRoutes = ['/login', '/signup'];
+        const isPublicRoute = publicRoutes.includes(location.pathname);
+
+        // If first time setup is needed, allow access to setup (handled by route rendering)
+        if (isFirstTimeSetup && !setupComplete) {
+            return;
+        }
+
+        // If setup is complete but user is not logged in and not on a public route
+        if (!isLoggedIn && !isPublicRoute) {
+            console.debug('User not authenticated, redirecting to login page');
+            navigate('/login', { replace: true });
+        }
+
+        // If user is logged in and on login/signup page, redirect to home
+        if (isLoggedIn && isPublicRoute) {
+            console.debug('User already authenticated, redirecting to home');
+            navigate('/', { replace: true });
+        }
+    }, [isLoggedIn, isFirstTimeSetup, setupComplete, location.pathname, navigate]);
 
     // Global hotkey listener for Ctrl+1-9 / Cmd+1-9 to switch pages
     useEffect(() => {

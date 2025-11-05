@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { AppBar, Box, IconButton, Modal, Toolbar, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Modal, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
@@ -29,7 +29,7 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
             return '92vw';
         }
 
-        return '50vw';
+        return '60vw'; // Increased from 50vw for better readability
     };
 
     const style = {
@@ -40,7 +40,7 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
         width: setWidth(),
         height: height || 'auto',
         bgcolor: 'background.paper',
-        borderRadius: '8px',
+        borderRadius: '12px', // Increased border radius
         boxShadow: 24,
         maxHeight: height ? height : '90vh',
         display: 'flex',
@@ -62,39 +62,48 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
             disableScrollLock={false}
         >
             <Box sx={style}>
-                {/* AppBar with Title and Close Button */}
-                <AppBar position='static' sx={{
-                    height: '3rem',
-                    borderRadius: '8px 8px 0 0',
-                    flexShrink: 0 // Prevent AppBar from shrinking
-                }} elevation={0}>
-                    <Toolbar  sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between', // Ensures space between title & close button
-                        alignItems: 'center', // Vertically aligns everything
-                        height: '100%',
-                        px: 2, // Add padding for spacing
-                        mt: isMobile ? '-.2rem' : '-.5rem'
-                    }}>
-                        <Typography id='modal-title' sx={{ flexGrow: 1 }}>{title}</Typography>
-                        <Box
-                            onPointerDownCapture={(e) => e.stopPropagation()} // Stop drag from interfering
-                            onClick={(e) => e.stopPropagation()} // Prevent drag from triggering on click
-                            sx={styles.vcenter}
-                        >
-                            <Tooltip title='Close' placement='top'>
-                                <IconButton
-                                    onClick={handleClose}
-                                    aria-label='Close modal'
-                                >
-                                    <Box height={'100%'} sx={styles.vcenter}>
-                                        <CloseIcon sx={{ fontSize: 28, color: 'white' }} />
-                                    </Box>
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    </Toolbar>
-                </AppBar>
+                {/* Clean Header with Title and Close Button */}
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    px: 3,
+                    pt: 3,
+                    pb: 2,
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                    flexShrink: 0
+                }}>
+                    <Typography
+                        id='modal-title'
+                        sx={{
+                            fontSize: '1.75rem', // Larger font size
+                            fontWeight: 600, // Bolder weight
+                            flexGrow: 1
+                        }}
+                    >
+                        {title}
+                    </Typography>
+                    <Box
+                        onPointerDownCapture={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
+                        sx={styles.vcenter}
+                    >
+                        <Tooltip title='Close' placement='top'>
+                            <IconButton
+                                onClick={handleClose}
+                                aria-label='Close modal'
+                                sx={{
+                                    color: 'text.primary',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(255, 255, 255, 0.05)'
+                                    }
+                                }}
+                            >
+                                <CloseIcon sx={{ fontSize: 28 }} />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </Box>
 
                 {/* Modal Content (Fix for Scroll Issues) */}
                 <Box

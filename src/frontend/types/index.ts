@@ -138,6 +138,8 @@ export type DashboardItem = {
         temperatureUnit?: string;
         healthUrl?: string;
         healthCheckType?: string;
+        enableStatusCheck?: boolean; // Toggle to enable/disable status check
+        openInNewTab?: boolean; // Toggle to open link in new tab (default: true)
         // Security flags for sensitive data
         _hasApiToken?: boolean;
         _hasPassword?: boolean;

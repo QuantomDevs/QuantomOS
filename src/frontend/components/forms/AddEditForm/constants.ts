@@ -115,7 +115,7 @@ export const WIDGET_OPTIONS = [
 export const ITEM_TYPE_OPTIONS = [
     {
         id: ITEM_TYPE.APP_SHORTCUT,
-        label: 'Shortcut',
+        label: 'App',
         icon: LaunchIcon,
         description: 'Link to websites, applications, or services'
     },

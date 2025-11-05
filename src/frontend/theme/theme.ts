@@ -22,7 +22,7 @@ export const theme = createTheme({
     },
     palette: {
         primary: {
-            main: '#734CDE',
+            main: COLORS.PURPLE, // Unified with theme system
         },
         secondary: {
             main: '#242424',

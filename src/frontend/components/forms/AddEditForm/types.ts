@@ -5,6 +5,8 @@ export type FormValues = {
     url?: string;
     healthUrl?: string;
     healthCheckType?: 'http' | 'ping';
+    enableStatusCheck?: boolean; // Toggle to enable/disable status check
+    openInNewTab?: boolean; // Toggle to open link in new tab (default: true)
     icon?: { path: string; name: string; source?: string } | null;
     showLabel?: boolean;
     widgetType?: string;

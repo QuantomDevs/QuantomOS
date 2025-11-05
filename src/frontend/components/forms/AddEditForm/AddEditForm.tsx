@@ -853,24 +853,6 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                     }}
                                                 />
                                             </Grid>
-
-                                            <Grid>
-                                                <CheckboxElement
-                                                    label='Admin Only'
-                                                    name='adminOnly'
-                                                    checked={formContext.watch('adminOnly')}
-                                                    sx={{
-                                                        ml: 1,
-                                                        color: 'white',
-                                                        '& .MuiSvgIcon-root': { fontSize: 30 },
-                                                        '& .MuiFormHelperText-root': {
-                                                            marginLeft: 1,
-                                                            fontSize: '0.75rem',
-                                                            color: 'rgba(255, 255, 255, 0.7)'
-                                                        }
-                                                    }}
-                                                />
-                                            </Grid>
                                         </>
                                     )}
 
@@ -881,25 +863,6 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                 onExtensionConfigured={handleExtensionConfigured}
                                                 onBack={() => handleStepChange('select')}
                                             />
-
-                                            {/* Admin Only checkbox for custom extensions */}
-                                            <Grid>
-                                                <CheckboxElement
-                                                    label='Admin Only'
-                                                    name='adminOnly'
-                                                    checked={formContext.watch('adminOnly')}
-                                                    sx={{
-                                                        ml: 1,
-                                                        color: 'white',
-                                                        '& .MuiSvgIcon-root': { fontSize: 30 },
-                                                        '& .MuiFormHelperText-root': {
-                                                            marginLeft: 1,
-                                                            fontSize: '0.75rem',
-                                                            color: 'rgba(255, 255, 255, 0.7)'
-                                                        }
-                                                    }}
-                                                />
-                                            </Grid>
                                         </>
                                     )}
 
@@ -907,26 +870,6 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                     {selectedItemType === 'widget' && selectedWidgetType && (
                                         <>
                                             <WidgetConfig formContext={formContext} widgetType={selectedWidgetType} existingItem={existingItem} />
-
-                                            {/* Admin Only checkbox for widget types - keep this outside the WidgetConfig component */}
-                                            <Grid>
-                                                <CheckboxElement
-                                                    label='Admin Only'
-                                                    name='adminOnly'
-                                                    checked={formContext.watch('adminOnly')}
-
-                                                    sx={{
-                                                        ml: 1,
-                                                        color: 'white',
-                                                        '& .MuiSvgIcon-root': { fontSize: 30 },
-                                                        '& .MuiFormHelperText-root': {
-                                                            marginLeft: 1,
-                                                            fontSize: '0.75rem',
-                                                            color: 'rgba(255, 255, 255, 0.7)'
-                                                        }
-                                                    }}
-                                                />
-                                            </Grid>
                                         </>
                                     )}
 
@@ -936,26 +879,6 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
 
                                     {selectedItemType === ITEM_TYPE.PLACEHOLDER && (
                                         <PlaceholderConfig formContext={formContext} />
-                                    )}
-
-                                    {(selectedItemType === ITEM_TYPE.BLANK_WIDGET || selectedItemType === ITEM_TYPE.BLANK_ROW || selectedItemType === ITEM_TYPE.BLANK_APP) && (
-                                        <Grid>
-                                            <CheckboxElement
-                                                label='Admin Only'
-                                                name='adminOnly'
-                                                checked={formContext.watch('adminOnly')}
-                                                sx={{
-                                                    ml: 1,
-                                                    color: 'white',
-                                                    '& .MuiSvgIcon-root': { fontSize: 30 },
-                                                    '& .MuiFormHelperText-root': {
-                                                        marginLeft: 1,
-                                                        fontSize: '0.75rem',
-                                                        color: 'rgba(255, 255, 255, 0.7)'
-                                                    }
-                                                }}
-                                            />
-                                        </Grid>
                                     )}
 
                                     <Grid sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>

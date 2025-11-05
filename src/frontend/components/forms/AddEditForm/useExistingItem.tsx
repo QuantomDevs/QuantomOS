@@ -153,6 +153,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             port: existingItem?.config?.port || '',
             healthUrl: healthUrl,
             healthCheckType: (existingItem?.config?.healthCheckType || 'http') as 'http' | 'ping',
+            enableStatusCheck: existingItem?.config?.enableStatusCheck !== undefined ? existingItem.config.enableStatusCheck : false,
+            openInNewTab: existingItem?.config?.openInNewTab !== undefined ? existingItem.config.openInNewTab : true,
             // Add maxItems for group widget
             maxItems: maxItems,
             // Download client config

@@ -8,7 +8,7 @@ import { theme } from '../../../theme/theme';
 import { FormValues } from '../AddEditForm/types';
 import { IconSearch } from '../IconSearch';
 
-const HEALTH_CHECK_TYPES = [
+const STATUS_CHECK_TYPES = [
     { id: 'http', label: 'HTTP Request' },
     { id: 'ping', label: 'Ping Host' }
 ];
@@ -159,10 +159,34 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                         />
                     </Grid>
                     <Grid>
+                        <CheckboxElement
+                            label='Open in New Tab'
+                            name='openInNewTab'
+                            checked={formContext.watch('openInNewTab')}
+                            sx={{
+                                ml: 1,
+                                color: 'white',
+                                '& .MuiSvgIcon-root': { fontSize: 30 }
+                            }}
+                        />
+                    </Grid>
+                    <Grid>
+                        <CheckboxElement
+                            label='Enable Status Check'
+                            name='enableStatusCheck'
+                            checked={formContext.watch('enableStatusCheck')}
+                            sx={{
+                                ml: 1,
+                                color: 'white',
+                                '& .MuiSvgIcon-root': { fontSize: 30 }
+                            }}
+                        />
+                    </Grid>
+                    <Grid>
                         <SelectElement
-                            label='Health Check Type'
+                            label='Status Check Type'
                             name='healthCheckType'
-                            options={HEALTH_CHECK_TYPES}
+                            options={STATUS_CHECK_TYPES}
                             sx={{
                                 width: '100%',
                                 '& .MuiOutlinedInput-root': {
@@ -195,7 +219,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                     <Grid>
                         <TextFieldElement
                             name='healthUrl'
-                            label={healthCheckType === 'http' ? 'Health Check URL' : 'Hostname or IP Address'}
+                            label={healthCheckType === 'http' ? 'Status Check URL' : 'Hostname or IP Address'}
                             helperText={'Optional'}
                             variant='outlined'
                             sx={{
@@ -212,7 +236,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                 validate: (value) => {
                                     if (!value) return true;
                                     if (healthCheckType === 'http') {
-                                        return value.includes('://') || 'Invalid URL. Ex: "http://192.168.x.x/health"';
+                                        return value.includes('://') || 'Invalid URL. Ex: "http://192.168.x.x/status"';
                                     }
                                     return true; // No validation for ping hostnames
                                 },
@@ -344,23 +368,6 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                     label='Show Name'
                     name='showLabel'
                     sx={{ ml: 1, color: 'white', '& .MuiSvgIcon-root': { fontSize: 30 } }}
-                />
-            </Grid>
-            <Grid>
-                <CheckboxElement
-                    label='Admin Only'
-                    name='adminOnly'
-                    checked={formContext.watch('adminOnly')}
-                    sx={{
-                        ml: 1,
-                        color: 'white',
-                        '& .MuiSvgIcon-root': { fontSize: 30 },
-                        '& .MuiFormHelperText-root': {
-                            marginLeft: 1,
-                            fontSize: '0.75rem',
-                            color: 'rgba(255, 255, 255, 0.7)'
-                        }
-                    }}
                 />
             </Grid>
         </>

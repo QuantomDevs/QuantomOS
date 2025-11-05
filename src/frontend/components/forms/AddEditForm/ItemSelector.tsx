@@ -23,10 +23,7 @@ export const ItemTypeSelector = ({ formContext, setCurrentStep }: Props) => {
 
     return (
         <Box sx={{ mb: 2 }}>
-            <Typography variant='body2' sx={{ color: 'text.primary', mb: 2, fontSize: '0.875rem' }}>
-                    Choose an Item Type*
-            </Typography>
-            <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+            <Grid container spacing={2.5} sx={{ justifyContent: 'center' }}>
                 {ITEM_TYPE_OPTIONS.map((option) => {
                     const IconComponent = option.icon;
 
@@ -38,16 +35,16 @@ export const ItemTypeSelector = ({ formContext, setCurrentStep }: Props) => {
                             <Box
                                 onClick={() => handleItemTypeSelect(option.id)}
                                 sx={{
-                                    py: 2.5,
-                                    px: .25,
-                                    height: { xs: '180px', sm: '160px' },
+                                    py: 3,
+                                    px: .5,
+                                    height: { xs: '200px', sm: '180px' },
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
                                     cursor: 'pointer',
                                     backgroundColor: COLORS.GRAY,
-                                    borderRadius: '8px',
+                                    borderRadius: '12px',
                                     border: `1px solid ${COLORS.LIGHT_GRAY_TRANSPARENT}`,
                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                                     transition: 'all 0.2s ease',
@@ -55,26 +52,28 @@ export const ItemTypeSelector = ({ formContext, setCurrentStep }: Props) => {
                                     '@media (pointer: fine)': {
                                         '&:hover': {
                                             backgroundColor: COLORS.LIGHT_GRAY_HOVER,
-                                            boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
+                                            boxShadow: '0 6px 12px rgba(0,0,0,0.2)',
+                                            transform: 'translateY(-2px)',
                                         },
                                     },
                                 }}
                             >
                                 <IconComponent
                                     sx={{
-                                        fontSize: 36,
+                                        fontSize: 44,
                                         color: 'text.primary',
-                                        mb: 1
+                                        mb: 1.5
                                     }}
                                 />
                                 <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                     <Typography
-                                        variant='subtitle2'
+                                        variant='h6'
                                         sx={{
                                             color: 'text.primary',
-                                            fontWeight: 600,
-                                            mb: 0.5,
-                                            lineHeight: 1.2
+                                            fontWeight: 700,
+                                            mb: 1,
+                                            lineHeight: 1.2,
+                                            fontSize: '1.1rem'
                                         }}
                                     >
                                         {option.label}
@@ -82,8 +81,8 @@ export const ItemTypeSelector = ({ formContext, setCurrentStep }: Props) => {
                                     <Typography
                                         variant='caption'
                                         sx={{
-                                            fontSize: '0.7rem',
-                                            lineHeight: 1.1,
+                                            fontSize: '0.75rem',
+                                            lineHeight: 1.2,
                                             px: 0.5,
                                             display: '-webkit-box',
                                             WebkitLineClamp: { xs: 4, sm: 3 },

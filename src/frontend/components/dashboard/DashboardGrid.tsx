@@ -78,6 +78,22 @@ export const DashboardGrid: React.FC = () => {
         return () => window.removeEventListener('resize', updateWidth);
     }, []);
 
+    // Calculate square row height based on column width
+    const calculateSquareRowHeight = useMemo(() => {
+        const cols = GRID_CONFIG.cols[currentBreakpoint as keyof typeof GRID_CONFIG.cols] || GRID_CONFIG.cols.lg;
+        const margin = colorTheme.gridMargin;
+        const containerPadding = GRID_CONFIG.containerPadding[0];
+
+        // Calculate inner width (container width minus padding)
+        const innerWidth = containerWidth - (containerPadding * 2);
+
+        // Calculate column width: (innerWidth - margin * (cols - 1)) / cols
+        const columnWidth = (innerWidth - (margin * (cols - 1))) / cols;
+
+        // Return the column width as the row height to create square tiles
+        return Math.floor(columnWidth);
+    }, [containerWidth, currentBreakpoint, colorTheme.gridMargin]);
+
     // Convert DashboardItems to GridLayout format
     const convertToGridLayout = useCallback((dashboardItems: DashboardItem[]): GridLayoutItem[] => {
         return dashboardItems.map(item => {
@@ -452,11 +468,11 @@ export const DashboardGrid: React.FC = () => {
                 sx={{ width: '100%', maxWidth: '100vw', boxSizing: 'border-box', px: 2, paddingBottom: 4 }}
             >
                 <ResponsiveGridLayout
-                    className="dashboard-grid"
+                    className={`dashboard-grid ${editMode ? 'edit-mode' : ''}`}
                     layouts={layouts}
                     breakpoints={GRID_CONFIG.breakpoints}
                     cols={GRID_CONFIG.cols}
-                    rowHeight={colorTheme.gridRowHeight}
+                    rowHeight={calculateSquareRowHeight}
                     width={containerWidth}
                     margin={[colorTheme.gridMargin, colorTheme.gridMargin]}
                     containerPadding={GRID_CONFIG.containerPadding}

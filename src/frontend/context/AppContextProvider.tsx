@@ -498,6 +498,12 @@ export const AppContextProvider = ({ children }: Props) => {
     };
 
     const saveLayout = async (items: DashboardItem[]) => {
+        // Don't try to save if user is not logged in
+        if (!isLoggedIn) {
+            console.debug('Skipping layout save - user not logged in');
+            return;
+        }
+
         // Use existing config state instead of fetching again
         if (!config) {
             console.error('No config available for saving layout');
@@ -720,6 +726,12 @@ export const AppContextProvider = ({ children }: Props) => {
     // Helper function to save layout changes to the server
     const saveLayoutToServer = async (items: DashboardItem[]) => {
         try {
+            // Don't try to save if user is not logged in
+            if (!isLoggedIn) {
+                console.debug('Skipping layout save to server - user not logged in');
+                return;
+            }
+
             // Use existing config state instead of fetching again
             if (!config) {
                 console.error('No config available for saving layout to server');
@@ -743,6 +755,11 @@ export const AppContextProvider = ({ children }: Props) => {
 
     const updateConfig = async (partialConfig: Partial<Config>) => {
         try {
+            // Don't try to save if user is not logged in
+            if (!isLoggedIn) {
+                console.debug('Skipping config update - user not logged in');
+                return;
+            }
 
             const updatedConfig: Partial<Config> = { ...partialConfig };
 

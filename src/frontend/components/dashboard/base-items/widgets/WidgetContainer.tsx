@@ -46,8 +46,7 @@ export const WidgetContainer: React.FC<Props> = ({
                 width: '100%',
                 maxWidth: '100%',
                 minWidth: 0,
-                flexGrow: 1,
-                minHeight: customHeight || (appShortcut || rowPlaceholder ? '6rem' : { xs: '12rem' }),
+                height: '100%', // Fill the grid item height
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

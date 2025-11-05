@@ -59,24 +59,6 @@ export const PlaceholderConfig = ({ formContext }: PlaceholderConfigProps) => {
                     }}
                 />
             </Grid>
-
-            <Grid>
-                <CheckboxElement
-                    label='Admin Only'
-                    name='adminOnly'
-                    checked={formContext.watch('adminOnly')}
-                    sx={{
-                        ml: 1,
-                        color: 'white',
-                        '& .MuiSvgIcon-root': { fontSize: 30 },
-                        '& .MuiFormHelperText-root': {
-                            marginLeft: 1,
-                            fontSize: '0.75rem',
-                            color: 'rgba(255, 255, 255, 0.7)'
-                        }
-                    }}
-                />
-            </Grid>
         </>
     );
 };

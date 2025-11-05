@@ -9,6 +9,12 @@
     transition-property: left, top;
 }
 
+/* Ensure grid items and their children fill the full height */
+.react-grid-item > div {
+    height: 100%;
+    width: 100%;
+}
+
 .react-grid-item.cssTransforms {
     transition-property: transform;
 }
@@ -43,10 +49,18 @@
     border: 2px dashed rgba(0, 119, 255, 0.6);
 }
 
+/* Resize handle - hidden by default */
 .react-grid-item > .react-resizable-handle {
     position: absolute;
     width: 20px;
     height: 20px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}
+
+/* Make resize handle visible and more prominent in edit mode */
+.dashboard-grid.edit-mode .react-grid-item > .react-resizable-handle {
+    opacity: 1;
 }
 
 .react-grid-item > .react-resizable-handle::after {
@@ -58,6 +72,25 @@
     height: 5px;
     border-right: 2px solid rgba(255, 255, 255, 0.4);
     border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    transition: all 200ms ease;
+}
+
+/* Enhanced visibility for resize handle in edit mode */
+.dashboard-grid.edit-mode .react-grid-item > .react-resizable-handle::after {
+    width: 8px;
+    height: 8px;
+    border-right: 3px solid var(--color-primary-accent, #8b5cf6);
+    border-bottom: 3px solid var(--color-primary-accent, #8b5cf6);
+    right: 2px;
+    bottom: 2px;
+}
+
+/* Add hover effect for resize handle in edit mode */
+.dashboard-grid.edit-mode .react-grid-item > .react-resizable-handle:hover::after {
+    width: 10px;
+    height: 10px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
 }
 
 .react-resizable-hide > .react-resizable-handle {
