@@ -2,8 +2,7 @@ import {
     Launch as LaunchIcon,
     Article as PageIcon,
     CropFree as PlaceholderIcon,
-    Widgets as WidgetIcon,
-    Extension as ExtensionIcon
+    Widgets as WidgetIcon
 } from '@mui/icons-material';
 import {
     FaClock,
@@ -124,12 +123,6 @@ export const ITEM_TYPE_OPTIONS = [
         label: 'Widget',
         icon: WidgetIcon,
         description: 'Interactive widgets with live data and monitoring'
-    },
-    {
-        id: ITEM_TYPE.CUSTOM_EXTENSION,
-        label: 'Custom Extension',
-        icon: ExtensionIcon,
-        description: 'Add custom extensions from the extensions directory'
     },
     {
         id: ITEM_TYPE.PLACEHOLDER,

@@ -67,7 +67,13 @@ QuantomOS is an open-source user interface designed to be your internally hosted
 - **Pi-hole & AdGuard**: DNS and ad-blocking statistics
 - **Weather Widget**: Current weather and forecast
 - **Clock & Calendar**: Time, date, and timezone information
+- **Group Widget**: Container widget for organizing related items
+- **Dual Widget**: Combine two widgets into a single dashboard item
 - **Custom Extensions**: Create your own widgets with JSON-based extensions
+  - Unified widget selector with extensions integrated alongside built-in widgets
+  - Comprehensive extension development documentation
+  - Template system for dynamic content
+  - Shadow DOM isolation for style encapsulation
 
 ### Customization
 
@@ -297,6 +303,17 @@ QuantomOS-main/
 │   ├── vite.config.ts     # Vite configuration
 │   └── tsconfig.json      # TypeScript configuration
 ├── extensions/            # Custom extension files
+│   ├── docs/              # Extension development documentation
+│   │   ├── extension-development-guide.md
+│   │   ├── extension-structure.md
+│   │   ├── settings-reference.md
+│   │   ├── template-system.md
+│   │   ├── shadow-dom-guide.md
+│   │   ├── best-practices.md
+│   │   ├── examples.md
+│   │   ├── troubleshooting.md
+│   │   └── api-reference.md
+│   └── *.json             # Extension definition files
 ├── docker-compose.yml     # Docker Compose configuration
 ├── Dockerfile             # Docker build instructions
 ├── package.json           # Root package.json (scripts)
@@ -330,6 +347,54 @@ PORT=2525                     # Backend port (optional, defaults to 2525)
 4. **Change Background**: Settings → Appearance → Upload background
 5. **Add Pages**: Settings → Pages → Create new page
 6. **Manage Users**: Settings → Users → Add/Edit users (admin only)
+
+### Creating Custom Extensions
+
+QuantomOS supports custom widgets through a JSON-based extension system. Extensions are automatically discovered and integrated into the widget selector.
+
+**Quick Start**:
+
+1. **Create an extension file** in the `/extensions` directory:
+   ```json
+   {
+     "id": "my-widget",
+     "name": "myWidget",
+     "title": "My Custom Widget",
+     "version": "1.0.0",
+     "author": "Your Name",
+     "description": "A custom widget for my dashboard",
+     "settings": [
+       {
+         "id": "message",
+         "name": "Message",
+         "type": "text",
+         "defaultValue": "Hello World!",
+         "description": "Text to display"
+       }
+     ],
+     "html": "<div class='widget'>{{message}}</div>",
+     "css": ".widget { padding: 2rem; background: var(--color-widget-background); }",
+     "javascript": "console.log('Widget loaded!');"
+   }
+   ```
+
+2. **Extension appears automatically** in the widget selector under "Custom Extensions"
+
+3. **Configure and add** to your dashboard like any built-in widget
+
+**Documentation**:
+
+Comprehensive extension development documentation is available in `/extensions/docs/`:
+
+- [Extension Development Guide](./extensions/docs/extension-development-guide.md) - Getting started
+- [Extension Structure](./extensions/docs/extension-structure.md) - JSON schema and required fields
+- [Settings Reference](./extensions/docs/settings-reference.md) - All available setting types
+- [Template System](./extensions/docs/template-system.md) - Dynamic content with placeholders
+- [Shadow DOM Guide](./extensions/docs/shadow-dom-guide.md) - Style isolation and theming
+- [Best Practices](./extensions/docs/best-practices.md) - Code quality and performance
+- [Examples](./extensions/docs/examples.md) - Complete extension examples
+- [Troubleshooting](./extensions/docs/troubleshooting.md) - Common issues and solutions
+- [API Reference](./extensions/docs/api-reference.md) - Available APIs and utilities
 
 ---
 

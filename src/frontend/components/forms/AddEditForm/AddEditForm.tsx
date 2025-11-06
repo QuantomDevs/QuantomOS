@@ -9,13 +9,16 @@ import { createWidgetConfig } from './createWidgetConfig';
 import { ItemTypeSelector } from './ItemSelector';
 import { useExistingItem } from './useExistingItem';
 import { DashApi } from '../../../api/dash-api';
+import { fetchExtension } from '../../../api/extensions-api';
 import { useAppContext } from '../../../context/useAppContext';
 import { COLORS, styles } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, NewItem, Page, TORRENT_CLIENT_TYPE } from '../../../types';
-import { ConfiguredExtension } from '../../../types/extension.types';
+import { ConfiguredExtension, Extension, ExtensionMetadata } from '../../../types/extension.types';
 import { isEncrypted } from '../../../utils/utils';
+import { processExtensionTemplates } from '../../../utils/templateProcessor';
 import { AppShortcutConfig, PlaceholderConfig, WidgetConfig, CustomExtensionConfig } from '../configs';
+import { ExtensionConfigDialog } from '../../extensions/ExtensionConfigDialog';
 import { ITEM_TYPE_OPTIONS, WIDGET_OPTIONS } from './constants';
 import { FormValues } from './types';
 import { WidgetSelector } from './WidgetSelector';
@@ -33,6 +36,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
     const navigate = useNavigate();
     const [customIconFile, setCustomIconFile] = useState<File | null>(null);
     const [extensionData, setExtensionData] = useState<ConfiguredExtension | null>(null);
+    const [selectedExtension, setSelectedExtension] = useState<any | null>(null);
+    const [showExtensionConfig, setShowExtensionConfig] = useState(false);
     const [currentStep, setCurrentStep] = useState<'select' | 'widget-select' | 'configure'>(() => {
         if (existingItem) {
             return 'configure';
@@ -95,6 +100,53 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
         setExtensionData(configured);
         // Set the widget name to the extension title
         formContext.setValue('shortcutName', extensionTitle);
+    };
+
+    const handleExtensionSelect = async (extension: ExtensionMetadata) => {
+        try {
+            const fullExtension = await fetchExtension(extension.id);
+            setSelectedExtension(fullExtension);
+            setShowExtensionConfig(true);
+        } catch (error) {
+            console.error('Error loading extension:', error);
+            alert('Failed to load extension. Please try again.');
+        }
+    };
+
+    const handleExtensionConfigSave = (settings: Record<string, any>) => {
+        if (!selectedExtension) return;
+
+        // Process templates with user-configured settings
+        const { processedHtml, processedCss, processedJavascript } = processExtensionTemplates(
+            selectedExtension.html,
+            selectedExtension.css || '',
+            selectedExtension.javascript || '',
+            settings
+        );
+
+        const configuredExtension: ConfiguredExtension = {
+            extensionId: selectedExtension.id,
+            extensionName: selectedExtension.name,
+            version: selectedExtension.version,
+            settings,
+            processedHtml,
+            processedCss,
+            processedJavascript
+        };
+
+        // Set form values for extension
+        formContext.setValue('itemType', ITEM_TYPE.CUSTOM_EXTENSION);
+        formContext.setValue('shortcutName', selectedExtension.title);
+        setExtensionData(configuredExtension);
+
+        // Close dialog and move to configure step
+        setShowExtensionConfig(false);
+        setCurrentStep('configure');
+    };
+
+    const handleExtensionConfigClose = () => {
+        setShowExtensionConfig(false);
+        setSelectedExtension(null);
     };
 
     // Helper function to scroll to top of form
@@ -707,19 +759,21 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                 <>
                                     <Grid sx={{
                                         width: '100%',
-                                        mb: 0,
+                                        mb: 2,
                                         display: 'flex',
-                                        flexDirection: { xs: 'column', sm: 'row' },
-                                        alignItems: { xs: 'flex-start', sm: 'center' },
-                                        position: 'relative',
-                                        gap: { xs: 1, sm: 0 }
+                                        flexDirection: 'column',
+                                        gap: 2
                                     }}>
                                         <Button
                                             variant='outlined'
                                             onClick={() => handleStepChange('select')}
+                                            fullWidth
                                             sx={{
                                                 color: 'text.primary',
                                                 borderColor: 'text.primary',
+                                                fontWeight: 700,
+                                                minHeight: '48px',
+                                                fontSize: '0.95rem',
                                                 '&:hover': {
                                                     borderColor: theme.palette.primary.main,
                                                     backgroundColor: `${theme.palette.primary.main}10`
@@ -727,23 +781,23 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                             }}
                                             startIcon={<ArrowBackIosIcon />}
                                         >
-                                            Back
+                                            Go back to previous step
                                         </Button>
 
                                         <Typography variant='h6' sx={{
                                             color: 'text.primary',
-                                            position: { xs: 'static', sm: 'absolute' },
-                                            left: { xs: 'auto', sm: '50%' },
-                                            transform: { xs: 'none', sm: 'translateX(-50%)' },
                                             textAlign: 'center',
-                                            width: { xs: '100%', sm: 'auto' },
                                         }}>
                                             Select Widget
                                         </Typography>
                                     </Grid>
 
                                     <Grid>
-                                        <WidgetSelector formContext={formContext} setCurrentStep={handleStepChange}/>
+                                        <WidgetSelector
+                                            formContext={formContext}
+                                            setCurrentStep={handleStepChange}
+                                            onExtensionSelect={handleExtensionSelect}
+                                        />
                                     </Grid>
                                 </>
                             )}
@@ -752,12 +806,10 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                 <>
                                     <Grid sx={{
                                         width: '100%',
-                                        mb: 1,
+                                        mb: 2,
                                         display: 'flex',
-                                        flexDirection: { xs: 'column', sm: 'row' },
-                                        alignItems: { xs: 'flex-start', sm: 'center' },
-                                        position: 'relative',
-                                        gap: { xs: 1, sm: 0 }
+                                        flexDirection: 'column',
+                                        gap: 2
                                     }}>
                                         <Button
                                             variant='outlined'
@@ -768,9 +820,13 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                     handleStepChange('select');
                                                 }
                                             }}
+                                            fullWidth
                                             sx={{
                                                 color: 'text.primary',
                                                 borderColor: 'text.primary',
+                                                fontWeight: 700,
+                                                minHeight: '48px',
+                                                fontSize: '0.95rem',
                                                 '&:hover': {
                                                     borderColor: theme.palette.primary.main,
                                                     backgroundColor: `${theme.palette.primary.main}10`
@@ -778,20 +834,12 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                             }}
                                             startIcon={<ArrowBackIosIcon />}
                                         >
-                                            Back
+                                            Go back to previous step
                                         </Button>
 
                                         <Typography variant='h6' sx={{
                                             color: 'text.primary',
-                                            position: { xs: 'static', sm: 'absolute' },
-                                            left: { xs: 'auto', sm: '50%' },
-                                            transform: { xs: 'none', sm: 'translateX(-50%)' },
                                             textAlign: 'center',
-                                            width: { xs: '100%', sm: 'calc(100% - 120px)' },
-                                            maxWidth: { xs: '100%', sm: '400px' },
-                                            whiteSpace: { xs: 'normal', sm: 'nowrap' },
-                                            overflow: { xs: 'visible', sm: 'hidden' },
-                                            textOverflow: { xs: 'clip', sm: 'ellipsis' }
                                         }}>
                                             Configure {selectedItemType === 'widget'
                                                 ? WIDGET_OPTIONS.find(opt => opt.id === selectedWidgetType)?.label
@@ -892,6 +940,16 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                     </FormContainer>
                 </Box>
             </Grid>
+
+            {/* Extension Configuration Dialog */}
+            {selectedExtension && (
+                <ExtensionConfigDialog
+                    open={showExtensionConfig}
+                    extension={selectedExtension}
+                    onClose={handleExtensionConfigClose}
+                    onSave={handleExtensionConfigSave}
+                />
+            )}
         </Grid>
     );
 };

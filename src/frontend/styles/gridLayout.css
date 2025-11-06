@@ -49,13 +49,14 @@
     border: 2px dashed rgba(0, 119, 255, 0.6);
 }
 
-/* Resize handle - hidden by default */
+/* Resize handle - hidden by default, larger clickable area */
 .react-grid-item > .react-resizable-handle {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     opacity: 0;
-    transition: opacity 200ms ease;
+    transition: opacity 200ms ease, transform 200ms ease;
+    z-index: 10;
 }
 
 /* Make resize handle visible and more prominent in edit mode */
@@ -63,34 +64,57 @@
     opacity: 1;
 }
 
+/* Default state - hidden/subtle */
 .react-grid-item > .react-resizable-handle::after {
     content: "";
     position: absolute;
-    right: 3px;
-    bottom: 3px;
-    width: 5px;
-    height: 5px;
-    border-right: 2px solid rgba(255, 255, 255, 0.4);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    right: 4px;
+    bottom: 4px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
     transition: all 200ms ease;
 }
 
-/* Enhanced visibility for resize handle in edit mode */
+/* Enhanced visibility for resize handle in edit mode - much larger and more visible */
 .dashboard-grid.edit-mode .react-grid-item > .react-resizable-handle::after {
-    width: 8px;
-    height: 8px;
-    border-right: 3px solid var(--color-primary-accent, #8b5cf6);
-    border-bottom: 3px solid var(--color-primary-accent, #8b5cf6);
-    right: 2px;
-    bottom: 2px;
+    width: 18px;
+    height: 18px;
+    border-right: 4px solid var(--color-primary-accent, #8b5cf6);
+    border-bottom: 4px solid var(--color-primary-accent, #8b5cf6);
+    right: 3px;
+    bottom: 3px;
+    /* Add subtle background for better contrast */
+    background: linear-gradient(
+        135deg,
+        transparent 50%,
+        rgba(139, 92, 246, 0.1) 50%
+    );
+    border-radius: 2px;
 }
 
-/* Add hover effect for resize handle in edit mode */
+/* Add prominent hover effect for resize handle in edit mode */
 .dashboard-grid.edit-mode .react-grid-item > .react-resizable-handle:hover::after {
-    width: 10px;
-    height: 10px;
-    border-right-width: 4px;
-    border-bottom-width: 4px;
+    width: 20px;
+    height: 20px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    /* Make the accent color more vibrant on hover */
+    border-right-color: var(--color-primary-accent, #a78bfa);
+    border-bottom-color: var(--color-primary-accent, #a78bfa);
+    background: linear-gradient(
+        135deg,
+        transparent 50%,
+        rgba(139, 92, 246, 0.2) 50%
+    );
+    transform: scale(1.1);
+}
+
+/* Add a visual tooltip hint on hover */
+.dashboard-grid.edit-mode .react-grid-item > .react-resizable-handle:hover {
+    /* Could add a tooltip using title attribute in the component */
+    cursor: se-resize;
 }
 
 .react-resizable-hide > .react-resizable-handle {
@@ -123,7 +147,7 @@
 .react-grid-item > .react-resizable-handle.react-resizable-handle-w,
 .react-grid-item > .react-resizable-handle.react-resizable-handle-e {
     top: 50%;
-    margin-top: -10px;
+    margin-top: -15px;
     cursor: ew-resize;
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-w {
@@ -137,7 +161,7 @@
 .react-grid-item > .react-resizable-handle.react-resizable-handle-n,
 .react-grid-item > .react-resizable-handle.react-resizable-handle-s {
     left: 50%;
-    margin-left: -10px;
+    margin-left: -15px;
     cursor: ns-resize;
 }
 .react-grid-item > .react-resizable-handle.react-resizable-handle-n {
