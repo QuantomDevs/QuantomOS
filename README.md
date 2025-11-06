@@ -135,7 +135,7 @@ QuantomOS is an open-source user interface designed to be your internally hosted
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/snenjih/quantomos.git
+   git clone https://github.com/QuantomDevs/quantomos.git
    cd quantomos
    ```
 
@@ -455,13 +455,13 @@ Contributions are welcome! Please follow these guidelines:
 
 ### Reporting Issues
 
-Please report bugs and request features through [GitHub Issues](https://github.com/snenjih/quantomos/issues).
+Please report bugs and request features through [GitHub Issues](https://github.com/QuantomDevs/quantomos/issues).
 
 ---
 
 ## License
 
-This project is licensed under the **ISC License**. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
 ---
 
@@ -470,13 +470,8 @@ This project is licensed under the **ISC License**. See the [LICENSE](LICENSE) f
 - **Material-UI** - For the excellent React component library
 - **The Homelab Community** - For inspiration and feedback
 - **Open Source Contributors** - For making this project possible
-- **Icon Providers** - [@loganmarchione/homelab-svg-assets](https://github.com/loganmarchione/homelab-svg-assets)
 
 ---
-
-## Disclaimer
-
-This code is provided for informational and educational purposes only. The author is not associated with any of the services or applications mentioned in this project.
 
 ---
 
