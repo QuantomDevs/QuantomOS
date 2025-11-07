@@ -11,6 +11,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 interface MediaRequestManagerWidgetConfigProps {
@@ -20,6 +21,7 @@ interface MediaRequestManagerWidgetConfigProps {
 export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidgetConfigProps> = ({
     formContext
 }) => {
+    const { colorTheme } = useTheme();
     const { watch, setValue } = formContext;
 
     const service = watch('mediaRequestManagerService') || 'jellyseerr';
@@ -72,7 +74,7 @@ export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidget
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: colorTheme.primaryAccent
                                         }
                                     }}
                                 />
@@ -86,7 +88,7 @@ export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidget
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: colorTheme.primaryAccent
                                         }
                                     }}
                                 />
@@ -109,12 +111,12 @@ export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidget
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -132,12 +134,12 @@ export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidget
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -155,12 +157,12 @@ export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidget
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -179,12 +181,12 @@ export const MediaRequestManagerWidgetConfig: React.FC<MediaRequestManagerWidget
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>

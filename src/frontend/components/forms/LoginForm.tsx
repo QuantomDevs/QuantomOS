@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DashApi } from '../../api/dash-api';
 import { ToastManager } from '../../components/toast/ToastManager';
 import { useAppContext } from '../../context/useAppContext';
+import { useTheme } from '../../context/ThemeContext';
 import { styles } from '../../theme/styles';
 import { theme } from '../../theme/theme';
 
@@ -15,6 +16,7 @@ type FormValues = {
 }
 
 export const LoginForm = () => {
+    const { colorTheme } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const { setIsLoggedIn, setUsername, setIsAdmin, refreshDashboard } = useAppContext();
@@ -75,7 +77,7 @@ export const LoginForm = () => {
                                 input: {
                                     startAdornment: (
                                         <InputAdornment position='start'>
-                                            <FaUser style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
+                                            <FaUser style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
                                         </InputAdornment>
                                     ),
                                     autoComplete: 'username'
@@ -97,7 +99,7 @@ export const LoginForm = () => {
                             input: {
                                 startAdornment: (
                                     <InputAdornment position='start'>
-                                        <FaLock style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
+                                        <FaLock style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
                                     </InputAdornment>
                                 )
                             }

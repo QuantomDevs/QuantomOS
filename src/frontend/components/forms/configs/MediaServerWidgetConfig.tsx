@@ -5,6 +5,7 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 const MEDIA_SERVER_OPTIONS = [
@@ -17,6 +18,7 @@ interface MediaServerWidgetConfigProps {
 }
 
 export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
 
     // Watch the media server type directly from the form
@@ -30,8 +32,8 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
             '& fieldset': {
                 borderColor: 'text.primary',
             },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
         },
         width: '100%',
         minWidth: isMobile ? '50vw' : '20vw'
@@ -88,7 +90,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                                         sx={{
                                             color: 'white',
                                             '&.Mui-checked': {
-                                                color: theme.palette.primary.main
+                                                color: colorTheme.primaryAccent
                                             }
                                         }}
                                     />
@@ -107,7 +109,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                     fullWidth
                     sx={textFieldStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                     placeholder='Jellyfin'
                 />
@@ -123,7 +125,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                     required
                     sx={textFieldStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                     placeholder='192.168.1.100 or jellyfin.example.com'
                 />
@@ -139,7 +141,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                     required
                     sx={textFieldStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -155,7 +157,7 @@ export const MediaServerWidgetConfig = ({ formContext }: MediaServerWidgetConfig
                     required
                     sx={textFieldStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                     helperText='Generate in Jellyfin: Dashboard > API Keys'
                     rules={{

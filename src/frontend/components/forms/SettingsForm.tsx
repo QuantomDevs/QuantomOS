@@ -11,6 +11,7 @@ import { MultiFileInput } from './MultiFileInput';
 import { DashApi } from '../../api/dash-api';
 import { BACKEND_URL } from '../../constants/constants';
 import { useAppContext } from '../../context/useAppContext';
+import { useTheme as useColorTheme } from '../../context/ThemeContext';
 import { COLORS } from '../../theme/styles';
 import { Config, SearchProvider } from '../../types';
 import { PopupManager } from '../modals/PopupManager';
@@ -197,6 +198,7 @@ const ImagePreviewCard = ({ image, onDelete, formatFileSize }: {
 };
 
 export const SettingsForm = () => {
+    const { colorTheme } = useColorTheme();
     const [isCustomProvider, setIsCustomProvider] = useState(false);
     const [hasChanges, setHasChanges] = useState(false);
     const { config, updateConfig, refreshDashboard, pages } = useAppContext();
@@ -245,7 +247,7 @@ export const SettingsForm = () => {
                 background-color: ${COLORS.LIGHT_GRAY_HOVER} !important;
             }
             .MuiPopover-root .MuiPaper-root .MuiMenuItem-root.Mui-selected {
-                background-color: ${theme.palette.primary.main} !important;
+                background-color: ${colorTheme.primaryAccent} !important;
             }
             .MuiPopover-root .MuiPaper-root .MuiMenuItem-root.Mui-selected:hover {
                 background-color: ${COLORS.LIGHT_GRAY_HOVER} !important;
@@ -796,11 +798,11 @@ export const SettingsForm = () => {
                                                 labelKey='label'
                                                 sx={{
                                                     '& .MuiOutlinedInput-root': {
-                                                        '& fieldset': { borderColor: theme.palette.text.primary },
-                                                        '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                                        '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                                                        '& fieldset': { borderColor: colorTheme.primaryText },
+                                                        '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                                        '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                                                     },
-                                                    '.MuiSvgIcon-root ': { fill: theme.palette.text.primary },
+                                                    '.MuiSvgIcon-root ': { fill: colorTheme.primaryText },
                                                     width: '95%'
                                                 }}
                                             />

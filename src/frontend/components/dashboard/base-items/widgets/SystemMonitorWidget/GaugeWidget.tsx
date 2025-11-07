@@ -3,7 +3,7 @@ import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import React, { ReactNode } from 'react';
 
 import { useIsMobile } from '../../../../../hooks/useIsMobile';
-import { theme } from '../../../../../theme/theme';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 interface GaugeWidgetProps {
   value: number; // The gauge value
@@ -29,6 +29,7 @@ export const GaugeWidget: React.FC<GaugeWidgetProps> = ({
     isDualWidget
 }) => {
     const isMobile = useIsMobile();
+    const { colorTheme } = useTheme();
 
     // Calculate the maximum value for temperature gauge based on the unit
     const maxValue = temperature
@@ -73,10 +74,10 @@ export const GaugeWidget: React.FC<GaugeWidgetProps> = ({
                 sx={
                     { '& .MuiGauge-valueText': { display: 'none' },
                         [`& .${gaugeClasses.valueArc}`]: {
-                            fill: 'primary.main',
+                            fill: colorTheme.primaryAccent,
                         },
                         [`& .${gaugeClasses.referenceArc}`]: {
-                            fill: theme.palette.text.disabled,
+                            fill: colorTheme.mutedText,
                         },
                         ...gaugeSizing,
                         pointerEvents: 'none',

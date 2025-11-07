@@ -8,6 +8,7 @@ import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 interface DiskInfo {
@@ -32,6 +33,7 @@ interface DiskMonitorWidgetConfigProps {
 }
 
 export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: DiskMonitorWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
     const [availableDisks, setAvailableDisks] = useState<Array<{id: string, label: string, size: number}>>([]);
     const [selectedDisks, setSelectedDisks] = useState<DiskSelection[]>([]);
@@ -40,24 +42,24 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
     const selectStyling = {
         '& .MuiOutlinedInput-root': {
             '& fieldset': {
-                borderColor: theme.palette.text.primary,
+                borderColor: colorTheme.primaryText,
             },
             '.MuiSvgIcon-root ': {
-                fill: theme.palette.text.primary,
+                fill: colorTheme.primaryText,
             },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
         },
         width: '100%',
         '& .MuiMenuItem-root:hover': {
             backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
         },
         '& .MuiMenuItem-root.Mui-selected': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${colorTheme.primaryAccent} !important`,
             color: 'white',
         },
         '& .MuiMenuItem-root.Mui-selected:hover': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${colorTheme.primaryAccent} !important`,
             color: 'white',
         }
     };
@@ -291,7 +293,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
     return (
         <>
             <Grid>
-                <Typography variant='h6' sx={{ color: theme.palette.text.primary, mb: 2 }}>
+                <Typography variant='h6' sx={{ color: colorTheme.primaryText, mb: 2 }}>
                     Layout & Disk Selection
                 </Typography>
             </Grid>
@@ -311,7 +313,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                             mb: 2
                         }}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                     />
                 </Grid>
@@ -356,7 +358,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                             <Box sx={{ mb: 1 }}>
                                 <FormControl fullWidth>
                                     <InputLabel
-                                        sx={{ color: theme.palette.text.primary }}
+                                        sx={{ color: colorTheme.primaryText }}
                                     >
                                         {`Disk ${index + 1}`}
                                     </InputLabel>
@@ -367,19 +369,19 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                                         sx={{
                                             ...selectStyling,
                                             '& .MuiSelect-select': {
-                                                color: theme.palette.text.primary
+                                                color: colorTheme.primaryText
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: theme.palette.text.primary
+                                                borderColor: colorTheme.primaryText
                                             },
                                             '&:hover .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: theme.palette.primary.main
+                                                borderColor: colorTheme.primaryAccent
                                             },
                                             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: theme.palette.primary.main
+                                                borderColor: colorTheme.primaryAccent
                                             },
                                             '& .MuiSelect-icon': {
-                                                color: theme.palette.text.primary
+                                                color: colorTheme.primaryText
                                             }
                                         }}
                                     >
@@ -401,16 +403,16 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                                     fullWidth
                                     sx={{
                                         '& .MuiOutlinedInput-root': {
-                                            '& fieldset': { borderColor: theme.palette.text.primary },
-                                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main }
+                                            '& fieldset': { borderColor: colorTheme.primaryText },
+                                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent }
                                         }
                                     }}
                                     InputLabelProps={{
-                                        style: { color: theme.palette.text.primary }
+                                        style: { color: colorTheme.primaryText }
                                     }}
                                     inputProps={{
-                                        style: { color: theme.palette.text.primary }
+                                        style: { color: colorTheme.primaryText }
                                     }}
                                 />
                             </Box>
@@ -423,16 +425,16 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
                                             checked={disk.showMountPath ?? false}
                                             onChange={(e) => updateDisk(index, 'showMountPath', e.target.checked)}
                                             sx={{
-                                                color: theme.palette.text.primary,
+                                                color: colorTheme.primaryText,
                                                 '&.Mui-checked': {
-                                                    color: theme.palette.primary.main
+                                                    color: colorTheme.primaryAccent
                                                 }
                                             }}
                                         />
                                     }
                                     label='Show Mount Path'
                                     sx={{
-                                        color: theme.palette.text.primary,
+                                        color: colorTheme.primaryText,
                                         '& .MuiFormControlLabel-label': {
                                             fontSize: '0.875rem'
                                         }
@@ -503,7 +505,7 @@ export const DiskMonitorWidgetConfig = ({ formContext, fieldNamePrefix = '' }: D
 
             {isLoading && (
                 <Grid>
-                    <Typography variant='body2' sx={{ color: theme.palette.text.primary, fontStyle: 'italic' }}>
+                    <Typography variant='body2' sx={{ color: colorTheme.primaryText, fontStyle: 'italic' }}>
                         Loading available disks...
                     </Typography>
                 </Grid>

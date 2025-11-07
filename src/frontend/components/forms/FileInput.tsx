@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Controller } from 'react-hook-form-mui';
 import { FaFileUpload } from 'react-icons/fa';
 
+import { useTheme } from '../../context/ThemeContext';
 import { theme } from '../../theme/theme';
 
 type Props = {
@@ -23,6 +24,7 @@ export const FileInput = ({
     maxSize = 5 * 1024 * 1024, // 5MB default
     sx
 }: Props) => {
+    const { colorTheme } = useTheme();
     const [sizeError, setSizeError] = useState<string | null>(null);
 
     return (
@@ -55,7 +57,7 @@ export const FileInput = ({
                         inputProps: {
                             accept
                         },
-                        startAdornment: <FaFileUpload style={{ marginLeft: 5, color: theme.palette.text.primary }}/>
+                        startAdornment: <FaFileUpload style={{ marginLeft: 5, color: colorTheme.primaryText }}/>
                     }}
                     sx={{ width: width || '100%', ...sx }}
                     placeholder='Select a File'

@@ -1,8 +1,10 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 
+import { ColorTheme } from '../context/ThemeContext';
 import { COLORS } from './styles';
 
-export const theme = createTheme({
+// Create a dynamic theme based on ColorTheme values
+export const createDynamicTheme = (colorTheme: ColorTheme): Theme => createTheme({
     breakpoints: {
         values: {
             xs: 0,
@@ -22,31 +24,31 @@ export const theme = createTheme({
     },
     palette: {
         primary: {
-            main: COLORS.PURPLE, // Unified with theme system
+            main: colorTheme.primaryAccent, // Dynamic from ColorTheme
         },
         secondary: {
-            main: '#242424',
+            main: colorTheme.secondaryAccent, // Dynamic from ColorTheme
             light: '#ffffff',
             contrastText: '#ffffff'
         },
         background: {
-            default: '#242424',
-            paper: '#242424'
+            default: colorTheme.backgroundColor, // Dynamic from ColorTheme
+            paper: colorTheme.widgetBackground // Dynamic from ColorTheme
         },
         text: {
-            primary: '#C9C9C9',
-            secondary: '#000000',
+            primary: colorTheme.primaryText, // Dynamic from ColorTheme
+            secondary: colorTheme.secondaryText, // Dynamic from ColorTheme
         },
         success: {
-            main: '#4caf50',
+            main: colorTheme.successColor, // Dynamic from ColorTheme
             contrastText: '#ffffff',
         },
         warning: {
-            main: '#ff9800',
+            main: colorTheme.warningColor, // Dynamic from ColorTheme
             contrastText: '#ffffff',
         },
         error: {
-            main: '#C6112E',
+            main: colorTheme.errorColor, // Dynamic from ColorTheme
             contrastText: '#ffffff',
         },
         action: {
@@ -60,14 +62,14 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     '&:hover': {
-                        backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`, // Custom hover color globally
+                        backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
                     },
                     '&.Mui-selected': {
-                        backgroundColor: `${COLORS.PURPLE} !important`,
+                        backgroundColor: `${colorTheme.primaryAccent} !important`, // Dynamic from ColorTheme
                         color: 'white',
                     },
                     '&.Mui-selected:hover': {
-                        backgroundColor: `${COLORS.PURPLE} !important`,
+                        backgroundColor: `${colorTheme.primaryAccent} !important`, // Dynamic from ColorTheme
                         color: 'white',
                     },
                 },
@@ -77,7 +79,7 @@ export const theme = createTheme({
             styleOverrides: {
                 paper: {
                     '& .MuiAutocomplete-noOptions': {
-                        color: '#C9C9C9',
+                        color: colorTheme.primaryText, // Dynamic from ColorTheme
                     },
                 },
                 option: {
@@ -85,11 +87,11 @@ export const theme = createTheme({
                         backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
                     },
                     '&[aria-selected="true"]': {
-                        backgroundColor: `${COLORS.PURPLE} !important`,
+                        backgroundColor: `${colorTheme.primaryAccent} !important`, // Dynamic from ColorTheme
                         color: 'white',
                     },
                     '&[aria-selected="true"]:hover': {
-                        backgroundColor: `${COLORS.PURPLE} !important`,
+                        backgroundColor: `${colorTheme.primaryAccent} !important`, // Dynamic from ColorTheme
                         color: 'white',
                     },
                 },
@@ -99,7 +101,7 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     '&:hover': {
-                        backgroundColor: COLORS.LIGHT_GRAY_HOVER, // Change this to your preferred hover color
+                        backgroundColor: COLORS.LIGHT_GRAY_HOVER,
                     },
                 },
             },
@@ -109,10 +111,10 @@ export const theme = createTheme({
                 root: {
                     '& .MuiOutlinedInput-root': {
                         '& fieldset': {
-                            borderColor: COLORS.LIGHT_GRAY,
+                            borderColor: colorTheme.borderColor, // Dynamic from ColorTheme
                         },
-                        '&:hover fieldset': { borderColor: COLORS.PURPLE },
-                        '&.Mui-focused fieldset': { borderColor: COLORS.PURPLE },
+                        '&:hover fieldset': { borderColor: colorTheme.primaryAccent }, // Dynamic from ColorTheme
+                        '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent }, // Dynamic from ColorTheme
                     },
                 }
             },
@@ -162,10 +164,10 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     '&.Mui-active': {
-                        color: COLORS.PURPLE,
+                        color: colorTheme.primaryAccent, // Dynamic from ColorTheme
                     },
                     '&.Mui-completed': {
-                        color: COLORS.PURPLE,
+                        color: colorTheme.primaryAccent, // Dynamic from ColorTheme
                     }
                 },
                 text: {
@@ -180,11 +182,11 @@ export const theme = createTheme({
                         backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
                     },
                     '&.Mui-selected': {
-                        backgroundColor: `${COLORS.PURPLE} !important`,
+                        backgroundColor: `${colorTheme.primaryAccent} !important`, // Dynamic from ColorTheme
                         color: 'white',
                     },
                     '&.Mui-selected:hover': {
-                        backgroundColor: `${COLORS.PURPLE} !important`,
+                        backgroundColor: `${colorTheme.primaryAccent} !important`, // Dynamic from ColorTheme
                         color: 'white',
                     },
                 },
@@ -192,6 +194,10 @@ export const theme = createTheme({
         }
     },
 });
+
+// For backward compatibility and places where we need a static theme
+import { DEFAULT_THEME } from '../context/ThemeContext';
+export const theme = createDynamicTheme(DEFAULT_THEME);
 
 export const styles = {
     center: {

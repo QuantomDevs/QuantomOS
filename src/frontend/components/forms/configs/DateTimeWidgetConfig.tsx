@@ -6,6 +6,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 interface LocationOption {
@@ -20,6 +21,7 @@ interface DateTimeWidgetConfigProps {
 }
 
 export const DateTimeWidgetConfig = ({ formContext }: DateTimeWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
     const [locationSearch, setLocationSearch] = useState('');
     const [locationOptions, setLocationOptions] = useState<LocationOption[]>([]);
@@ -178,12 +180,12 @@ export const DateTimeWidgetConfig = ({ formContext }: DateTimeWidgetConfigProps)
                     }}
                     loading={isSearching}
                     loadingText={
-                        <Typography style={{ color: theme.palette.text.primary }}>
+                        <Typography style={{ color: colorTheme.primaryText }}>
                             Searching...
                         </Typography>
                     }
                     noOptionsText={
-                        <Typography style={{ color: theme.palette.text.primary }}>
+                        <Typography style={{ color: colorTheme.primaryText }}>
                             {locationSearch.length < 2 ? 'Type to search...' : 'No locations found'}
                         </Typography>
                     }
@@ -193,7 +195,7 @@ export const DateTimeWidgetConfig = ({ formContext }: DateTimeWidgetConfigProps)
                     clearOnEscape
                     value={selectedLocation}
                     freeSolo
-                    clearIcon={<ClearIcon style={{ color: theme.palette.text.primary }} />}
+                    clearIcon={<ClearIcon style={{ color: colorTheme.primaryText }} />}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -204,7 +206,7 @@ export const DateTimeWidgetConfig = ({ formContext }: DateTimeWidgetConfigProps)
                                 style: {
                                     color: timezoneError
                                         ? 'rgba(255, 0, 0, 0.7)'
-                                        : theme.palette.text.primary
+                                        : colorTheme.primaryText
                                 }
                             }}
                             sx={{
@@ -214,12 +216,12 @@ export const DateTimeWidgetConfig = ({ formContext }: DateTimeWidgetConfigProps)
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 }
                             }}
                             InputLabelProps={{
-                                style: { color: theme.palette.text.primary }
+                                style: { color: colorTheme.primaryText }
                             }}
                         />
                     )}

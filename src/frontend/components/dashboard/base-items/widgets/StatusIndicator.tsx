@@ -44,8 +44,8 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({ url, healthChe
                     position: 'absolute',
                     bottom: 4,
                     right: 4,
-                    width: 14,
-                    height: 14,
+                    width: 18,
+                    height: 18,
                     borderRadius: '50%',
                     backgroundColor: dotColor,
                     cursor: 'pointer',
@@ -61,13 +61,13 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({ url, healthChe
                 {dotColor === 'green' && (
                     <KeyboardArrowUpIcon sx={{
                         color: 'white',
-                        fontSize: 14
+                        fontSize: 18
                     }} />
                 )}
                 {dotColor === 'red' && (
                     <KeyboardArrowDownIcon sx={{
                         color: 'white',
-                        fontSize: 14
+                        fontSize: 18
                     }} />
                 )}
             </Box>

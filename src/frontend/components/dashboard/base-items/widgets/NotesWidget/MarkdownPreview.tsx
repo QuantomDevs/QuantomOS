@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
+import { useTheme } from '../../../../../context/ThemeContext';
 import { theme } from '../../../../../theme/theme';
 
 interface MarkdownPreviewProps {
@@ -10,6 +11,7 @@ interface MarkdownPreviewProps {
 }
 
 export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, fontSize = '16px' }) => {
+    const { colorTheme } = useTheme();
     return (
         <Box sx={{
             color: 'rgba(255,255,255,0.9)',
@@ -67,7 +69,7 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, fontS
                 fontStyle: 'italic'
             },
             '& a': {
-                color: theme.palette.primary.main,
+                color: colorTheme.primaryAccent,
                 textDecoration: 'underline'
             },
             '& strong': {

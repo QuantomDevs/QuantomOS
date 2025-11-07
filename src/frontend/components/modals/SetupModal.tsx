@@ -7,6 +7,7 @@ import { FaLock, FaUser } from 'react-icons/fa6';
 
 import { DashApi } from '../../api/dash-api';
 import { useAppContext } from '../../context/useAppContext';
+import { useTheme } from '../../context/ThemeContext';
 import { styles } from '../../theme/styles';
 import { theme } from '../../theme/theme';
 import { PopupManager } from '../modals/PopupManager';
@@ -28,6 +29,7 @@ type SetupModalProps = {
 };
 
 export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
+    const { colorTheme } = useTheme();
     const [activeStep, setActiveStep] = useState(0);
     const { setIsLoggedIn, setUsername, setIsAdmin, refreshDashboard } = useAppContext();
 
@@ -104,7 +106,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                                 input: {
                                     startAdornment: (
                                         <InputAdornment position='start'>
-                                            <FaUser style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
+                                            <FaUser style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
                                         </InputAdornment>
                                     ),
                                     autoComplete: 'username'
@@ -132,7 +134,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                             input: {
                                 startAdornment: (
                                     <InputAdornment position='start'>
-                                        <FaLock style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
+                                        <FaLock style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
                                     </InputAdornment>
                                 ),
                                 autoComplete: 'new-password'
@@ -155,7 +157,7 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
                             input: {
                                 startAdornment: (
                                     <InputAdornment position='start'>
-                                        <FaLock style={{ color: theme.palette.text.primary, fontSize: 22 }}/>
+                                        <FaLock style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
                                     </InputAdornment>
                                 ),
                                 autoComplete: 'new-password'

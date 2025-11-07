@@ -3,6 +3,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 interface GroupWidgetConfigProps {
@@ -17,6 +18,7 @@ const MAX_ITEMS_OPTIONS = [
 ];
 
 export const GroupWidgetConfig = ({ formContext }: GroupWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     return (
         <>
             <Grid>
@@ -59,7 +61,7 @@ export const GroupWidgetConfig = ({ formContext }: GroupWidgetConfigProps) => {
                                 '&:hover fieldset': { borderColor: 'primary.main' },
                                 '&.Mui-focused fieldset': { borderColor: 'primary.main', },
                                 '.MuiSvgIcon-root ': {
-                                    fill: theme.palette.text.primary,
+                                    fill: colorTheme.primaryText,
                                 },
                             },
                             '& .MuiFormLabel-root': {

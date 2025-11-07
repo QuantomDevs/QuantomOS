@@ -1,6 +1,6 @@
 # QuantomOS
 
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.3.2-brightgreen.svg)](package.json)
 
 **QuantomOS** - A modern, customizable dashboard system for managing your server and homelab infrastructure.

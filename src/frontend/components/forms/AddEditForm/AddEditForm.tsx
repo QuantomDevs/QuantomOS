@@ -11,6 +11,7 @@ import { useExistingItem } from './useExistingItem';
 import { DashApi } from '../../../api/dash-api';
 import { fetchExtension } from '../../../api/extensions-api';
 import { useAppContext } from '../../../context/useAppContext';
+import { useTheme } from '../../../context/ThemeContext';
 import { COLORS, styles } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, NewItem, Page, TORRENT_CLIENT_TYPE } from '../../../types';
@@ -32,6 +33,7 @@ type Props = {
 export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
     const { formState: { errors } } = useForm();
     const { dashboardLayout, addItem, updateItem, addPage, refreshDashboard, pageNameToSlug, pages } = useAppContext();
+    const { colorTheme } = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
     const [customIconFile, setCustomIconFile] = useState<File | null>(null);
@@ -775,8 +777,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                 minHeight: '48px',
                                                 fontSize: '0.95rem',
                                                 '&:hover': {
-                                                    borderColor: theme.palette.primary.main,
-                                                    backgroundColor: `${theme.palette.primary.main}10`
+                                                    borderColor: colorTheme.primaryAccent,
+                                                    backgroundColor: `${colorTheme.primaryAccent}10`
                                                 }
                                             }}
                                             startIcon={<ArrowBackIosIcon />}
@@ -828,8 +830,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                 minHeight: '48px',
                                                 fontSize: '0.95rem',
                                                 '&:hover': {
-                                                    borderColor: theme.palette.primary.main,
-                                                    backgroundColor: `${theme.palette.primary.main}10`
+                                                    borderColor: colorTheme.primaryAccent,
+                                                    backgroundColor: `${colorTheme.primaryAccent}10`
                                                 }
                                             }}
                                             startIcon={<ArrowBackIosIcon />}
@@ -860,15 +862,15 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                             '& fieldset': {
                                                                 borderColor: 'text.primary',
                                                             },
-                                                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                                                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                                                         },
                                                         width: '100%',
                                                         minWidth: isMobile ? '65vw' : '20vw'
                                                     }}
                                                     helperText='Pages are added to the navigation menu'
                                                     slotProps={{
-                                                        inputLabel: { style: { color: theme.palette.text.primary } }
+                                                        inputLabel: { style: { color: colorTheme.primaryText } }
                                                     }}
                                                     rules={{
                                                         required: 'Page name is required',

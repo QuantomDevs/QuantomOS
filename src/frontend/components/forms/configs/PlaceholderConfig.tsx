@@ -2,6 +2,7 @@ import { Grid2 as Grid } from '@mui/material';
 import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, SelectElement } from 'react-hook-form-mui';
 
+import { useTheme } from '../../../context/ThemeContext';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
@@ -18,6 +19,7 @@ const PLACEHOLDER_SIZE_OPTIONS = [
 ];
 
 export const PlaceholderConfig = ({ formContext }: PlaceholderConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
 
     return (
@@ -35,10 +37,10 @@ export const PlaceholderConfig = ({ formContext }: PlaceholderConfigProps) => {
                                 borderColor: 'text.primary',
                             },
                             '.MuiSvgIcon-root ': {
-                                fill: theme.palette.text.primary,
+                                fill: colorTheme.primaryText,
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                         width: '100%',
                         minWidth: isMobile ? '65vw' : '20vw',
@@ -46,16 +48,16 @@ export const PlaceholderConfig = ({ formContext }: PlaceholderConfigProps) => {
                             backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
                         },
                         '& .MuiMenuItem-root.Mui-selected': {
-                            backgroundColor: `${theme.palette.primary.main} !important`,
+                            backgroundColor: `${colorTheme.primaryAccent} !important`,
                             color: 'white',
                         },
                         '& .MuiMenuItem-root.Mui-selected:hover': {
-                            backgroundColor: `${theme.palette.primary.main} !important`,
+                            backgroundColor: `${colorTheme.primaryAccent} !important`,
                             color: 'white',
                         }
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>

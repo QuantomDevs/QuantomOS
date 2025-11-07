@@ -12,6 +12,7 @@ import { MarkdownToolbar } from './MarkdownToolbar';
 import { DashApi } from '../../../../../api/dash-api';
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../../constants/widget-dimensions';
 import { useAppContext } from '../../../../../context/useAppContext';
+import { useTheme } from '../../../../../context/ThemeContext';
 import { theme } from '../../../../../theme/theme';
 import { CenteredModal } from '../../../../modals/CenteredModal';
 import { PopupManager } from '../../../../modals/PopupManager';
@@ -36,6 +37,7 @@ interface NotesWidgetProps {
 }
 
 export const NotesWidget = ({ config }: NotesWidgetProps) => {
+    const { colorTheme } = useTheme();
     const [notes, setNotes] = useState<Note[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -503,7 +505,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     borderColor: 'rgba(255,255,255,0.5)',
                                 },
                                 '&.Mui-focused fieldset': {
-                                    borderColor: theme.palette.primary.main,
+                                    borderColor: colorTheme.primaryAccent,
                                 },
                             },
                             '& .MuiInputBase-input': {
@@ -532,7 +534,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                         minHeight: '32px',
                                         minWidth: 'auto',
                                         '& .MuiTabs-indicator': {
-                                            backgroundColor: theme.palette.primary.main,
+                                            backgroundColor: colorTheme.primaryAccent,
                                         },
                                         '& .MuiTab-root': {
                                             color: 'rgba(255,255,255,0.7)',
@@ -591,7 +593,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     minHeight: '32px',
                                     minWidth: 'auto',
                                     '& .MuiTabs-indicator': {
-                                        backgroundColor: theme.palette.primary.main,
+                                        backgroundColor: colorTheme.primaryAccent,
                                     },
                                     '& .MuiTab-root': {
                                         color: 'rgba(255,255,255,0.7)',
@@ -657,7 +659,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                             borderColor: 'rgba(255,255,255,0.5)',
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: theme.palette.primary.main,
+                                            borderColor: colorTheme.primaryAccent,
                                         },
                                     },
                                     '& .MuiInputBase-inputMultiline': {
@@ -966,7 +968,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                         borderColor: 'rgba(255,255,255,0.5)',
                                     },
                                     '&.Mui-focused fieldset': {
-                                        borderColor: theme.palette.primary.main,
+                                        borderColor: colorTheme.primaryAccent,
                                     },
                                 },
                                 '& .MuiInputBase-input': {
@@ -991,7 +993,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                     minHeight: '32px',
                                     minWidth: 'auto',
                                     '& .MuiTabs-indicator': {
-                                        backgroundColor: theme.palette.primary.main,
+                                        backgroundColor: colorTheme.primaryAccent,
                                     },
                                     '& .MuiTab-root': {
                                         color: 'rgba(255,255,255,0.7)',
@@ -1056,7 +1058,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                                                 borderColor: 'rgba(255,255,255,0.5)',
                                             },
                                             '&.Mui-focused fieldset': {
-                                                borderColor: theme.palette.primary.main,
+                                                borderColor: colorTheme.primaryAccent,
                                             },
                                         },
                                         '& .MuiInputBase-inputMultiline': {

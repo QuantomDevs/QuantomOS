@@ -6,6 +6,7 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { DOWNLOAD_CLIENT_TYPE, TORRENT_CLIENT_TYPE } from '../../../types';
 import { FormValues } from '../AddEditForm/types';
 
@@ -25,6 +26,7 @@ interface DownloadClientWidgetConfigProps {
 const MASKED_VALUE = '**********'; // 10 asterisks for masked values
 
 export const DownloadClientWidgetConfig = ({ formContext, existingItem }: DownloadClientWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
 
     // Watch the torrent client type directly from the form
@@ -148,7 +150,7 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
                                         sx={{
                                             color: 'white',
                                             '&.Mui-checked': {
-                                                color: theme.palette.primary.main
+                                                color: colorTheme.primaryAccent
                                             }
                                         }}
                                     />
@@ -173,12 +175,12 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -196,12 +198,12 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -226,12 +228,12 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                         }}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                     />
                 </Grid>
@@ -254,12 +256,12 @@ export const DownloadClientWidgetConfig = ({ formContext, existingItem }: Downlo
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>

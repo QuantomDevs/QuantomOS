@@ -5,6 +5,7 @@ import { FaHdd } from 'react-icons/fa';
 import { DashApi } from '../../../../api/dash-api';
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimensions';
 import { theme } from '../../../../theme/theme';
+import { useTheme } from '../../../../context/ThemeContext';
 
 interface DiskInfo {
     fs: string;
@@ -35,6 +36,7 @@ interface DiskMonitorWidgetProps {
 }
 
 export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) => {
+    const { colorTheme } = useTheme();
     const [diskData, setDiskData] = useState<DiskInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -281,7 +283,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                 left: 0,
                                 width: `${displayUsagePercent}%`,
                                 height: '100%',
-                                backgroundColor: theme.palette.primary.main,
+                                backgroundColor: colorTheme.primaryAccent,
                                 cursor: 'pointer'
                             }}
                         />

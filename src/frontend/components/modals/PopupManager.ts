@@ -1,9 +1,10 @@
 import { grey } from '@mui/material/colors';
 import Swal from 'sweetalert2';
 
+import { DEFAULT_THEME } from '../../context/ThemeContext';
 import { theme } from '../../theme/theme';
 
-const CONFIRM_COLOR = theme.palette.success.main;
+const CONFIRM_COLOR = DEFAULT_THEME.successColor;
 
 const ThemedAlert = Swal.mixin({
     customClass: {
@@ -39,7 +40,7 @@ export class PopupManager {
             title: 'Success',
             text: text && text,
             icon: 'success',
-            iconColor: theme.palette.success.main,
+            iconColor: DEFAULT_THEME.successColor,
             showConfirmButton: true,
             confirmButtonColor: CONFIRM_COLOR,
         }).then(() => action && action());
@@ -50,7 +51,7 @@ export class PopupManager {
             text: text && text,
             confirmButtonColor: CONFIRM_COLOR,
             icon: 'error',
-            iconColor: theme.palette.error.main
+            iconColor: DEFAULT_THEME.errorColor
         }).then(() => action && action());
     }
 
@@ -89,11 +90,11 @@ export class PopupManager {
         ThemedAlert.fire({
             title: `${options.title}`,
             confirmButtonText: options.confirmText ? options.confirmText : 'Yes, Delete',
-            confirmButtonColor: theme.palette.error.main,
+            confirmButtonColor: DEFAULT_THEME.errorColor,
             text: options.text ? options.text : 'This action cannot be undone',
             html: options.html && options.html,
             icon: 'error',
-            iconColor: theme.palette.error.main,
+            iconColor: DEFAULT_THEME.errorColor,
             showDenyButton: true,
             denyButtonText: 'Cancel',
             denyButtonColor: grey[500],
@@ -115,13 +116,13 @@ export class PopupManager {
             text: options.text,
             html: options.html,
             icon: 'error',
-            iconColor: theme.palette.error.main,
+            iconColor: DEFAULT_THEME.errorColor,
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: options.confirmText || 'Confirm',
-            confirmButtonColor: theme.palette.error.main,
+            confirmButtonColor: DEFAULT_THEME.errorColor,
             denyButtonText: options.denyText || 'Deny',
-            denyButtonColor: theme.palette.info.main,
+            denyButtonColor: DEFAULT_THEME.secondaryAccent,
             cancelButtonText: 'Cancel',
             reverseButtons: true,
             focusDeny: true

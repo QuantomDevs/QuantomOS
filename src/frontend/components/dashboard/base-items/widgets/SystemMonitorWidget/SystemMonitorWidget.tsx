@@ -9,8 +9,8 @@ import { GaugeWidget } from './GaugeWidget';
 import { DashApi } from '../../../../../api/dash-api';
 import { useInternetStatus } from '../../../../../hooks/useInternetStatus';
 import { useIsMobile } from '../../../../../hooks/useIsMobile';
+import { useTheme } from '../../../../../context/ThemeContext';
 import { COLORS } from '../../../../../theme/styles';
-import { theme } from '../../../../../theme/theme';
 import { convertSecondsToUptime, formatBytes } from '../../../../../utils/utils';
 import { CenteredModal } from '../../../../modals/CenteredModal';
 
@@ -50,6 +50,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
     const [internetTooltipOpen, setInternetTooltipOpen] = useState(false);
 
     const { internetStatus } = useInternetStatus();
+    const { colorTheme } = useTheme();
 
     // Default gauges if not specified in config
     const selectedGauges = config?.gauges || ['cpu', 'temp', 'ram'];
@@ -507,7 +508,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                         sx={infoButtonStyles}
                         onClick={() => setOpenSystemModal(true)}
                     >
-                        <IoInformationCircleOutline style={{ color: theme.palette.text.primary, fontSize: '1.5rem' }}/>
+                        <IoInformationCircleOutline style={{ color: colorTheme.primaryText, fontSize: '1.5rem' }}/>
                     </IconButton>
                 </div>
             )}
@@ -554,9 +555,9 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                             }}
                         >
                             {internetStatus === 'online' ? (
-                                <PiGlobeSimple style={{ color: theme.palette.text.primary, fontSize: '1.4rem' }} />
+                                <PiGlobeSimple style={{ color: colorTheme.primaryText, fontSize: '1.4rem' }} />
                             ) : internetStatus === 'offline' ? (
-                                <PiGlobeSimpleX style={{ color: theme.palette.text.primary, fontSize: '1.4rem' }} />
+                                <PiGlobeSimpleX style={{ color: colorTheme.primaryText, fontSize: '1.4rem' }} />
                             ) : (
                                 <PiGlobeSimple style={{ color: 'gray', fontSize: '1.4rem' }} />
                             )}

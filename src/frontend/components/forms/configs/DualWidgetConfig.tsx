@@ -10,6 +10,7 @@ import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { ITEM_TYPE } from '../../../types';
 import { FormValues } from '../AddEditForm/types';
 
@@ -43,6 +44,7 @@ type PositionFormContext = Omit<UseFormReturn<FormValues>, 'register' | 'watch' 
 };
 
 export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
     const initializedRef = useRef(false);
 
@@ -87,10 +89,10 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                 borderColor: 'text.primary',
             },
             '.MuiSvgIcon-root ': {
-                fill: theme.palette.text.primary,
+                fill: colorTheme.primaryText,
             },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
         },
         width: '100%',
         minWidth: isMobile ? '50vw' : '20vw',
@@ -98,11 +100,11 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
             backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
         },
         '& .MuiMenuItem-root.Mui-selected': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${colorTheme.primaryAccent} !important`,
             color: 'white',
         },
         '& .MuiMenuItem-root.Mui-selected:hover': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${colorTheme.primaryAccent} !important`,
             color: 'white',
         }
     };
@@ -1406,7 +1408,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: colorTheme.primaryAccent
                                         }
                                     }}
                                 />
@@ -1420,7 +1422,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: colorTheme.primaryAccent
                                         }
                                     }}
                                 />
@@ -1445,7 +1447,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         fullWidth
                         sx={selectStyling}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                         onChange={handleGaugeChange('gauge1')}
                         value={gaugeValues.gauge1}
@@ -1466,7 +1468,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         fullWidth
                         sx={selectStyling}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                         onChange={handleGaugeChange('gauge2')}
                         value={gaugeValues.gauge2}
@@ -1487,7 +1489,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         fullWidth
                         sx={selectStyling}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                         onChange={handleGaugeChange('gauge3')}
                         value={gaugeValues.gauge3}
@@ -1506,7 +1508,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                             disabled={networkInterfaces.length === 0}
                             sx={selectStyling}
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } }
+                                inputLabel: { style: { color: colorTheme.primaryText } }
                             }}
                         />
                     </Box>
@@ -1659,7 +1661,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: colorTheme.primaryAccent
                                         }
                                     }}
                                 />
@@ -1673,7 +1675,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                     sx={{
                                         color: 'white',
                                         '&.Mui-checked': {
-                                            color: theme.palette.primary.main
+                                            color: colorTheme.primaryAccent
                                         }
                                     }}
                                 />
@@ -1938,15 +1940,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -1969,15 +1971,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -1995,12 +1997,12 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                         }}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                     />
                 </Grid>
@@ -2031,15 +2033,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -2070,15 +2072,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -2284,15 +2286,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -2315,15 +2317,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 0, 0, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -2341,12 +2343,12 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                         }}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                     />
                 </Grid>
@@ -2372,15 +2374,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -2407,15 +2409,15 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 '& fieldset': {
                                     borderColor: 'text.primary',
                                 },
-                                '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                             },
                             '& .MuiFormHelperText-root': {
                                 color: 'rgba(255, 255, 255, 0.7)'
                             }
                         }}
                         InputLabelProps={{
-                            style: { color: theme.palette.text.primary }
+                            style: { color: colorTheme.primaryText }
                         }}
                     />
                 </Grid>
@@ -2509,7 +2511,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                         minHeight: isMobile ? '42px' : '48px',
                         width: '100%',
                         '& .MuiTab-root': {
-                            color: theme.palette.text.primary,
+                            color: colorTheme.primaryText,
                             fontWeight: 'medium',
                             fontSize: isMobile ? '0.75rem' : '0.875rem',
                             padding: isMobile ? '6px 4px' : '12px 16px',
@@ -2517,16 +2519,16 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                             flex: isMobile ? 1 : 'initial',
                             minHeight: isMobile ? '42px' : '48px',
                             '&:hover': {
-                                color: theme.palette.primary.main,
+                                color: colorTheme.primaryAccent,
                                 opacity: 0.8
                             },
                             '&.Mui-selected': {
-                                color: theme.palette.primary.main,
+                                color: colorTheme.primaryAccent,
                                 fontWeight: 'bold'
                             }
                         },
                         '& .MuiTabs-indicator': {
-                            backgroundColor: theme.palette.primary.main,
+                            backgroundColor: colorTheme.primaryAccent,
                             height: 3
                         }
                     }}
@@ -2555,7 +2557,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 fullWidth
                                 sx={selectStyling}
                                 slotProps={{
-                                    inputLabel: { style: { color: theme.palette.text.primary } }
+                                    inputLabel: { style: { color: colorTheme.primaryText } }
                                 }}
                             />
                         </Grid>
@@ -2586,7 +2588,7 @@ export const DualWidgetConfig = ({ formContext, existingItem }: DualWidgetConfig
                                 fullWidth
                                 sx={selectStyling}
                                 slotProps={{
-                                    inputLabel: { style: { color: theme.palette.text.primary } }
+                                    inputLabel: { style: { color: colorTheme.primaryText } }
                                 }}
                             />
                         </Grid>

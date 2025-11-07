@@ -6,6 +6,7 @@ import { PopupManager } from '../../../../components/modals/PopupManager';
 import { BACKEND_URL } from '../../../../constants/constants';
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimensions';
 import { useAppContext } from '../../../../context/useAppContext';
+import { useTheme } from '../../../../context/ThemeContext';
 import { theme } from '../../../../theme/theme';
 
 
@@ -137,6 +138,7 @@ interface DownloadItemProps {
 }
 
 const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmin, onResume, onPause, onDelete }) => {
+    const { colorTheme } = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -425,9 +427,9 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                     mt: 0.5,
                     '& .MuiLinearProgress-bar': {
                         backgroundColor:
-                            torrent.state === 'downloading' ? 'primary.main' :
-                                torrent.state.includes('seed') || torrent.state.includes('upload') ? theme.palette.primary.main :
-                                    torrent.progress === 1 ? 'success.main' : 'warning.main'
+                            torrent.state === 'downloading' ? colorTheme.primaryAccent :
+                                torrent.state.includes('seed') || torrent.state.includes('upload') ? colorTheme.primaryAccent :
+                                    torrent.progress === 1 ? colorTheme.successColor : colorTheme.warningColor
                     }
                 }}
             />
@@ -475,6 +477,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
     onPauseTorrent,
     onDeleteTorrent
 }) => {
+    const { colorTheme } = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { isAdmin, editMode } = useAppContext();
 

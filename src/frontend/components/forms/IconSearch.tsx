@@ -8,6 +8,7 @@ import shortid from 'shortid';
 
 import { VirtualizedListbox } from './VirtualizedListBox';
 import { DashApi } from '../../api/dash-api';
+import { useTheme } from '../../context/ThemeContext';
 import { COLORS, styles } from '../../theme/styles';
 import { theme } from '../../theme/theme';
 import { Icon } from '../../types';
@@ -45,6 +46,7 @@ const getIconDisplayName = (icon: Icon | null): string => {
 };
 
 export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
+    const { colorTheme } = useTheme();
     const [selectedIcon, setSelectedIcon] = useState<Icon | null>(control._defaultValues.icon || null);
     const [iconList, setIconList] = useState<Icon[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -209,11 +211,11 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                             backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`
                                         },
                                         '&.Mui-selected': {
-                                            backgroundColor: `${theme.palette.primary.main} !important`,
+                                            backgroundColor: `${colorTheme.primaryAccent} !important`,
                                             color: 'white',
                                         },
                                         '&.Mui-selected:hover': {
-                                            backgroundColor: `${theme.palette.primary.main} !important`,
+                                            backgroundColor: `${colorTheme.primaryAccent} !important`,
                                             color: 'white',
                                         }
                                     }} key={shortid.generate()}>
@@ -247,16 +249,16 @@ export const IconSearch = ({ control, errors, onCustomIconSelect }: Props) => {
                                             helperText={fieldState?.error?.message}
                                             sx={{
                                                 '& .MuiOutlinedInput-root': {
-                                                    '& fieldset': { borderColor: theme.palette.text.primary },
-                                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                                                    '& fieldset': { borderColor: colorTheme.primaryText },
+                                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                                                     '&.MuiInputBase-root.MuiOutlinedInput-root.Mui-error fieldset': {
-                                                        borderColor: theme.palette.error.main,
+                                                        borderColor: colorTheme.errorColor,
                                                     },
-                                                    '.MuiSvgIcon-root ': { fill: theme.palette.text.primary },
+                                                    '.MuiSvgIcon-root ': { fill: colorTheme.primaryText },
                                                 },
                                             }}
-                                            slotProps={{ inputLabel: { style: { color: theme.palette.text.primary } } }}
+                                            slotProps={{ inputLabel: { style: { color: colorTheme.primaryText } } }}
                                         />
                                         {selectedIcon &&
                                             <Box ml={1}>

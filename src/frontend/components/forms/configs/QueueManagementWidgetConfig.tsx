@@ -4,6 +4,7 @@ import { CheckboxElement, TextFieldElement } from 'react-hook-form-mui';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 interface QueueManagementWidgetConfigProps {
@@ -17,6 +18,7 @@ export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigPr
     serviceName,
     defaultPort
 }) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
     const servicePrefix = serviceName.toLowerCase(); // 'sonarr' or 'radarr'
 
@@ -32,14 +34,14 @@ export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigPr
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                         },
                         width: '100%',
                         minWidth: isMobile ? '65vw' : '20vw'
                     }}
                     InputLabelProps={{
-                        style: { color: theme.palette.text.primary }
+                        style: { color: colorTheme.primaryText }
                     }}
                 />
             </Grid>
@@ -56,14 +58,14 @@ export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigPr
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                         },
                         width: '100%',
                         minWidth: isMobile ? '65vw' : '20vw'
                     }}
                     InputLabelProps={{
-                        style: { color: theme.palette.text.primary }
+                        style: { color: colorTheme.primaryText }
                     }}
                 />
             </Grid>
@@ -80,14 +82,14 @@ export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigPr
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                         },
                         width: '100%',
                         minWidth: isMobile ? '65vw' : '20vw'
                     }}
                     InputLabelProps={{
-                        style: { color: theme.palette.text.primary }
+                        style: { color: colorTheme.primaryText }
                     }}
                 />
             </Grid>
@@ -118,14 +120,14 @@ export const QueueManagementWidgetConfig: React.FC<QueueManagementWidgetConfigPr
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent },
                         },
                         width: '100%',
                         minWidth: isMobile ? '65vw' : '20vw'
                     }}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } },
+                        inputLabel: { style: { color: colorTheme.primaryText } },
                         formHelperText: { style: { color: 'rgba(255, 255, 255, 0.7)' } }
                     }}
                 />

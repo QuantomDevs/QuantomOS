@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { CheckboxElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 
+import { useTheme } from '../../../context/ThemeContext';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { FormValues } from '../AddEditForm/types';
@@ -19,6 +20,7 @@ interface AppShortcutConfigProps {
 }
 
 export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortcutConfigProps) => {
+    const { colorTheme } = useTheme();
     const [editingWolShortcut, setEditingWolShortcut] = useState(false);
     const [previousHealthUrl, setPreviousHealthUrl] = useState('');
     const [previousHealthCheckType, setPreviousHealthCheckType] = useState<'http' | 'ping'>('http');
@@ -82,13 +84,13 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                             '& fieldset': {
                                 borderColor: 'text.primary',
                             },
-                            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                         },
                     }}
                     autoComplete='off'
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -125,8 +127,8 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 },
                             }}
                             rules={{
@@ -150,7 +152,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                             }}
                             autoComplete='off'
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } },
+                                inputLabel: { style: { color: colorTheme.primaryText } },
                                 formHelperText: { sx: {
                                     whiteSpace: 'normal',
                                     maxWidth: '16vw',
@@ -194,25 +196,25 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                         borderColor: 'text.primary',
                                     },
                                     '.MuiSvgIcon-root ': {
-                                        fill: theme.palette.text.primary,
+                                        fill: colorTheme.primaryText,
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 },
                                 '& .MuiMenuItem-root:hover': {
                                     backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
                                 },
                                 '& .MuiMenuItem-root.Mui-selected': {
-                                    backgroundColor: `${theme.palette.primary.main} !important`,
+                                    backgroundColor: `${colorTheme.primaryAccent} !important`,
                                     color: 'white',
                                 },
                                 '& .MuiMenuItem-root.Mui-selected:hover': {
-                                    backgroundColor: `${theme.palette.primary.main} !important`,
+                                    backgroundColor: `${colorTheme.primaryAccent} !important`,
                                     color: 'white',
                                 }
                             }}
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } }
+                                inputLabel: { style: { color: colorTheme.primaryText } }
                             }}
                         />
                     </Grid>
@@ -228,8 +230,8 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 },
                             }}
                             rules={{
@@ -243,7 +245,7 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                             }}
                             autoComplete='off'
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } },
+                                inputLabel: { style: { color: colorTheme.primaryText } },
                                 formHelperText: { sx: {
                                     whiteSpace: 'normal',
                                     maxWidth: '16vw',
@@ -275,13 +277,13 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 },
                             }}
                             autoComplete='off'
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } },
+                                inputLabel: { style: { color: colorTheme.primaryText } },
                                 formHelperText: { sx: {
                                     whiteSpace: 'normal',
                                     maxWidth: '16vw',
@@ -307,13 +309,13 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 },
                             }}
                             autoComplete='off'
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } },
+                                inputLabel: { style: { color: colorTheme.primaryText } },
                                 formHelperText: { sx: {
                                     whiteSpace: 'normal',
                                     maxWidth: '16vw',
@@ -339,13 +341,13 @@ export const AppShortcutConfig = ({ formContext, onCustomIconSelect }: AppShortc
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 },
                             }}
                             autoComplete='off'
                             slotProps={{
-                                inputLabel: { style: { color: theme.palette.text.primary } },
+                                inputLabel: { style: { color: colorTheme.primaryText } },
                                 formHelperText: { sx: {
                                     whiteSpace: 'normal',
                                     maxWidth: '16vw',

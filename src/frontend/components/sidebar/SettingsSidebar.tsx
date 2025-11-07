@@ -1,16 +1,18 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Backdrop, Box, Drawer, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Backdrop, Box, Drawer, IconButton, Typography, useMediaQuery, useTheme as useMuiTheme } from '@mui/material';
 import React, { useEffect } from 'react';
 
 import { useSettingsSidebar } from '../../context/SettingsSidebarContext';
+import { useTheme } from '../../context/ThemeContext';
 import { SettingsForm } from '../forms/SettingsForm';
 
 export const SettingsSidebar: React.FC = () => {
     const { isOpen, closeSidebar } = useSettingsSidebar();
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const isTablet = useMediaQuery(theme.breakpoints.between('md', 'lg'));
-    const isLargeDesktop = useMediaQuery(theme.breakpoints.up('xl'));
+    const { colorTheme } = useTheme();
+    const muiTheme = useMuiTheme();
+    const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+    const isTablet = useMediaQuery(muiTheme.breakpoints.between('md', 'lg'));
+    const isLargeDesktop = useMediaQuery(muiTheme.breakpoints.up('xl'));
 
     // Determine sidebar width based on screen size with enhanced widths for larger screens
     const sidebarWidth = isMobile ? '95%' : isTablet ? '480px' : isLargeDesktop ? '640px' : '560px';
@@ -112,7 +114,7 @@ export const SettingsSidebar: React.FC = () => {
                                 }
                             }}
                         >
-                            <CloseIcon sx={{ fontSize: 28 }} />
+                            <CloseIcon sx={{ fontSize: 28, color: colorTheme.primaryText }} />
                         </IconButton>
                     </Box>
 

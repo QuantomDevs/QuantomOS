@@ -2,7 +2,7 @@ import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import React from 'react';
 
 import { useIsMobile } from '../../../../../hooks/useIsMobile';
-import { theme } from '../../../../../theme/theme';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 
 
@@ -25,6 +25,7 @@ export const DiskUsageBar: React.FC<DiskUsageBarProps> = ({ totalSpace, usedSpac
     const freeSpace = totalSpace - usedSpace;
     const freePercentage = 100 - usedPercentage;
     const isMobile = useIsMobile();
+    const { colorTheme } = useTheme();
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -48,7 +49,7 @@ export const DiskUsageBar: React.FC<DiskUsageBarProps> = ({ totalSpace, usedSpac
                     <Box
                         sx={{
                             width: `${usedPercentage}%`,
-                            backgroundColor: theme.palette.primary.main,
+                            backgroundColor: colorTheme.primaryAccent,
                             height: '100%',
                             cursor: 'pointer',
                         }}

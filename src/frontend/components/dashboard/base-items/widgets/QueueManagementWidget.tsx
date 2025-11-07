@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { BACKEND_URL } from '../../../../constants/constants';
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimensions';
 import { useAppContext } from '../../../../context/useAppContext';
+import { useTheme } from '../../../../context/ThemeContext';
 import { theme } from '../../../../theme/theme';
 import { PopupManager } from '../../../modals/PopupManager';
 
@@ -161,6 +162,7 @@ interface QueueItemComponentProps {
 }
 
 const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceName, isAdmin, onRemove }) => {
+    const { colorTheme } = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -300,7 +302,7 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
                     </MenuItem>
                     <MenuItem
                         onClick={() => handleRemove(true, true)}
-                        sx={{ fontSize: '0.9rem', py: 1, color: theme.palette.error.main }}
+                        sx={{ fontSize: '0.9rem', py: 1, color: colorTheme.errorColor }}
                     >
                         <Delete fontSize='small' sx={{ mr: 1 }} />
                         Blocklist & Remove
@@ -316,9 +318,9 @@ const QueueItemComponent: React.FC<QueueItemComponentProps> = ({ item, serviceNa
                     mt: 0.5,
                     '& .MuiLinearProgress-bar': {
                         backgroundColor:
-                            item.state === 'downloading' ? 'primary.main' :
-                                item.state.includes('seed') || item.state.includes('upload') ? theme.palette.primary.main :
-                                    item.progress === 1 ? 'success.main' : 'warning.main'
+                            item.state === 'downloading' ? colorTheme.primaryAccent :
+                                item.state.includes('seed') || item.state.includes('upload') ? colorTheme.primaryAccent :
+                                    item.progress === 1 ? colorTheme.successColor : colorTheme.warningColor
                     }
                 }}
             />
@@ -351,6 +353,7 @@ export const QueueManagementWidget: React.FC<QueueManagementWidgetProps> = ({
     connectionDetails,
     statistics
 }) => {
+    const { colorTheme } = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { editMode, isAdmin } = useAppContext();
 

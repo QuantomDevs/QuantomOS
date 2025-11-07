@@ -7,6 +7,7 @@ import { DashApi } from '../../../api/dash-api';
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { COLORS } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { ITEM_TYPE } from '../../../types';
 import { FormValues } from '../AddEditForm/types';
 
@@ -28,6 +29,7 @@ interface SystemMonitorWidgetConfigProps {
 }
 
 export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
     const [networkInterfaces, setNetworkInterfaces] = useState<Array<{id: string, label: string}>>([]);
 
@@ -60,10 +62,10 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
                 borderColor: 'text.primary',
             },
             '.MuiSvgIcon-root ': {
-                fill: theme.palette.text.primary,
+                fill: colorTheme.primaryText,
             },
-            '&:hover fieldset': { borderColor: theme.palette.primary.main },
-            '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+            '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+            '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
         },
         width: '100%',
         minWidth: isMobile ? '65vw' : '20vw',
@@ -71,11 +73,11 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
             backgroundColor: `${COLORS.LIGHT_GRAY_HOVER} !important`,
         },
         '& .MuiMenuItem-root.Mui-selected': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${colorTheme.primaryAccent} !important`,
             color: 'white',
         },
         '& .MuiMenuItem-root.Mui-selected:hover': {
-            backgroundColor: `${theme.palette.primary.main} !important`,
+            backgroundColor: `${colorTheme.primaryAccent} !important`,
             color: 'white',
         }
     };
@@ -174,7 +176,7 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
                                         sx={{
                                             color: 'white',
                                             '&.Mui-checked': {
-                                                color: theme.palette.primary.main
+                                                color: colorTheme.primaryAccent
                                             }
                                         }}
                                     />
@@ -194,7 +196,7 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
                     fullWidth
                     sx={selectStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -207,7 +209,7 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
                     fullWidth
                     sx={selectStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -220,7 +222,7 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
                     fullWidth
                     sx={selectStyling}
                     slotProps={{
-                        inputLabel: { style: { color: theme.palette.text.primary } }
+                        inputLabel: { style: { color: colorTheme.primaryText } }
                     }}
                 />
             </Grid>
@@ -241,7 +243,7 @@ export const SystemMonitorWidgetConfig = ({ formContext }: SystemMonitorWidgetCo
                             mt: 2
                         }}
                         slotProps={{
-                            inputLabel: { style: { color: theme.palette.text.primary } }
+                            inputLabel: { style: { color: colorTheme.primaryText } }
                         }}
                     />
                 )}

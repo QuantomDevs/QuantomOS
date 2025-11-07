@@ -5,6 +5,7 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { useIsMobile } from '../../../hooks/useIsMobile';
 import { theme } from '../../../theme/theme';
+import { useTheme } from '../../../context/ThemeContext';
 import { FormValues } from '../AddEditForm/types';
 
 const TEMPERATURE_UNIT_OPTIONS = [
@@ -24,6 +25,7 @@ interface WeatherWidgetConfigProps {
 }
 
 export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) => {
+    const { colorTheme } = useTheme();
     const isMobile = useIsMobile();
     const [locationSearch, setLocationSearch] = useState('');
     const [locationOptions, setLocationOptions] = useState<LocationOption[]>([]);
@@ -147,7 +149,7 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                                         sx={{
                                             color: 'white',
                                             '&.Mui-checked': {
-                                                color: theme.palette.primary.main
+                                                color: colorTheme.primaryAccent
                                             }
                                         }}
                                     />
@@ -183,12 +185,12 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                     }}
                     loading={isSearching}
                     loadingText={
-                        <Typography style={{ color: theme.palette.text.primary }}>
+                        <Typography style={{ color: colorTheme.primaryText }}>
                             Searching...
                         </Typography>
                     }
                     noOptionsText={
-                        <Typography style={{ color: theme.palette.text.primary }}>
+                        <Typography style={{ color: colorTheme.primaryText }}>
                             {locationSearch.length < 2 ? 'Type to search...' : 'No locations found'}
                         </Typography>
                     }
@@ -198,7 +200,7 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                     clearOnEscape
                     value={selectedLocation}
                     freeSolo
-                    clearIcon={<ClearIcon style={{ color: theme.palette.text.primary }} />}
+                    clearIcon={<ClearIcon style={{ color: colorTheme.primaryText }} />}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -206,7 +208,7 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                             variant='outlined'
                             helperText='Enter a zip code or city'
                             FormHelperTextProps={{
-                                style: { color: theme.palette.text.primary }
+                                style: { color: colorTheme.primaryText }
                             }}
                             sx={{
                                 width: '100%',
@@ -215,12 +217,12 @@ export const WeatherWidgetConfig = ({ formContext }: WeatherWidgetConfigProps) =
                                     '& fieldset': {
                                         borderColor: 'text.primary',
                                     },
-                                    '&:hover fieldset': { borderColor: theme.palette.primary.main },
-                                    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, },
+                                    '&:hover fieldset': { borderColor: colorTheme.primaryAccent },
+                                    '&.Mui-focused fieldset': { borderColor: colorTheme.primaryAccent, },
                                 }
                             }}
                             InputLabelProps={{
-                                style: { color: theme.palette.text.primary }
+                                style: { color: colorTheme.primaryText }
                             }}
                         />
                     )}
