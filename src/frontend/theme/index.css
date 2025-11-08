@@ -14,26 +14,26 @@
   /* These will be dynamically updated by ThemeContext */
 
   /* Background Colors */
-  --color-background: #050508;
-  --color-widget-background: #2e2e2e;
-  --color-header-background: #1a1a1f;
-  --color-sidebar-background: #0f0f14;
-  --color-secondary-background: #252530;
+  --color-background: #09090B;
+  --color-secondary-background: #0A0D0D;
+  --color-widget-background: #09090B;
+  --color-header-background: #09090B;
+  --color-sidebar-background: #131315;
 
   /* Accent Colors */
-  --color-primary-accent: #8b5cf6;
-  --color-secondary-accent: #6366f1;
+  --color-primary-accent: #26BD6C;
+  --color-secondary-accent: #1a7350;
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
 
   /* Text Colors */
-  --color-primary-text: #f3f4f6;
-  --color-secondary-text: #9ca3af;
+  --color-primary-text: #DFE1E0;
+  --color-secondary-text: #9FA1A0;
   --color-muted-text: rgba(255, 255, 255, 0.4);
 
   /* Border Colors */
-  --color-border: #374151;
+  --color-border: #1B1E1E;
   --color-hover-border: #6b7280;
 
   /* Transparency & Effects */
