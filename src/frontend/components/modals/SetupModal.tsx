@@ -282,6 +282,14 @@ export const SetupModal: React.FC<SetupModalProps> = ({ open, onComplete }) => {
             disableEnforceFocus
             disableAutoFocus
             sx={{ userSelect: 'none' }}
+            slotProps={{
+                backdrop: {
+                    sx: {
+                        backdropFilter: 'blur(8px)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    }
+                }
+            }}
         >
             <Paper
                 sx={{

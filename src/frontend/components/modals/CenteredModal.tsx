@@ -60,6 +60,14 @@ export const CenteredModal = ({ open, handleClose, children, width, height, titl
             aria-labelledby='modal-title'
             aria-describedby='modal-description'
             disableScrollLock={false}
+            slotProps={{
+                backdrop: {
+                    sx: {
+                        backdropFilter: 'blur(8px)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    }
+                }
+            }}
         >
             <Box sx={style}>
                 {/* Clean Header with Title and Close Button */}

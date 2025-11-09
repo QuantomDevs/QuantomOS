@@ -9,7 +9,7 @@ import { DynamicMuiThemeProvider } from './components/DynamicMuiThemeProvider.ts
 import { ToastInitializer } from './components/toast/ToastInitializer.tsx';
 import { ToastProvider } from './components/toast/ToastManager.tsx';
 import { AppContextProvider } from './context/AppContextProvider.tsx';
-import { SettingsSidebarProvider } from './context/SettingsSidebarContext.tsx';
+import { SettingsModalProvider } from './context/SettingsModalContext.tsx';
 import { ThemeProvider as ColorThemeProvider } from './context/ThemeContext.tsx';
 import './theme/index.css';
 import 'react-grid-layout/css/styles.css';
@@ -23,13 +23,13 @@ createRoot(document.getElementById('root')!).render(
             <ToastProvider>
                 <ColorThemeProvider>
                     <DynamicMuiThemeProvider>
-                        <SettingsSidebarProvider>
+                        <SettingsModalProvider>
                             <AppContextProvider>
                                 <ToastInitializer />
                                 <CssBaseline />
                                 <App />
                             </AppContextProvider>
-                        </SettingsSidebarProvider>
+                        </SettingsModalProvider>
                     </DynamicMuiThemeProvider>
                 </ColorThemeProvider>
             </ToastProvider>

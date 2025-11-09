@@ -15,7 +15,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { DashApi } from '../../api/dash-api';
 import { useAppContext } from '../../context/useAppContext';
-import { useSettingsSidebar } from '../../context/SettingsSidebarContext';
+import { useSettingsModal } from '../../context/SettingsModalContext';
 import { useInternetStatus } from '../../hooks/useInternetStatus';
 import { COLORS, styles } from '../../theme/styles';
 import { theme } from '../../theme/theme';
@@ -24,6 +24,7 @@ import { getAppVersion } from '../../utils/version';
 import { AddEditForm } from '../forms/AddEditForm/AddEditForm';
 import { Logo } from '../Logo';
 import { CenteredModal } from '../modals/CenteredModal';
+import { SettingsModal } from '../modals/SettingsModal';
 import { UpdateModal } from '../modals/UpdateModal';
 import { VersionModal } from '../modals/VersionModal';
 import { GlobalSearch } from '../search/GlobalSearch';
@@ -44,7 +45,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
     const [userMenuAnchor, setUserMenuAnchor] = useState<HTMLElement | null>(null);
 
     const { internetStatus } = useInternetStatus();
-    const { openSidebar } = useSettingsSidebar();
+    const { openModal } = useSettingsModal();
 
     const {
         dashboardLayout,
@@ -368,7 +369,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         </Tooltip>
                                         {/* Settings Button */}
                                         <Tooltip title='Settings' placement='bottom' arrow>
-                                            <IconButton onClick={openSidebar}>
+                                            <IconButton onClick={openModal}>
                                                 <FaGear style={{ color: 'white', fontSize: '1.5rem' }} />
                                             </IconButton>
                                         </Tooltip>
@@ -431,7 +432,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                 username={username}
                                 isAdmin={isAdmin}
                                 onEditDashboard={() => handleSetEditMode(true)}
-                                onOpenSettings={openSidebar}
+                                onOpenSettings={openModal}
                                 onLogout={handleLogout}
                             />
                         </Box>
@@ -467,6 +468,8 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                     open={openVersionModal}
                     handleClose={handleCloseVersionModal}
                 />
+                {/* Settings Modal */}
+                <SettingsModal />
             </AppBar>
             <Box sx={{
                 display: 'flex',
