@@ -78,7 +78,7 @@ const ColorInput: React.FC<ColorInputProps> = ({ label, description, value, onCh
                         mt: 1,
                         p: 2,
                         backgroundColor: 'var(--color-sidebar-background)',
-                        border: '1px solid var(--color-border)',
+                        border: '2px solid var(--color-border)',
                         borderRadius: 1,
                         zIndex: 1000
                     }}

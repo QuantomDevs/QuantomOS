@@ -55,7 +55,7 @@ export const KeyboardShortcutsPanel: React.FC = () => {
                     p: 1.5,
                     bgcolor: 'var(--color-secondary-background)',
                     borderRadius: 1,
-                    border: '1px solid var(--color-border)'
+                    border: '2px solid var(--color-border)'
                 }}>
                     <Typography variant='body2'>Focus search bar</Typography>
                     <Box sx={{
@@ -88,7 +88,7 @@ export const KeyboardShortcutsPanel: React.FC = () => {
                         p: 1.5,
                         bgcolor: 'var(--color-secondary-background)',
                         borderRadius: 1,
-                        border: '1px solid var(--color-border)'
+                        border: '2px solid var(--color-border)'
                     }}>
                         <Typography variant='body2'>Go to Home page</Typography>
                         <Box sx={{
@@ -111,7 +111,7 @@ export const KeyboardShortcutsPanel: React.FC = () => {
                             p: 1.5,
                             bgcolor: 'var(--color-secondary-background)',
                             borderRadius: 1,
-                            border: '1px solid var(--color-border)'
+                            border: '2px solid var(--color-border)'
                         }}>
                             <Typography variant='body2'>Go to {page.name}</Typography>
                             <Box sx={{
@@ -134,7 +134,7 @@ export const KeyboardShortcutsPanel: React.FC = () => {
                         p: 1.5,
                         bgcolor: 'var(--color-secondary-background)',
                         borderRadius: 1,
-                        border: '1px solid var(--color-border)'
+                        border: '2px solid var(--color-border)'
                     }}>
                         <Typography variant='body2'>Go to Settings page</Typography>
                         <Box sx={{

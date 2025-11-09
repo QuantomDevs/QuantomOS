@@ -19,7 +19,7 @@ const ImagePreviewCard = ({ image, onDelete, formatFileSize }: {
     return (
         <Box
             sx={{
-                border: '1px solid var(--color-border)',
+                border: '2px solid var(--color-border)',
                 borderRadius: 1,
                 pt: 1,
                 overflow: 'hidden',

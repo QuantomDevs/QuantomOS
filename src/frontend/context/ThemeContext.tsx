@@ -44,26 +44,26 @@ export interface ColorTheme {
 // Default theme with enhanced contrast
 export const DEFAULT_THEME: ColorTheme = {
     // Background Colors - Enhanced contrast
-    backgroundColor: '#050508',          // Darker main background
-    widgetBackground: '#2e2e2e',        // Medium dark for widgets
-    headerBackground: '#1a1a1f',         // Slightly lighter than main bg
-    sidebarBackground: '#0f0f14',       // Dark for sidebars
-    secondaryBackground: '#252530',     // Medium dark for highlighted elements
+    backgroundColor: '#09090B',          // Darker main background
+    secondaryBackground: '#131315',     // Medium dark for highlighted elements
+    widgetBackground: '#09090B',        // Medium dark for widgets
+    headerBackground: '#09090B',         // Slightly lighter than main bg
+    sidebarBackground: '#131315',       // Dark for sidebars
 
     // Accent Colors - More vibrant
-    primaryAccent: '#8b5cf6',           // Brighter purple
-    secondaryAccent: '#6366f1',         // Vibrant indigo
+    primaryAccent: '#26BD6C',           // Brighter purple
+    secondaryAccent: '#1a7350',         // Vibrant indigo
     successColor: '#10b981',            // Brighter green
     warningColor: '#f59e0b',            // Brighter orange
     errorColor: '#ef4444',              // Brighter red
 
     // Text Colors - Better readability
-    primaryText: '#f3f4f6',             // Brighter white for main text
-    secondaryText: '#9ca3af',           // Light gray for secondary text
+    primaryText: '#DFE1E0',             // Brighter white for main text
+    secondaryText: '#9FA1A0',           // Light gray for secondary text
     mutedText: 'rgba(255, 255, 255, 0.4)',
 
     // Border Colors - More visible
-    borderColor: '#374151',             // More visible border
+    borderColor: '#1B1E1E',             // More visible border
     hoverBorderColor: '#6b7280',        // Brighter hover state
 
     // Transparency & Effects

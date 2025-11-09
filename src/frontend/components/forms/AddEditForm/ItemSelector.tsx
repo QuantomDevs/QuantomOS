@@ -4,7 +4,6 @@ import { UseFormReturn } from 'react-hook-form';
 
 import { ITEM_TYPE_OPTIONS } from './constants';
 import { FormValues } from './types';
-import { COLORS } from '../../../theme/styles';
 
 type Props = {
     formContext: UseFormReturn<FormValues>
@@ -35,57 +34,55 @@ export const ItemTypeSelector = ({ formContext, setCurrentStep }: Props) => {
                             <Box
                                 onClick={() => handleItemTypeSelect(option.id)}
                                 sx={{
-                                    py: 3,
-                                    px: .5,
-                                    height: { xs: '200px', sm: '180px' },
+                                    p: 3,
+                                    height: { xs: '220px', sm: '200px' },
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
-                                    justifyContent: 'space-between',
+                                    justifyContent: 'center',
+                                    gap: 2,
                                     cursor: 'pointer',
-                                    backgroundColor: COLORS.GRAY,
-                                    borderRadius: '12px',
-                                    border: `1px solid ${COLORS.LIGHT_GRAY_TRANSPARENT}`,
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                    backgroundColor: 'var(--color-background)',
+                                    borderRadius: '16px',
+                                    border: '2px solid var(--color-border)',
                                     transition: 'all 0.2s ease',
                                     // Hover effects for mouse users
                                     '@media (pointer: fine)': {
                                         '&:hover': {
-                                            backgroundColor: COLORS.LIGHT_GRAY_HOVER,
-                                            boxShadow: '0 6px 12px rgba(0,0,0,0.2)',
-                                            transform: 'translateY(-2px)',
+                                            borderColor: 'var(--color-primary-accent)',
+                                            backgroundColor: 'var(--color-background)',
+                                            transform: 'scale(1.02)',
                                         },
                                     },
                                 }}
                             >
                                 <IconComponent
                                     sx={{
-                                        fontSize: 44,
-                                        color: 'text.primary',
-                                        mb: 1.5
+                                        fontSize: 56,
+                                        color: 'var(--color-primary-accent)',
                                     }}
                                 />
-                                <Box sx={{ textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <Box sx={{ textAlign: 'center' }}>
                                     <Typography
                                         variant='h6'
                                         sx={{
-                                            color: 'text.primary',
+                                            color: 'var(--color-primary-text)',
                                             fontWeight: 700,
                                             mb: 1,
                                             lineHeight: 1.2,
-                                            fontSize: '1.1rem'
+                                            fontSize: '1.2rem'
                                         }}
                                     >
                                         {option.label}
                                     </Typography>
                                     <Typography
-                                        variant='caption'
+                                        variant='body2'
                                         sx={{
-                                            fontSize: '0.75rem',
-                                            lineHeight: 1.2,
-                                            px: 0.5,
+                                            fontSize: '0.85rem',
+                                            lineHeight: 1.3,
+                                            color: 'var(--color-secondary-text)',
                                             display: '-webkit-box',
-                                            WebkitLineClamp: { xs: 4, sm: 3 },
+                                            WebkitLineClamp: { xs: 3, sm: 2 },
                                             WebkitBoxOrient: 'vertical',
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis'

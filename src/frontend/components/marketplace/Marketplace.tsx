@@ -169,7 +169,7 @@ export const Marketplace: React.FC = () => {
                         '& .MuiInputBase-root': {
                             backgroundColor: 'var(--color-background)',
                             borderRadius: '1rem',
-                            border: '1px solid var(--color-border)',
+                            border: '2px solid var(--color-border)',
                             color: 'var(--color-primary-text)'
                         },
                         '& .MuiOutlinedInput-notchedOutline': {
@@ -185,7 +185,7 @@ export const Marketplace: React.FC = () => {
                     sx={{
                         backgroundColor: 'var(--color-background)',
                         borderRadius: '1rem',
-                        border: '1px solid var(--color-border)',
+                        border: '2px solid var(--color-border)',
                         color: 'var(--color-primary-text)',
                         textTransform: 'none',
                         px: 3,
@@ -205,7 +205,7 @@ export const Marketplace: React.FC = () => {
                     sx={{
                         '& .MuiPaper-root': {
                             bgcolor: 'var(--color-background)',
-                            border: '1px solid var(--color-border)',
+                            border: '2px solid var(--color-border)',
                             borderRadius: '0.5rem'
                         }
                     }}
@@ -269,7 +269,7 @@ export const Marketplace: React.FC = () => {
                                     justifyContent: 'space-between',
                                     p: 2,
                                     borderRadius: '0.5rem',
-                                    border: '1px solid var(--color-border)',
+                                    border: '2px solid var(--color-border)',
                                     backgroundColor: 'var(--color-secondary-background)',
                                     '&:hover': {
                                         backgroundColor: 'rgba(255, 255, 255, 0.05)'

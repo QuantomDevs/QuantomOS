@@ -118,7 +118,7 @@ export const PagesManagement: React.FC = () => {
                                 justifyContent: 'space-between',
                                 p: 2,
                                 borderRadius: '0.5rem',
-                                border: '1px solid var(--color-border)',
+                                border: '2px solid var(--color-border)',
                                 backgroundColor: 'var(--color-secondary-background)',
                                 '&:hover': {
                                     backgroundColor: 'rgba(255, 255, 255, 0.05)'

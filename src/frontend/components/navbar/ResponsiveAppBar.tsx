@@ -277,13 +277,14 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         display: { xs: 'none', md: 'block' },
                                         fontFamily: '"Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                                         letterSpacing: '.1rem',
-                                        color: 'inherit',
+                                        color: 'var(--color-primary-text)',
                                         textDecoration: 'none',
                                         minWidth: '120px',
                                         textAlign: 'left',
                                         whiteSpace: 'nowrap',
                                         overflow: 'hidden',
-                                        textOverflow: 'ellipsis'
+                                        textOverflow: 'ellipsis',
+                                        fontWeight: 'bold'
                                     }}
                                     key={`app-title-${config?.title}-${nanoid()}`}
                                 >
@@ -300,11 +301,12 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         display: { xs: 'block', md: 'none' },
                                         fontFamily: '"Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                                         letterSpacing: '.1rem',
-                                        color: 'inherit',
+                                        color: 'var(--color-primary-text)',
                                         textDecoration: 'none',
                                         whiteSpace: 'nowrap',
                                         overflow: 'hidden',
                                         textOverflow: 'ellipsis',
+                                        fontWeight: 'bold',
                                         maxWidth: 'calc(100vw - 180px)', // Reduced further to prevent icon shifting
                                         minWidth: 0
                                     }}
@@ -465,7 +467,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         <Badge
                                             sx={{
                                                 '& .MuiBadge-badge': {
-                                                    backgroundColor: '#2196f3', // Blue color
+                                                    backgroundColor: 'var(--color-primary-accent)', // Blue color
                                                     top: 0,
                                                     right: -5
                                                 }

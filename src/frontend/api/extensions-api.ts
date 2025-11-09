@@ -55,3 +55,16 @@ export async function uploadExtensionFile(file: File): Promise<{
         throw error;
     }
 }
+
+/**
+ * Deletes a custom extension by ID
+ */
+export async function deleteExtension(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/extensions/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting extension ${id}:`, error);
+        throw error;
+    }
+}

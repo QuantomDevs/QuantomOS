@@ -12,7 +12,7 @@ import { DashApi } from '../../../api/dash-api';
 import { fetchExtension } from '../../../api/extensions-api';
 import { useAppContext } from '../../../context/useAppContext';
 import { useTheme } from '../../../context/ThemeContext';
-import { COLORS, styles } from '../../../theme/styles';
+import { styles } from '../../../theme/styles';
 import { theme } from '../../../theme/theme';
 import { DashboardItem, DOWNLOAD_CLIENT_TYPE, ITEM_TYPE, NewItem, Page, TORRENT_CLIENT_TYPE } from '../../../types';
 import { ConfiguredExtension, Extension, ExtensionMetadata } from '../../../types/extension.types';
@@ -739,9 +739,8 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                 <Box
                     sx={{
                         p: 2,
-                        borderRadius: '8px',
-                        boxShadow: 3,
-                        backgroundColor: COLORS.GRAY,
+                        borderRadius: '12px',
+                        backgroundColor: 'var(--color-background)',
                         width: { xs: '80vw', sm: '70vw', md: '40vw', lg: '45vw' }
                     }}
                 >
@@ -762,36 +761,24 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                     <Grid sx={{
                                         width: '100%',
                                         mb: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 2
                                     }}>
                                         <Button
-                                            variant='outlined'
+                                            variant='text'
                                             onClick={() => handleStepChange('select')}
-                                            fullWidth
                                             sx={{
-                                                color: 'text.primary',
-                                                borderColor: 'text.primary',
-                                                fontWeight: 700,
-                                                minHeight: '48px',
-                                                fontSize: '0.95rem',
+                                                color: 'var(--color-secondary-text)',
+                                                backgroundColor: 'var(--color-secondary-background)',
+                                                fontWeight: 600,
+                                                fontSize: '0.9rem',
                                                 '&:hover': {
-                                                    borderColor: colorTheme.primaryAccent,
-                                                    backgroundColor: `${colorTheme.primaryAccent}10`
+                                                    color: 'var(--color-primary-accent)',
+                                                    backgroundColor: 'var(--color-secondary-background)'
                                                 }
                                             }}
-                                            startIcon={<ArrowBackIosIcon />}
+                                            startIcon={<ArrowBackIosIcon sx={{ fontSize: '1rem' }} />}
                                         >
-                                            Go back to previous step
+                                            Back to Item Selection
                                         </Button>
-
-                                        <Typography variant='h6' sx={{
-                                            color: 'text.primary',
-                                            textAlign: 'center',
-                                        }}>
-                                            Select Widget
-                                        </Typography>
                                     </Grid>
 
                                     <Grid>
@@ -809,12 +796,9 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                     <Grid sx={{
                                         width: '100%',
                                         mb: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: 2
                                     }}>
                                         <Button
-                                            variant='outlined'
+                                            variant='text'
                                             onClick={() => {
                                                 if (selectedItemType === 'widget') {
                                                     handleStepChange('widget-select');
@@ -822,31 +806,19 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                                                     handleStepChange('select');
                                                 }
                                             }}
-                                            fullWidth
                                             sx={{
-                                                color: 'text.primary',
-                                                borderColor: 'text.primary',
-                                                fontWeight: 700,
-                                                minHeight: '48px',
-                                                fontSize: '0.95rem',
+                                                color: 'var(--color-secondary-text)',
+                                                fontWeight: 600,
+                                                fontSize: '0.9rem',
                                                 '&:hover': {
-                                                    borderColor: colorTheme.primaryAccent,
-                                                    backgroundColor: `${colorTheme.primaryAccent}10`
+                                                    color: 'var(--color-primary-accent)',
+                                                    backgroundColor: 'transparent'
                                                 }
                                             }}
-                                            startIcon={<ArrowBackIosIcon />}
+                                            startIcon={<ArrowBackIosIcon sx={{ fontSize: '1rem' }} />}
                                         >
-                                            Go back to previous step
+                                            Back to {selectedItemType === 'widget' ? 'Widget Selection' : 'Item Selection'}
                                         </Button>
-
-                                        <Typography variant='h6' sx={{
-                                            color: 'text.primary',
-                                            textAlign: 'center',
-                                        }}>
-                                            Configure {selectedItemType === 'widget'
-                                                ? WIDGET_OPTIONS.find(opt => opt.id === selectedWidgetType)?.label
-                                                : ITEM_TYPE_OPTIONS.find(opt => opt.id === selectedItemType)?.label}
-                                        </Typography>
                                     </Grid>
 
                                     {selectedItemType === ITEM_TYPE.PAGE && (

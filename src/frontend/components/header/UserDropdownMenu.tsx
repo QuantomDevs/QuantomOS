@@ -46,7 +46,7 @@ export const UserDropdownMenu: React.FC<UserDropdownMenuProps> = ({
                         width: 280,
                         mt: 1,
                         backgroundColor: 'var(--color-sidebar-background)',
-                        border: '1px solid var(--color-border)',
+                        border: '2px solid var(--color-border)',
                     }
                 }
             }}
