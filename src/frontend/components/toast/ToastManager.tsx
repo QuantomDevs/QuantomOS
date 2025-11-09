@@ -21,6 +21,7 @@ interface ToastContextType {
     success: (message: string, duration?: number, action?: ToastAction) => void;
     error: (message: string, duration?: number) => void;
     info: (message: string, duration?: number) => void;
+    warning: (message: string, duration?: number) => void;
 }
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
@@ -61,6 +62,10 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         showToast(message, 'info', duration);
     };
 
+    const warning = (message: string, duration?: number) => {
+        showToast(message, 'warning', duration);
+    };
+
     const handleClose = (toastId: string) => {
         setToasts(prev => prev.filter(toast => toast.id !== toastId));
     };
@@ -69,7 +74,8 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         showToast,
         success,
         error,
-        info
+        info,
+        warning
     };
 
     return (
@@ -162,6 +168,10 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                             '&.MuiAlert-filledInfo': {
                                 backgroundColor: 'rgba(32, 137, 222, 1)', // Muted blue
                                 color: '#ffffff'
+                            },
+                            '&.MuiAlert-filledWarning': {
+                                backgroundColor: 'rgba(245, 158, 11, 1)', // Muted orange
+                                color: '#ffffff'
                             }
                         }}
                     >
@@ -208,6 +218,14 @@ export class ToastManager {
     public static info(message: string, duration?: number): void {
         if (ToastManager.instance) {
             ToastManager.instance.info(message, duration);
+        } else {
+            console.warn('ToastManager not initialized. Make sure ToastProvider is wrapped around your app.');
+        }
+    }
+
+    public static warning(message: string, duration?: number): void {
+        if (ToastManager.instance) {
+            ToastManager.instance.warning(message, duration);
         } else {
             console.warn('ToastManager not initialized. Make sure ToastProvider is wrapped around your app.');
         }

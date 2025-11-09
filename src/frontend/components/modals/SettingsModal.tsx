@@ -9,10 +9,12 @@ import { BackgroundIconsSettings } from '../settings/BackgroundIconsSettings';
 import { BackupDataPanel } from '../settings/BackupDataPanel';
 import { GeneralSettingsPanel } from '../settings/GeneralSettingsPanel';
 import { KeyboardShortcutsPanel } from '../settings/KeyboardShortcutsPanel';
+import { PagesManagement } from '../settings/PagesManagement';
 import { PasswordChange } from '../settings/PasswordChange';
 import { SettingsCategory, SettingsCategorySidebar } from '../settings/SettingsCategorySidebar';
 import { ColorCustomization } from '../sidebar/ColorCustomization';
 import { GridSettings } from '../sidebar/GridSettings';
+import { Marketplace } from '../marketplace/Marketplace';
 
 export const SettingsModal: React.FC = () => {
     const { isOpen, closeModal } = useSettingsModal();
@@ -46,6 +48,8 @@ export const SettingsModal: React.FC = () => {
         switch (selectedCategory) {
             case 'general':
                 return <GeneralSettingsPanel />;
+            case 'pages':
+                return <PagesManagement />;
             case 'backup':
                 return <BackupDataPanel />;
             case 'keyboard':
@@ -78,6 +82,8 @@ export const SettingsModal: React.FC = () => {
                 );
             case 'color':
                 return <ColorCustomization />;
+            case 'marketplace':
+                return <Marketplace />;
             default:
                 return <GeneralSettingsPanel />;
         }
@@ -107,8 +113,8 @@ export const SettingsModal: React.FC = () => {
                 sx={{
                     width: 'min(90vw, 1200px)',
                     height: 'min(85vh, 800px)',
-                    backgroundColor: 'var(--color-main-background)',
-                    border: '1px solid var(--color-border)',
+                    backgroundColor: 'var(--color-background)',
+                    border: '2px solid var(--color-border)',
                     borderRadius: '1rem',
                     display: 'flex',
                     flexDirection: 'column',

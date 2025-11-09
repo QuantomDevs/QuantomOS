@@ -27,7 +27,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                existingItem?.type === ITEM_TYPE.SONARR_WIDGET ||
                                existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
                                existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
-                               existingItem?.type === ITEM_TYPE.GROUP_WIDGET
+                               existingItem?.type === ITEM_TYPE.GROUP_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.CUSTOM_EXTENSION
             ? 'widget'
             : (existingItem?.type === ITEM_TYPE.BLANK_WIDGET ||
                existingItem?.type === ITEM_TYPE.BLANK_ROW ||
@@ -56,7 +57,8 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.RADARR_WIDGET
             ? (existingItem?.type === ITEM_TYPE.TORRENT_CLIENT ? ITEM_TYPE.DOWNLOAD_CLIENT : existingItem?.type)
             : existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
-                                    existingItem?.type === ITEM_TYPE.GROUP_WIDGET
+                                    existingItem?.type === ITEM_TYPE.GROUP_WIDGET ||
+                                    existingItem?.type === ITEM_TYPE.CUSTOM_EXTENSION
                 ? existingItem?.type
                 : '';
 

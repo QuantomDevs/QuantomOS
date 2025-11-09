@@ -275,7 +275,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                     sx={{
                                         flexGrow: 1,
                                         display: { xs: 'none', md: 'block' },
-                                        fontFamily: 'Earth Orbiter',
+                                        fontFamily: '"Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                                         letterSpacing: '.1rem',
                                         color: 'inherit',
                                         textDecoration: 'none',
@@ -298,7 +298,7 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         flexGrow: 0,
                                         flexShrink: 1,
                                         display: { xs: 'block', md: 'none' },
-                                        fontFamily: 'Earth Orbiter',
+                                        fontFamily: '"Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                                         letterSpacing: '.1rem',
                                         color: 'inherit',
                                         textDecoration: 'none',
@@ -321,6 +321,64 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                         }
 
                         <Box sx={{ display: 'flex' }}>
+                            {/* Page Selection Buttons - Desktop only */}
+                            {!editMode && pages.length > 0 && !currentPath.includes('/settings') && !currentPath.includes('/login') && !currentPath.includes('/signup') && (
+                                <Box sx={{
+                                    display: { xs: 'none', md: 'flex' },
+                                    gap: 1,
+                                    mr: 2,
+                                    alignItems: 'center'
+                                }}>
+                                    {/* Home button */}
+                                    <Button
+                                        onClick={() => {
+                                            if (currentPageId !== null) {
+                                                switchToPage('');
+                                                navigate('/');
+                                            }
+                                        }}
+                                        sx={{
+                                            color: currentPageId === null ? 'var(--color-accent)' : 'var(--color-secondary-font)',
+                                            '&:hover': {
+                                                color: 'var(--color-primary)',
+                                            },
+                                            borderRadius: '1rem',
+                                            px: 2,
+                                            py: 0.5,
+                                            minWidth: 'auto',
+                                            textTransform: 'none',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        Home
+                                    </Button>
+                                    {/* Page buttons */}
+                                    {pages.map((page) => (
+                                        <Button
+                                            key={page.id}
+                                            onClick={() => {
+                                                switchToPage(page.id);
+                                                const slug = pageNameToSlug(page.name);
+                                                navigate(`/page/${slug}`);
+                                            }}
+                                            sx={{
+                                                color: currentPageId === page.id ? 'var(--color-accent)' : 'var(--color-secondary-font)',
+                                                '&:hover': {
+                                                    color: 'var(--color-primary)',
+                                                },
+                                                borderRadius: '1rem',
+                                                px: 2,
+                                                py: 0.5,
+                                                minWidth: 'auto',
+                                                textTransform: 'none',
+                                                fontSize: '0.9rem'
+                                            }}
+                                        >
+                                            {page.name}
+                                        </Button>
+                                    ))}
+                                </Box>
+                            )}
                             <Box sx={{
                                 display: 'flex',
                                 width: { xs: 'auto', md: '300px', lg: '350px' },

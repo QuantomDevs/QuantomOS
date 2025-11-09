@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Typography } from '@mui/material';
 import React from 'react';
-import { FaCog, FaDatabase, FaImage, FaKeyboard, FaLock, FaPalette, FaTh, FaBook, FaStore } from 'react-icons/fa';
+import { FaCog, FaDatabase, FaImage, FaKeyboard, FaLock, FaPalette, FaTh, FaBook, FaStore, FaFileAlt } from 'react-icons/fa';
 import { FaRightFromBracket } from 'react-icons/fa6';
 
 import { DashApi } from '../../api/dash-api';
@@ -10,12 +10,14 @@ import { useNavigate } from 'react-router-dom';
 
 export type SettingsCategory =
     | 'general'
+    | 'pages'
     | 'backup'
     | 'keyboard'
     | 'security'
     | 'background'
     | 'grid'
-    | 'color';
+    | 'color'
+    | 'marketplace';
 
 interface SettingsCategorySidebarProps {
     selectedCategory: SettingsCategory;
@@ -62,6 +64,7 @@ export const SettingsCategorySidebar: React.FC<SettingsCategorySidebarProps> = (
             section: 'General',
             items: [
                 { id: 'general' as SettingsCategory, label: 'General Settings', icon: FaCog },
+                { id: 'pages' as SettingsCategory, label: 'Pages', icon: FaFileAlt },
                 { id: 'backup' as SettingsCategory, label: 'Backup & Data', icon: FaDatabase },
                 { id: 'keyboard' as SettingsCategory, label: 'Keyboard Shortcuts', icon: FaKeyboard },
                 { id: 'security' as SettingsCategory, label: 'Security', icon: FaLock },
@@ -149,10 +152,7 @@ export const SettingsCategorySidebar: React.FC<SettingsCategorySidebarProps> = (
                 <Button
                     fullWidth
                     startIcon={<FaStore style={{ fontSize: '1.2rem' }} />}
-                    onClick={() => {
-                        // TODO: Open marketplace
-                        ToastManager.info('Marketplace coming soon!');
-                    }}
+                    onClick={() => onSelectCategory('marketplace')}
                     sx={{
                         justifyContent: 'flex-start',
                         textAlign: 'left',
@@ -160,12 +160,15 @@ export const SettingsCategorySidebar: React.FC<SettingsCategorySidebarProps> = (
                         py: 1.5,
                         mb: 0.5,
                         borderRadius: '0.5rem',
-                        color: 'var(--color-primary-text)',
-                        backgroundColor: 'transparent',
+                        color: selectedCategory === 'marketplace' ? 'var(--color-primary-accent)' : 'var(--color-primary-text)',
+                        backgroundColor: selectedCategory === 'marketplace' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                        fontWeight: selectedCategory === 'marketplace' ? 600 : 400,
                         textTransform: 'none',
                         fontSize: '0.9rem',
                         '&:hover': {
-                            backgroundColor: 'var(--color-secondary-font)',
+                            backgroundColor: selectedCategory === 'marketplace'
+                                ? 'rgba(255, 255, 255, 0.1)'
+                                : 'var(--color-secondary-font)',
                         },
                         transition: 'all 0.2s ease',
                     }}
