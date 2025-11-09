@@ -1,4 +1,6 @@
 import axios from 'axios';
+import * as fs from 'fs';
+import * as path from 'path';
 
 // GitHub repository configuration
 const GITHUB_OWNER = 'QuantomDevs';
@@ -6,6 +8,9 @@ const GITHUB_REPO = 'QuantomOS';
 const GITHUB_EXTENSIONS_PATH = 'extensions';
 const GITHUB_API_BASE = 'https://api.github.com';
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com';
+
+// Local extensions directory
+const LOCAL_EXTENSIONS_DIR = path.join(process.cwd(), 'extensions');
 
 // Cache configuration
 const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
@@ -64,7 +69,7 @@ class GitHubService {
     }
 
     /**
-     * Fetch the list of extension directories from GitHub
+     * Fetch the list of extension directories from local filesystem
      */
     async listExtensions(): Promise<ExtensionMetadata[]> {
         const cacheKey = 'marketplace_extensions';
@@ -77,19 +82,17 @@ class GitHubService {
         }
 
         try {
-            console.log('Fetching marketplace extensions from GitHub...');
+            console.log('Loading marketplace extensions from local filesystem...');
 
-            // Fetch the contents of the extensions directory
-            const url = `${GITHUB_API_BASE}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_EXTENSIONS_PATH}`;
-            const response = await axios.get<GitHubFileResponse[]>(url, {
-                headers: {
-                    'Accept': 'application/vnd.github.v3+json',
-                    'User-Agent': 'QuantomOS-Marketplace'
-                }
-            });
+            // Check if extensions directory exists
+            if (!fs.existsSync(LOCAL_EXTENSIONS_DIR)) {
+                console.warn(`Extensions directory not found: ${LOCAL_EXTENSIONS_DIR}`);
+                return [];
+            }
 
-            // Filter for directories only
-            const extensionDirs = response.data.filter(item => item.type === 'dir');
+            // Read all directories in the extensions folder
+            const items = fs.readdirSync(LOCAL_EXTENSIONS_DIR, { withFileTypes: true });
+            const extensionDirs = items.filter(item => item.isDirectory());
 
             // Fetch metadata for each extension
             const extensions: ExtensionMetadata[] = [];
@@ -110,32 +113,39 @@ class GitHubService {
 
             return extensions;
         } catch (error: any) {
-            console.error('Failed to fetch extensions from GitHub:', error.message);
-
-            // If it's a rate limit error, inform the user
-            if (error.response?.status === 403) {
-                throw new Error('GitHub API rate limit exceeded. Please try again later.');
-            }
-
+            console.error('Failed to load extensions from local filesystem:', error.message);
             throw new Error('Failed to fetch marketplace extensions');
         }
     }
 
     /**
-     * Fetch metadata for a specific extension
+     * Fetch metadata for a specific extension from local filesystem
      */
     private async fetchExtensionMetadata(extensionId: string): Promise<ExtensionMetadata | null> {
         try {
-            const url = `${GITHUB_RAW_BASE}/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_EXTENSIONS_PATH}/${extensionId}/extension.json`;
+            const extensionDir = path.join(LOCAL_EXTENSIONS_DIR, extensionId);
 
-            const response = await axios.get(url, {
-                headers: {
-                    'Accept': 'application/json',
-                    'User-Agent': 'QuantomOS-Marketplace'
-                }
-            });
+            // Check if extension directory exists
+            if (!fs.existsSync(extensionDir)) {
+                console.warn(`Extension directory not found: ${extensionDir}`);
+                return null;
+            }
 
-            const data = response.data;
+            // Try to find JSON file - first with same name as folder, then extension.json
+            let jsonFilePath = path.join(extensionDir, `${extensionId}.json`);
+
+            if (!fs.existsSync(jsonFilePath)) {
+                jsonFilePath = path.join(extensionDir, 'extension.json');
+            }
+
+            if (!fs.existsSync(jsonFilePath)) {
+                console.warn(`No JSON file found for extension: ${extensionId}`);
+                return null;
+            }
+
+            // Read and parse the JSON file
+            const fileContent = fs.readFileSync(jsonFilePath, 'utf-8');
+            const data = JSON.parse(fileContent);
 
             // Return only metadata (not full extension content)
             return {
@@ -153,7 +163,7 @@ class GitHubService {
     }
 
     /**
-     * Fetch full extension data from GitHub
+     * Fetch full extension data from local filesystem
      */
     async fetchExtension(extensionId: string): Promise<any> {
         try {
@@ -164,22 +174,37 @@ class GitHubService {
                 throw new Error('Invalid extension ID');
             }
 
-            const url = `${GITHUB_RAW_BASE}/${GITHUB_OWNER}/${GITHUB_REPO}/main/${GITHUB_EXTENSIONS_PATH}/${sanitizedId}/extension.json`;
+            const extensionDir = path.join(LOCAL_EXTENSIONS_DIR, sanitizedId);
 
-            console.log(`Fetching extension from: ${url}`);
+            // Check if extension directory exists
+            if (!fs.existsSync(extensionDir)) {
+                console.error(`Extension directory not found: ${extensionDir}`);
+                throw new Error('Extension not found on marketplace');
+            }
 
-            const response = await axios.get(url, {
-                headers: {
-                    'Accept': 'application/json',
-                    'User-Agent': 'QuantomOS-Marketplace'
-                }
-            });
+            // Try to find JSON file - first with same name as folder, then extension.json
+            let jsonFilePath = path.join(extensionDir, `${sanitizedId}.json`);
 
-            return response.data;
+            if (!fs.existsSync(jsonFilePath)) {
+                jsonFilePath = path.join(extensionDir, 'extension.json');
+            }
+
+            if (!fs.existsSync(jsonFilePath)) {
+                console.error(`No JSON file found for extension: ${sanitizedId}`);
+                throw new Error('Extension not found on marketplace');
+            }
+
+            console.log(`Loading extension from: ${jsonFilePath}`);
+
+            // Read and parse the JSON file
+            const fileContent = fs.readFileSync(jsonFilePath, 'utf-8');
+            const data = JSON.parse(fileContent);
+
+            return data;
         } catch (error: any) {
             console.error(`Failed to fetch extension ${extensionId}:`, error.message);
 
-            if (error.response?.status === 404) {
+            if (error.message.includes('not found')) {
                 throw new Error('Extension not found on marketplace');
             }
 
