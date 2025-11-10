@@ -481,6 +481,38 @@ export const createWidgetConfig = async (
             displayName: data.displayName || 'Notes',
             defaultNoteFontSize: data.defaultNoteFontSize || '16px'
         };
+    } else if (widgetType === ITEM_TYPE.IFRAME_WIDGET) {
+        return {
+            displayName: data.displayName || 'Iframe',
+            url: data.url || '',
+            interactive: data.interactive !== undefined ? data.interactive : false,
+            showLabel: data.showLabel !== undefined ? data.showLabel : false
+        };
+    } else if (widgetType === ITEM_TYPE.VIDEO_STREAM_WIDGET) {
+        return {
+            displayName: data.displayName || 'Video Stream',
+            feedUrl: data.feedUrl || '',
+            autoplay: data.autoplay !== undefined ? data.autoplay : false,
+            muted: data.muted !== undefined ? data.muted : true,
+            showControls: data.showControls !== undefined ? data.showControls : true,
+            showLabel: data.showLabel !== undefined ? data.showLabel : false
+        };
+    } else if (widgetType === ITEM_TYPE.CALENDAR_WIDGET) {
+        return {
+            displayName: data.displayName || 'Calendar',
+            enableIcal: data.enableIcal !== undefined ? data.enableIcal : false,
+            icalUrl: data.icalUrl || '',
+            showLabel: data.showLabel !== undefined ? data.showLabel : false
+        };
+    } else if (widgetType === ITEM_TYPE.BOOKMARKS_WIDGET) {
+        return {
+            title: data.title || 'Bookmarks',
+            hideTitle: data.hideTitle !== undefined ? data.hideTitle : false,
+            hideIcons: data.hideIcons !== undefined ? data.hideIcons : false,
+            hideHostnames: data.hideHostnames !== undefined ? data.hideHostnames : false,
+            bookmarks: data.bookmarks || [],
+            showLabel: data.showLabel !== undefined ? data.showLabel : false
+        };
     }
 
     return {};

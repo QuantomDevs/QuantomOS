@@ -595,6 +595,18 @@ export const AddEditForm = ({ handleClose, existingItem, onSubmit }: Props) => {
                         }
                     };
                 }
+            } else if (data.widgetType === ITEM_TYPE.IFRAME_WIDGET) {
+                // Iframe widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.IFRAME_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.VIDEO_STREAM_WIDGET) {
+                // Video Stream widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.VIDEO_STREAM_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.CALENDAR_WIDGET) {
+                // Calendar widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.CALENDAR_WIDGET, data, existingItem, formContext);
+            } else if (data.widgetType === ITEM_TYPE.BOOKMARKS_WIDGET) {
+                // Bookmarks widget configuration
+                config = await createWidgetConfig(ITEM_TYPE.BOOKMARKS_WIDGET, data, existingItem, formContext);
             }
         } else if (data.itemType === ITEM_TYPE.CUSTOM_EXTENSION) {
             // Custom extension - use the configured extension data
