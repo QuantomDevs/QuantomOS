@@ -10,7 +10,7 @@ import { BackupDataPanel } from '../settings/BackupDataPanel';
 import { GeneralSettingsPanel } from '../settings/GeneralSettingsPanel';
 import { KeyboardShortcutsPanel } from '../settings/KeyboardShortcutsPanel';
 import { PagesManagement } from '../settings/PagesManagement';
-import { PasswordChange } from '../settings/PasswordChange';
+import { SecurityPanel } from '../settings/SecurityPanel';
 import { SettingsCategory, SettingsCategorySidebar } from '../settings/SettingsCategorySidebar';
 import { ColorCustomization } from '../sidebar/ColorCustomization';
 import { GridSettings } from '../sidebar/GridSettings';
@@ -55,17 +55,7 @@ export const SettingsModal: React.FC = () => {
             case 'keyboard':
                 return <KeyboardShortcutsPanel />;
             case 'security':
-                return (
-                    <Box>
-                        <Typography variant='h6' sx={{ mb: 3, fontWeight: 600 }}>
-                            Security
-                        </Typography>
-                        <Typography variant='body2' sx={{ mb: 4, opacity: 0.8 }}>
-                            Manage your account security settings.
-                        </Typography>
-                        <PasswordChange />
-                    </Box>
-                );
+                return <SecurityPanel />;
             case 'background':
                 return <BackgroundIconsSettings />;
             case 'grid':

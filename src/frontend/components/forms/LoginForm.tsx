@@ -1,19 +1,12 @@
-import { Box, Button, InputAdornment, Typography } from '@mui/material';
-import { FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui';
-import { FaLock, FaUser } from 'react-icons/fa6';
+import { Box, Button, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { FaEye, FaEyeSlash, FaUser } from 'react-icons/fa6';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { DashApi } from '../../api/dash-api';
 import { ToastManager } from '../../components/toast/ToastManager';
 import { useAppContext } from '../../context/useAppContext';
 import { useTheme } from '../../context/ThemeContext';
-import { styles } from '../../theme/styles';
-import { theme } from '../../theme/theme';
-
-type FormValues = {
-    username: string,
-    password: string;
-}
 
 export const LoginForm = () => {
     const { colorTheme } = useTheme();
@@ -21,95 +14,179 @@ export const LoginForm = () => {
     const location = useLocation();
     const { setIsLoggedIn, setUsername, setIsAdmin, refreshDashboard } = useAppContext();
 
-    const formContext = useForm<FormValues>({
-        defaultValues: {
-            username: '',
-            password: ''
-        }
-    });
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [userInfo, setUserInfo] = useState<{ username: string; profilePicture: string | null } | null>(null);
 
-    const handleSubmit = async (data: FormValues) => {
-        try {
-            const response = await DashApi.login(data.username, data.password);
-
-            // Update auth state in context - do this in sequence to avoid race conditions
-            setUsername(data.username);
-
-            // Get admin status directly from the response
-            if (response.isAdmin !== undefined) {
-                setIsAdmin(response.isAdmin);
+    // Fetch user info to display username and profile picture
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await fetch('/api/auth/user');
+                const data = await response.json();
+                setUserInfo(data);
+            } catch (err) {
+                console.error('Error fetching user info:', err);
             }
+        };
+        fetchUserInfo();
+    }, []);
 
-            // Set logged in status last to trigger any dependent effects
-            setIsLoggedIn(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
 
-            // Refresh dashboard to load admin-only items if user is admin
-            await refreshDashboard();
+        if (!password) {
+            setError('Password is required');
+            return;
+        }
 
-            // Show success toast and navigate back to previous page or home
-            ToastManager.success('Login successful!');
+        setIsLoading(true);
 
-            // Get the previous location from navigation state, default to home
-            const from = (location.state as any)?.from || '/';
-            navigate(from, { replace: true });
-        } catch (error: any) {
-            // Show error message
-            ToastManager.error(error.message || 'Login failed');
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                // Update auth state in context
+                setUsername(data.user.username);
+                setIsAdmin(true); // Single user is always admin
+                setIsLoggedIn(true);
+
+                // Refresh dashboard to load all data
+                await refreshDashboard();
+
+                // Show success toast and navigate
+                ToastManager.success('Login successful!');
+
+                const from = (location.state as any)?.from || '/';
+                navigate(from, { replace: true });
+            } else {
+                setError(data.message || 'Login failed');
+            }
+        } catch (err: any) {
+            setError(err.message || 'Login failed. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
-        <FormContainer onSuccess={handleSubmit} formContext={formContext}>
-            <Box sx={styles.vcenter} gap={3}>
-                <Box pt={2} textAlign={'center'}>
-                    <Typography variant='h4'>Login</Typography>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 3,
+            width: '100%',
+            maxWidth: '400px',
+            margin: '0 auto',
+            padding: 4
+        }}>
+            {/* Title */}
+            <Typography variant='h4' sx={{ fontWeight: 600, textAlign: 'center' }}>
+                Log In
+            </Typography>
+
+            {/* Profile Picture */}
+            {userInfo?.profilePicture ? (
+                <Box
+                    component='img'
+                    src={userInfo.profilePicture}
+                    alt='Profile'
+                    sx={{
+                        width: 96,
+                        height: 96,
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        border: `2px solid ${colorTheme.borderColor}`
+                    }}
+                />
+            ) : (
+                <Box
+                    sx={{
+                        width: 96,
+                        height: 96,
+                        borderRadius: '50%',
+                        backgroundColor: colorTheme.secondaryBackground,
+                        border: `2px solid ${colorTheme.borderColor}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <FaUser size={48} color={colorTheme.primaryText} />
                 </Box>
-                <Box sx={styles.vcenter} mb={2} mt={2}>
-                    <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <TextFieldElement
-                            name='username'
-                            label='Username'
-                            variant='outlined'
-                            sx={{ width: { xs: '80%', md: '40%' } }}
-                            required
-                            placeholder='Username'
-                            slotProps={{
-                                input: {
-                                    startAdornment: (
-                                        <InputAdornment position='start'>
-                                            <FaUser style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
-                                        </InputAdornment>
-                                    ),
-                                    autoComplete: 'username'
-                                }
-                            }}
-                        />
-                    </Box>
-                </Box>
-                <Box width={'100%'} sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <TextFieldElement
-                        name='password'
+            )}
+
+            {/* Username Display */}
+            <Typography variant='body1' sx={{ fontWeight: 500, textAlign: 'center' }}>
+                User: <strong>{userInfo?.username || 'User'}</strong>
+            </Typography>
+
+            {/* Login Form */}
+            <Box component='form' onSubmit={handleSubmit} sx={{ width: '100%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    {/* Password Input */}
+                    <TextField
+                        fullWidth
+                        type={showPassword ? 'text' : 'password'}
                         label='Password'
-                        variant='outlined'
-                        sx={{ width: { xs: '80%', md: '40%' } }}
-                        type='password'
-                        placeholder='Password'
-                        required
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position='start'>
-                                        <FaLock style={{ color: colorTheme.primaryText, fontSize: 22 }}/>
-                                    </InputAdornment>
-                                )
-                            }
+                        placeholder='Enter your password'
+                        value={password}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            setError(null); // Clear error when user starts typing
+                        }}
+                        error={!!error}
+                        helperText={error || ''}
+                        autoFocus
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position='end'>
+                                    <IconButton
+                                        onClick={togglePasswordVisibility}
+                                        edge='end'
+                                        aria-label='toggle password visibility'
+                                    >
+                                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
                         }}
                     />
-                </Box>
-                <Box mt={4} sx={styles.center} mb={2}>
-                    <Button variant='contained' type='submit'>Login</Button>
+
+                    {/* Login Button */}
+                    <Button
+                        type='submit'
+                        variant='contained'
+                        fullWidth
+                        disabled={isLoading}
+                        sx={{
+                            mt: 1,
+                            py: 1.5,
+                            fontWeight: 600,
+                            fontSize: '1rem'
+                        }}
+                    >
+                        {isLoading ? 'Logging in...' : 'Log In'}
+                    </Button>
                 </Box>
             </Box>
-        </FormContainer>
+        </Box>
     );
 };

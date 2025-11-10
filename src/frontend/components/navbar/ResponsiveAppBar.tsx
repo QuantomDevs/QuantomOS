@@ -422,6 +422,30 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                                         </Tooltip>
                                     </>
                                 )}
+                                {/* Show Sign In button for public users */}
+                                {!editMode && !isLoggedIn && !currentPath.includes('/login') && !currentPath.includes('/setup') && (
+                                    <Button
+                                        onClick={handleLogin}
+                                        variant='contained'
+                                        sx={{
+                                            backgroundColor: 'var(--color-primary-accent)',
+                                            color: 'white',
+                                            borderRadius: '999px',
+                                            height: '2.5rem',
+                                            px: 3,
+                                            mr: 1,
+                                            textTransform: 'none',
+                                            fontSize: '0.9rem',
+                                            fontWeight: 600,
+                                            '&:hover': {
+                                                backgroundColor: 'var(--color-secondary-accent)'
+                                            }
+                                        }}
+                                    >
+                                        Sign In
+                                    </Button>
+                                )}
+                                {/* Show Edit and Settings buttons for logged in users */}
                                 {!editMode && isLoggedIn && isAdmin && !currentPath.includes('/settings') && (
                                     <>
                                         {/* Edit Dashboard Button */}

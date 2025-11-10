@@ -5,7 +5,7 @@ import StatusCodes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 
-import {  authenticateToken, requireAdmin } from '../middleware/auth.middleware';
+import {  authenticateToken, requireAdmin, optionalAuth } from '../middleware/auth.middleware';
 import { Config } from '../types';
 import { BackupService } from '../utils/backup.service';
 
@@ -551,7 +551,8 @@ const restoreSensitiveData = (newConfig: any, existingConfig: any): any => {
 };
 
 // GET - Return the config file with sensitive data filtered and admin-only items filtered based on user role
-configRoute.get('/', async (req: Request, res: Response): Promise<void> => {
+// Supports public access when enabled
+configRoute.get('/', [optionalAuth], async (req: Request, res: Response): Promise<void> => {
     try {
         const config = loadConfig();
 
@@ -716,6 +717,40 @@ configRoute.post('/backup/restore', [authenticateToken, requireAdmin], async (_r
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             message: 'Error restoring from backup',
+            error: (error as Error).message
+        });
+    }
+});
+
+// PATCH - Update public access setting (admin only)
+configRoute.patch('/public-access', [authenticateToken, requireAdmin], async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { enabled } = req.body;
+
+        if (typeof enabled !== 'boolean') {
+            res.status(StatusCodes.BAD_REQUEST).json({
+                message: 'Invalid value for enabled. Must be a boolean.'
+            });
+            return;
+        }
+
+        // Load current config
+        const config = loadConfig();
+
+        // Update public access setting
+        config.publicAccess = enabled;
+
+        // Save updated config
+        await fs.writeFile(CONFIG_FILE, JSON.stringify(config, null, 2), 'utf-8');
+
+        res.status(StatusCodes.OK).json({
+            message: `Public access ${enabled ? 'enabled' : 'disabled'} successfully`,
+            publicAccess: enabled
+        });
+    } catch (error) {
+        console.error('Error updating public access:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: 'Error updating public access setting',
             error: (error as Error).message
         });
     }

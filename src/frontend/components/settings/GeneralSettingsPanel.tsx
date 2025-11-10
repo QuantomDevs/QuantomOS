@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, MenuItem, Select, TextField, Typography, SelectChangeEvent } from '@mui/material';
+import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, MenuItem, Select, TextField, Typography, SelectChangeEvent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 import { useAppContext } from '../../context/useAppContext';
@@ -24,6 +24,9 @@ export const GeneralSettingsPanel: React.FC = () => {
     const [title, setTitle] = useState(config?.title || 'QuantomOS');
     const [search, setSearch] = useState(config?.search || false);
     const [showInternetIndicator, setShowInternetIndicator] = useState(config?.showInternetIndicator !== false);
+    const [publicAccess, setPublicAccess] = useState(config?.publicAccess || false);
+    const [showPublicAccessDialog, setShowPublicAccessDialog] = useState(false);
+    const [pendingPublicAccessValue, setPendingPublicAccessValue] = useState(false);
     const [searchProviderId, setSearchProviderId] = useState('google');
     const [customProviderName, setCustomProviderName] = useState('');
     const [customProviderUrl, setCustomProviderUrl] = useState('');
@@ -51,6 +54,11 @@ export const GeneralSettingsPanel: React.FC = () => {
                 setCustomProviderName(name || '');
                 setCustomProviderUrl(url || '');
             }
+        }
+
+        // Initialize public access from config
+        if (config?.publicAccess !== undefined) {
+            setPublicAccess(config.publicAccess);
         }
     }, [config]);
 
@@ -89,6 +97,47 @@ export const GeneralSettingsPanel: React.FC = () => {
             ToastManager.error('Failed to update internet indicator setting');
             setShowInternetIndicator(!newValue); // Revert on error
         }
+    };
+
+    // Handle public access toggle with confirmation
+    const handlePublicAccessChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.checked;
+        setPendingPublicAccessValue(newValue);
+        setShowPublicAccessDialog(true);
+    };
+
+    // Confirm public access change
+    const confirmPublicAccessChange = async () => {
+        setShowPublicAccessDialog(false);
+
+        try {
+            const response = await fetch('/api/config/public-access', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ enabled: pendingPublicAccessValue })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setPublicAccess(pendingPublicAccessValue);
+                ToastManager.success(data.message || `Public access ${pendingPublicAccessValue ? 'enabled' : 'disabled'}`);
+            } else {
+                ToastManager.error(data.message || 'Failed to update public access setting');
+            }
+        } catch (error) {
+            console.error('Error updating public access:', error);
+            ToastManager.error('Failed to update public access setting');
+        }
+    };
+
+    // Cancel public access change
+    const cancelPublicAccessChange = () => {
+        setShowPublicAccessDialog(false);
+        setPendingPublicAccessValue(publicAccess);
     };
 
     // Save search provider when changed
@@ -284,6 +333,61 @@ export const GeneralSettingsPanel: React.FC = () => {
                     }
                 />
             </Box>
+
+            {/* Public Access */}
+            <Box sx={{ mb: 3 }}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={publicAccess}
+                            onChange={handlePublicAccessChange}
+                            sx={{
+                                color: 'var(--color-primary-text)',
+                                '&.Mui-checked': {
+                                    color: 'var(--color-primary-accent)'
+                                }
+                            }}
+                        />
+                    }
+                    label={
+                        <Box>
+                            <Typography variant='body2' sx={{ fontWeight: 500 }}>
+                                Public Access
+                            </Typography>
+                            <Typography variant='caption' sx={{ opacity: 0.7 }}>
+                                Allow viewing dashboard without login (read-only mode)
+                            </Typography>
+                        </Box>
+                    }
+                />
+            </Box>
+
+            {/* Public Access Confirmation Dialog */}
+            <Dialog
+                open={showPublicAccessDialog}
+                onClose={cancelPublicAccessChange}
+                aria-labelledby='public-access-dialog-title'
+                aria-describedby='public-access-dialog-description'
+            >
+                <DialogTitle id='public-access-dialog-title'>
+                    {pendingPublicAccessValue ? 'Enable Public Access?' : 'Disable Public Access?'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id='public-access-dialog-description'>
+                        {pendingPublicAccessValue
+                            ? 'Enable public access? Anyone with the link can view your dashboard (read-only).'
+                            : 'Disable public access? Login will be required to view the dashboard.'}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={cancelPublicAccessChange}>
+                        Cancel
+                    </Button>
+                    <Button onClick={confirmPublicAccessChange} variant='contained' autoFocus>
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

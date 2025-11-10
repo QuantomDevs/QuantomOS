@@ -118,6 +118,7 @@ export type Config = {
     search?: boolean;
     searchProvider?: SearchProvider;
     showInternetIndicator?: boolean;
+    publicAccess?: boolean;
     isSetupComplete?: boolean;
     lastSeenVersion?: string;
     defaultNoteFontSize?: string;

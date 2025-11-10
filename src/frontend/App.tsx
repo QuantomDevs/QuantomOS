@@ -1,10 +1,8 @@
 import './theme/App.css';
 import { GlobalStyles } from '@mui/material';
-import { Box, Paper } from '@mui/material';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
-import { SetupForm } from './components/forms/SetupForm';
 import { GlobalCustomScrollbar } from './components/GlobalCustomScrollbar';
 import { WithNav } from './components/navbar/WithNav';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -13,29 +11,8 @@ import { useAppContext } from './context/useAppContext';
 import { useMobilePointer } from './hooks/useMobilePointer';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
+import { SetupPage } from './pages/SetupPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { styles } from './theme/styles';
-
-const SetupPage = () => {
-    const { isFirstTimeSetup, setSetupComplete } = useAppContext();
-
-    // Show loading state while checking
-    if (isFirstTimeSetup === null) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                {/* Loading state */}
-            </Box>
-        );
-    }
-
-    return (
-        <Box width={'100%'} sx={{ ...styles.center, height: '100vh' }}>
-            <Box sx={{ ...styles.vcenter, width: '90%', borderRadius: 2 }} component={Paper}>
-                <SetupForm onSuccess={() => setSetupComplete(true)} />
-            </Box>
-        </Box>
-    );
-};
 
 export const App = () => {
     const {
@@ -68,25 +45,38 @@ export const App = () => {
         }
     }, [config?.title]);
 
-    // Authentication guard - redirect to login if not authenticated
+    // Authentication guard - redirect to login if not authenticated and public access disabled
     useEffect(() => {
         // Skip authentication check if we're still checking first time setup status
         if (isFirstTimeSetup === null) {
             return;
         }
 
-        // Allow access to login and signup pages without authentication
-        const publicRoutes = ['/login', '/signup'];
+        // Allow access to login and setup pages without authentication
+        const publicRoutes = ['/login', '/signup', '/setup'];
         const isPublicRoute = publicRoutes.includes(location.pathname);
 
-        // If first time setup is needed, allow access to setup (handled by route rendering)
+        // If first time setup is needed, redirect to setup page
         if (isFirstTimeSetup && !setupComplete) {
+            if (location.pathname !== '/setup') {
+                navigate('/setup', { replace: true });
+            }
             return;
         }
 
-        // If setup is complete but user is not logged in and not on a public route
+        // Check if public access is enabled
+        const publicAccessEnabled = config?.publicAccess === true;
+
+        // If setup is complete but user is not logged in
         if (!isLoggedIn && !isPublicRoute) {
-            console.debug('User not authenticated, redirecting to login page');
+            // If public access is enabled, allow viewing dashboard in read-only mode
+            if (publicAccessEnabled) {
+                console.debug('Public access enabled, allowing read-only access');
+                return;
+            }
+
+            // If public access is disabled, redirect to login
+            console.debug('User not authenticated and public access disabled, redirecting to login page');
             navigate('/login', { replace: true });
         }
 
@@ -95,7 +85,7 @@ export const App = () => {
             console.debug('User already authenticated, redirecting to home');
             navigate('/', { replace: true });
         }
-    }, [isLoggedIn, isFirstTimeSetup, setupComplete, location.pathname, navigate]);
+    }, [isLoggedIn, isFirstTimeSetup, setupComplete, location.pathname, navigate, config]);
 
     // Global hotkey listener for Ctrl+1-9 / Cmd+1-9 to switch pages
     useEffect(() => {
@@ -202,11 +192,11 @@ export const App = () => {
             {!isMobilePointer && <GlobalCustomScrollbar />}
             <Routes>
                 <Route element={<WithNav />}>
-                    <Route path='/' element={isFirstTimeSetup && !setupComplete ? <SetupPage /> : <DashboardPage />}/>
-                    <Route path='/:pageName' element={isFirstTimeSetup && !setupComplete ? <SetupPage /> : <DashboardPage />}/>
-                    <Route path='/settings' element={<SettingsPage />}/>
-                    <Route path='/login' element={<LoginPage />}/>
-                    <Route path='/signup' element={<LoginPage />}/>
+                    <Route path='/' element={<DashboardPage />} />
+                    <Route path='/setup' element={<SetupPage />} />
+                    <Route path='/login' element={<LoginPage />} />
+                    <Route path='/settings' element={<SettingsPage />} />
+                    <Route path='/:pageName' element={<DashboardPage />} />
                 </Route>
             </Routes>
         </>

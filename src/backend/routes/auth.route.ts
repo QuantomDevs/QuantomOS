@@ -2,64 +2,99 @@ import bcrypt from 'bcrypt';
 import { Request, Response, Router } from 'express';
 import fs from 'fs';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 import path from 'path';
 
 import { authenticateToken } from '../middleware/auth.middleware';
 
 export const authRoute = Router();
-const USERS_PATH = path.join(__dirname, '../config/users.json');
+const USER_PATH = path.join(__dirname, '../config/user.json');
+const PROFILE_PICTURE_DIR = path.join(process.cwd(), 'public', 'uploads', 'profile');
 const JWT_SECRET = process.env.SECRET || '@jZCgtn^qg8So*^^6A2M';
 const REFRESH_TOKEN_SECRET = process.env.SECRET || '@jZCgtn^qg8So*^^6A2M';
 const ACCESS_TOKEN_EXPIRY = '3d';
 const REFRESH_TOKEN_EXPIRY = '7d';
 
-// Interface for user data
+// Interface for single user data
 interface User {
   username: string;
   passwordHash: string;
+  profilePicture?: string;  // Path to profile picture
   refreshTokens?: string[];  // Store issued refresh tokens
-  role: 'admin' | 'user';    // Role for authorization
 }
 
-// Helper function to read users from JSON file
-const readUsers = (): User[] => {
+// Ensure profile picture directory exists
+if (!fs.existsSync(PROFILE_PICTURE_DIR)) {
+    fs.mkdirSync(PROFILE_PICTURE_DIR, { recursive: true });
+}
+
+// Configure multer for profile picture uploads
+const storage = multer.diskStorage({
+    destination: (_req, _file, cb) => {
+        cb(null, PROFILE_PICTURE_DIR);
+    },
+    filename: (_req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        cb(null, `profile-picture${ext}`);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 2 * 1024 * 1024 // 2MB limit
+    },
+    fileFilter: (_req, file, cb) => {
+        // Accept images only
+        if (!file.mimetype.startsWith('image/')) {
+            cb(new Error('Only image files are allowed'));
+            return;
+        }
+        cb(null, true);
+    }
+});
+
+// Helper function to read user from JSON file
+const readUser = (): User | null => {
     try {
-    // Create directory if it doesn't exist
-        const dir = path.dirname(USERS_PATH);
+        // Create directory if it doesn't exist
+        const dir = path.dirname(USER_PATH);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
 
         // Create file if it doesn't exist
-        if (!fs.existsSync(USERS_PATH)) {
-            fs.writeFileSync(USERS_PATH, JSON.stringify([]));
-            return [];
+        if (!fs.existsSync(USER_PATH)) {
+            return null;
         }
 
-        const data = fs.readFileSync(USERS_PATH, 'utf8');
+        const data = fs.readFileSync(USER_PATH, 'utf8');
+        if (!data.trim()) {
+            return null;
+        }
         return JSON.parse(data);
     } catch (error) {
-        console.error('Error reading users:', error);
-        return [];
+        console.error('Error reading user:', error);
+        return null;
     }
 };
 
-// Helper function to write users to JSON file
-const writeUsers = (users: User[]): void => {
+// Helper function to write user to JSON file
+const writeUser = (user: User): void => {
     try {
-        const dir = path.dirname(USERS_PATH);
+        const dir = path.dirname(USER_PATH);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
         }
-        fs.writeFileSync(USERS_PATH, JSON.stringify(users, null, 2));
+        fs.writeFileSync(USER_PATH, JSON.stringify(user, null, 2));
     } catch (error) {
-        console.error('Error writing users:', error);
+        console.error('Error writing user:', error);
     }
 };
 
 // Generate access token
-const generateAccessToken = (username: string, role: string): string => {
-    return jwt.sign({ username, role }, JWT_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY });
+const generateAccessToken = (username: string): string => {
+    return jwt.sign({ username, role: 'admin' }, JWT_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY });
 };
 
 // Generate refresh token
@@ -81,10 +116,28 @@ const getTokenExpiration = (token: string): Date | null => {
     }
 };
 
-// Signup route
-authRoute.post('/signup', async (req: Request, res: Response) => {
+// Check if system is initialized (user exists)
+authRoute.get('/initialized', (_req: Request, res: Response) => {
+    try {
+        const user = readUser();
+        res.json({ initialized: user !== null });
+    } catch (error) {
+        console.error('Error checking initialization:', error);
+        res.status(500).json({ message: 'Failed to check initialization status' });
+    }
+});
+
+// Setup route - Create initial user (only works if no user exists)
+authRoute.post('/setup', upload.single('profilePicture'), async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
+
+        // Check if user already exists
+        const existingUser = readUser();
+        if (existingUser) {
+            res.status(409).json({ message: 'User already exists' });
+            return;
+        }
 
         // Validate input
         if (!username || !password) {
@@ -92,10 +145,8 @@ authRoute.post('/signup', async (req: Request, res: Response) => {
             return;
         }
 
-        // Check if username is already taken
-        const users = readUsers();
-        if (users.some(user => user.username === username)) {
-            res.status(409).json({ message: 'Username already exists' });
+        if (password.length < 8) {
+            res.status(400).json({ message: 'Password must be at least 8 characters long' });
             return;
         }
 
@@ -103,65 +154,28 @@ authRoute.post('/signup', async (req: Request, res: Response) => {
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // First user is automatically an admin, others are regular users
-        const isFirstUser = users.length === 0;
-        const role = isFirstUser ? 'admin' : 'user';
-
-        // Store the new user with empty refresh tokens array
-        users.push({
+        // Create user object
+        const user: User = {
             username,
             passwordHash,
-            refreshTokens: [],
-            role
-        });
-        writeUsers(users);
+            refreshTokens: []
+        };
 
-        // Return success response
-        res.status(201).json({ message: 'User created successfully', username });
-    } catch (error) {
-        console.error('Signup error:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
-// Login route
-authRoute.post('/login', async (req: Request, res: Response) => {
-    try {
-        const { username, password } = req.body;
-
-        // Validate input
-        if (!username || !password) {
-            res.status(400).json({ message: 'Username and password are required' });
-            return;
+        // Handle profile picture if uploaded
+        if (req.file) {
+            user.profilePicture = `/uploads/profile/${req.file.filename}`;
         }
 
-        // Find the user
-        const users = readUsers();
-        const userIndex = users.findIndex(user => user.username === username);
+        // Save user
+        writeUser(user);
 
-        if (userIndex === -1) {
-            res.status(401).json({ message: 'Invalid credentials' });
-            return;
-        }
-
-        // Compare passwords
-        const passwordMatch = await bcrypt.compare(password, users[userIndex].passwordHash);
-
-        if (!passwordMatch) {
-            res.status(401).json({ message: 'Invalid credentials' });
-            return;
-        }
-
-        // Generate tokens
-        const token = generateAccessToken(username, users[userIndex].role);
+        // Generate tokens for automatic login
+        const token = generateAccessToken(username);
         const refreshToken = generateRefreshToken(username);
 
         // Store refresh token
-        if (!users[userIndex].refreshTokens) {
-            users[userIndex].refreshTokens = [];
-        }
-        users[userIndex].refreshTokens.push(refreshToken);
-        writeUsers(users);
+        user.refreshTokens = [refreshToken];
+        writeUser(user);
 
         // Set secure HTTP-only cookies
         res.cookie('access_token', token, {
@@ -169,7 +183,7 @@ authRoute.post('/login', async (req: Request, res: Response) => {
             secure: false,
             sameSite: 'lax',
             path: '/',
-            maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
         });
 
         res.cookie('refresh_token', refreshToken, {
@@ -177,34 +191,203 @@ authRoute.post('/login', async (req: Request, res: Response) => {
             secure: false,
             sameSite: 'lax',
             path: '/',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        // Return success without including tokens in response body
-        res.json({
-            message: 'Login successful',
-            username: username,
-            isAdmin: users[userIndex].role === 'admin'
+        // Return success
+        res.status(201).json({
+            success: true,
+            message: 'Setup completed successfully',
+            user: {
+                username: user.username,
+                profilePicture: user.profilePicture || null
+            }
         });
-        console.log('login successful');
+    } catch (error) {
+        console.error('Setup error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Login route - Password only
+authRoute.post('/login', async (req: Request, res: Response) => {
+    try {
+        const { password } = req.body;
+
+        // Validate input
+        if (!password) {
+            res.status(400).json({ success: false, message: 'Password is required' });
+            return;
+        }
+
+        // Get the user
+        const user = readUser();
+        if (!user) {
+            res.status(401).json({ success: false, message: 'No user configured. Please run setup first.' });
+            return;
+        }
+
+        // Compare passwords
+        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+
+        if (!passwordMatch) {
+            res.status(401).json({ success: false, message: 'Incorrect password. Please try again.' });
+            return;
+        }
+
+        // Generate tokens
+        const token = generateAccessToken(user.username);
+        const refreshToken = generateRefreshToken(user.username);
+
+        // Store refresh token
+        if (!user.refreshTokens) {
+            user.refreshTokens = [];
+        }
+        user.refreshTokens.push(refreshToken);
+        writeUser(user);
+
+        // Set secure HTTP-only cookies
+        res.cookie('access_token', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        });
+
+        res.cookie('refresh_token', refreshToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
+
+        // Return success
+        res.json({
+            success: true,
+            message: 'Login successful',
+            user: {
+                username: user.username,
+                profilePicture: user.profilePicture || null
+            }
+        });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ success: false, message: 'Authentication failed. Please try again later.' });
+    }
+});
+
+// Get current user info (public route - no auth required)
+authRoute.get('/user', (_req: Request, res: Response) => {
+    try {
+        const user = readUser();
+        if (!user) {
+            res.json({
+                username: 'User',
+                profilePicture: null
+            });
+            return;
+        }
+
+        res.json({
+            username: user.username,
+            profilePicture: user.profilePicture || null
+        });
+    } catch (error) {
+        console.error('Error getting user info:', error);
+        res.status(500).json({ message: 'Failed to get user information' });
+    }
+});
+
+// Update profile (username) - requires authentication
+authRoute.patch('/profile', [authenticateToken], async (req: Request, res: Response) => {
+    try {
+        const { username } = req.body;
+
+        if (!username) {
+            res.status(400).json({ message: 'Username is required' });
+            return;
+        }
+
+        // Validate username
+        if (username.length < 2 || username.length > 50) {
+            res.status(400).json({ message: 'Username must be between 2 and 50 characters' });
+            return;
+        }
+
+        // Get current user
+        const user = readUser();
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+
+        // Update username
+        user.username = username;
+        writeUser(user);
+
+        res.json({
+            success: true,
+            message: 'Username updated successfully',
+            username: user.username
+        });
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ message: 'Failed to update profile' });
+    }
+});
+
+// Upload profile picture - requires authentication
+authRoute.post('/profile-picture', [authenticateToken], upload.single('profilePicture'), async (req: Request, res: Response) => {
+    try {
+        if (!req.file) {
+            res.status(400).json({ message: 'No file uploaded' });
+            return;
+        }
+
+        // Get current user
+        const user = readUser();
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+
+        // Delete old profile picture if it exists
+        if (user.profilePicture) {
+            const oldPicturePath = path.join(process.cwd(), 'public', user.profilePicture);
+            if (fs.existsSync(oldPicturePath)) {
+                try {
+                    fs.unlinkSync(oldPicturePath);
+                } catch (err) {
+                    console.error('Error deleting old profile picture:', err);
+                }
+            }
+        }
+
+        // Update user with new profile picture path
+        user.profilePicture = `/uploads/profile/${req.file.filename}`;
+        writeUser(user);
+
+        res.json({
+            success: true,
+            message: 'Profile picture uploaded successfully',
+            profilePicture: user.profilePicture
+        });
+    } catch (error) {
+        console.error('Error uploading profile picture:', error);
+        res.status(500).json({ message: 'Failed to upload profile picture' });
     }
 });
 
 // Refresh token route
 authRoute.post('/refresh', async (req: Request, res: Response) => {
     try {
-        console.log('Refresh token request received');
-
         // Get refresh token from cookie
         const refreshToken = req.cookies?.refresh_token;
 
         if (!refreshToken) {
-            console.log('No refresh token in cookies');
-            // Don't send a 400 error, just indicate no refresh needed
-            res.status(204).end(); // 204 No Content - request processed but no content to return
+            res.status(204).end();
             return;
         }
 
@@ -214,7 +397,7 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
             const now = new Date();
             const timeLeft = expirationDate.getTime() - now.getTime();
             const minutesLeft = Math.floor(timeLeft / (1000 * 60));
-            console.log(`Token expiration date: ${expirationDate.toISOString()}, ${minutesLeft} minutes left`);
+            console.log(`Token expiration: ${expirationDate.toISOString()}, ${minutesLeft} minutes left`);
         }
 
         // Verify refresh token
@@ -223,14 +406,11 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
 
         try {
             decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET) as { username: string };
-            console.log('Refresh token verified for username');
         } catch (err: any) {
             tokenExpired = err.name === 'TokenExpiredError';
-            console.log('Token verification failed:', err.name, err.message);
 
             if (tokenExpired) {
-                console.log('Refresh token expired, clearing cookies');
-                // Clear the cookies with all necessary options
+                // Clear cookies
                 res.clearCookie('access_token', {
                     httpOnly: true,
                     secure: false,
@@ -245,7 +425,6 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
                     path: '/'
                 });
 
-                console.log('Cookies cleared on server due to expired token');
                 res.status(401).json({ message: 'Refresh token expired' });
             } else {
                 res.status(401).json({ message: 'Invalid refresh token' });
@@ -253,41 +432,10 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
             return;
         }
 
-        // Find user with this refresh token
-        const users = readUsers();
-        const userIndex = users.findIndex(user =>
-            user.username === decoded.username &&
-            user.refreshTokens?.includes(refreshToken)
-        );
-
-        if (userIndex === -1) {
-            console.log('Refresh token not found in user record');
-
-            // Check if the user exists at all
-            const userExists = users.some(user => user.username === decoded.username);
-            if (userExists) {
-                console.log('User exists but token is not in their refresh token list. Possible token reuse or database modification.');
-            } else {
-                console.log('User does not exist in database. User may have been deleted or database reset.');
-            }
-
-            // If token is not found, clean up any potentially invalid tokens
-            if (refreshToken) {
-                // Find and remove the refresh token
-                const updatedUsers = users.map(user => {
-                    if (user.refreshTokens?.includes(refreshToken)) {
-                        return {
-                            ...user,
-                            refreshTokens: user.refreshTokens.filter(token => token !== refreshToken)
-                        };
-                    }
-                    return user;
-                });
-
-                writeUsers(updatedUsers);
-            }
-
-            // Clear the cookies with all necessary options
+        // Get user and verify refresh token
+        const user = readUser();
+        if (!user || !user.refreshTokens?.includes(refreshToken)) {
+            // Clear cookies
             res.clearCookie('access_token', {
                 httpOnly: true,
                 secure: false,
@@ -302,17 +450,12 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
                 path: '/'
             });
 
-            console.log('Cookies cleared on server due to token not found in user record');
-
-            // Send response AFTER clearing cookies, not before
             res.status(401).json({ message: 'Refresh token not found' });
             return;
         }
 
-        console.log('Found valid refresh token for user');
-
         // Generate new access token
-        const newAccessToken = generateAccessToken(decoded.username, users[userIndex].role);
+        const newAccessToken = generateAccessToken(user.username);
 
         // Set the new access token cookie
         res.cookie('access_token', newAccessToken, {
@@ -324,7 +467,7 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
         });
 
         // Generate and set new refresh token
-        const newRefreshToken = generateRefreshToken(decoded.username);
+        const newRefreshToken = generateRefreshToken(user.username);
         res.cookie('refresh_token', newRefreshToken, {
             httpOnly: true,
             secure: false,
@@ -333,27 +476,14 @@ authRoute.post('/refresh', async (req: Request, res: Response) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-        // Update the user's refresh tokens in the database
-        const updatedUsers = users.map(user => {
-            if (user.username === decoded.username) {
-                return {
-                    ...user,
-                    refreshTokens: [
-                        ...(user.refreshTokens?.filter(token => token !== refreshToken) || []),
-                        newRefreshToken
-                    ]
-                };
-            }
-            return user;
-        });
-        writeUsers(updatedUsers);
+        // Update user's refresh tokens
+        user.refreshTokens = user.refreshTokens.filter(token => token !== refreshToken);
+        user.refreshTokens.push(newRefreshToken);
+        writeUser(user);
 
-        console.log('New access token set successfully for user');
-
-        // Return success message with user role information
         res.json({
             message: 'Token refreshed successfully',
-            isAdmin: users[userIndex].role === 'admin'
+            isAdmin: true // Single user is always admin
         });
     } catch (error) {
         console.error('Refresh token error:', error);
@@ -368,31 +498,15 @@ authRoute.post('/logout', (req: Request, res: Response) => {
         const refreshToken = req.cookies?.refresh_token;
 
         if (refreshToken) {
-            console.log('Logout request with valid refresh token');
-            // Find and remove the refresh token
-            const users = readUsers();
-
-            const updatedUsers = users.map(user => {
-                if (user.refreshTokens?.includes(refreshToken)) {
-                    console.log('Removing refresh token from user:', user.username);
-                    return {
-                        ...user,
-                        refreshTokens: user.refreshTokens.filter(token => token !== refreshToken)
-                    };
-                }
-                return user;
-            });
-
-            writeUsers(updatedUsers);
-        } else {
-            // If no refresh token is provided, it might be a request from a service
-            // Don't clear cookies in this case to avoid disrupting service auth
-            console.log('Logout request without refresh token - not clearing cookies');
-            res.json({ message: 'No session to logout' });
-            return;
+            // Remove the refresh token from user
+            const user = readUser();
+            if (user && user.refreshTokens) {
+                user.refreshTokens = user.refreshTokens.filter(token => token !== refreshToken);
+                writeUser(user);
+            }
         }
 
-        // Clear cookies with identical settings to how they were set
+        // Clear cookies
         res.clearCookie('access_token', {
             httpOnly: true,
             secure: false,
@@ -418,7 +532,6 @@ authRoute.post('/logout', (req: Request, res: Response) => {
             path: '/'
         });
 
-        console.log('Auth cookies cleared by server');
         res.json({ message: 'Logged out successfully' });
     } catch (error) {
         console.error('Logout error:', error);
@@ -426,11 +539,11 @@ authRoute.post('/logout', (req: Request, res: Response) => {
     }
 });
 
-// Check if any users exist in the system
-authRoute.get('/check-users', (req: Request, res: Response) => {
+// Check if any users exist in the system (for backward compatibility)
+authRoute.get('/check-users', (_req: Request, res: Response) => {
     try {
-        const users = readUsers();
-        const hasUsers = users.length > 0;
+        const user = readUser();
+        const hasUsers = user !== null;
 
         res.json({ hasUsers });
     } catch (error) {
@@ -439,19 +552,18 @@ authRoute.get('/check-users', (req: Request, res: Response) => {
     }
 });
 
-// Check if the current user is an admin
-authRoute.get('/check-admin', [authenticateToken], (req: Request, res: Response) => {
+// Check if the current user is an admin (always true for single user)
+authRoute.get('/check-admin', [authenticateToken], (_req: Request, res: Response) => {
     try {
-        const isAdmin = req.user?.role === 'admin';
-        res.json({ isAdmin });
+        res.json({ isAdmin: true });
     } catch (error) {
         console.error('Error checking admin status:', error);
         res.status(500).json({ message: 'Failed to check admin status' });
     }
 });
 
+// Check cookies (for debugging)
 authRoute.get('/check-cookies', (req: Request, res: Response) => {
-    // console.log('Cookies received:', req.cookies);
     res.json({
         cookies: req.cookies,
         hasAccessToken: !!req.cookies.access_token,
@@ -463,16 +575,10 @@ authRoute.get('/check-cookies', (req: Request, res: Response) => {
 authRoute.post('/change-password', [authenticateToken], async (req: Request, res: Response) => {
     try {
         const { currentPassword, newPassword, confirmPassword } = req.body;
-        const username = req.user?.username;
 
         // Validate input
         if (!currentPassword || !newPassword || !confirmPassword) {
             res.status(400).json({ message: 'All fields are required' });
-            return;
-        }
-
-        if (!username) {
-            res.status(401).json({ message: 'User not authenticated' });
             return;
         }
 
@@ -482,23 +588,21 @@ authRoute.post('/change-password', [authenticateToken], async (req: Request, res
             return;
         }
 
-        // Validate new password strength (at least 8 characters)
+        // Validate new password strength
         if (newPassword.length < 8) {
             res.status(400).json({ message: 'New password must be at least 8 characters long' });
             return;
         }
 
-        // Find the user
-        const users = readUsers();
-        const userIndex = users.findIndex(user => user.username === username);
-
-        if (userIndex === -1) {
+        // Get the user
+        const user = readUser();
+        if (!user) {
             res.status(404).json({ message: 'User not found' });
             return;
         }
 
         // Verify current password
-        const passwordMatch = await bcrypt.compare(currentPassword, users[userIndex].passwordHash);
+        const passwordMatch = await bcrypt.compare(currentPassword, user.passwordHash);
 
         if (!passwordMatch) {
             res.status(401).json({ message: 'Current password is incorrect' });
@@ -510,10 +614,10 @@ authRoute.post('/change-password', [authenticateToken], async (req: Request, res
         const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
 
         // Update the password
-        users[userIndex].passwordHash = newPasswordHash;
-        writeUsers(users);
+        user.passwordHash = newPasswordHash;
+        writeUser(user);
 
-        console.log(`Password changed successfully for user: ${username}`);
+        console.log(`Password changed successfully for user: ${user.username}`);
         res.json({ message: 'Password changed successfully' });
     } catch (error) {
         console.error('Change password error:', error);

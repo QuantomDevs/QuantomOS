@@ -313,13 +313,15 @@ export const AppContextProvider = ({ children }: Props) => {
         }
     };
 
-    // Check if users exist in the system
+    // Check if system is initialized (user exists)
     const checkIfUsersExist = async () => {
         try {
-            const hasUsers = await DashApi.checkIfUsersExist();
-            setIsFirstTimeSetup(!hasUsers);
+            const response = await fetch('/api/auth/initialized');
+            const data = await response.json();
+            const initialized = data.initialized;
+            setIsFirstTimeSetup(!initialized);
         } catch (error) {
-            console.error('Error checking for existing users:', error);
+            console.error('Error checking initialization status:', error);
             // If there's an error, assume it's not first time setup
             setIsFirstTimeSetup(false);
         }

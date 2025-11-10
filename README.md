@@ -29,6 +29,7 @@
 - [Development](#development)
   - [Local Development](#local-development)
   - [Code Style and Conventions](#code-style-and-conventions)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
@@ -384,17 +385,17 @@ QuantomOS supports custom widgets through a JSON-based extension system. Extensi
 
 **Documentation**:
 
-Comprehensive extension development documentation is available in `/extensions/docs/`:
+Comprehensive extension development documentation is available in `/docs/extensions/`:
 
-- [Extension Development Guide](./extensions/docs/extension-development-guide.md) - Getting started
-- [Extension Structure](./extensions/docs/extension-structure.md) - JSON schema and required fields
-- [Settings Reference](./extensions/docs/settings-reference.md) - All available setting types
-- [Template System](./extensions/docs/template-system.md) - Dynamic content with placeholders
-- [Shadow DOM Guide](./extensions/docs/shadow-dom-guide.md) - Style isolation and theming
-- [Best Practices](./extensions/docs/best-practices.md) - Code quality and performance
-- [Examples](./extensions/docs/examples.md) - Complete extension examples
-- [Troubleshooting](./extensions/docs/troubleshooting.md) - Common issues and solutions
-- [API Reference](./extensions/docs/api-reference.md) - Available APIs and utilities
+- [Extension Development Guide](./docs/extensions/extension-development-guide.md) - Getting started
+- [Extension Structure](./docs/extensions/extension-structure.md) - JSON schema and required fields
+- [Settings Reference](./docs/extensions/settings-reference.md) - All available setting types
+- [Template System](./docs/extensions/template-system.md) - Dynamic content with placeholders
+- [Shadow DOM Guide](./docs/extensions/shadow-dom-guide.md) - Style isolation and theming
+- [Best Practices](./docs/extensions/best-practices.md) - Code quality and performance
+- [Examples](./docs/extensions/examples.md) - Complete extension examples
+- [Troubleshooting](./docs/extensions/troubleshooting.md) - Common issues and solutions
+- [API Reference](./docs/extensions/api-reference.md) - Available APIs and utilities
 
 ---
 
@@ -432,6 +433,38 @@ npm run build        # Build both backend and frontend
 npm run lint         # Lint both backend and frontend
 npm install          # Install dependencies (runs preinstall script)
 ```
+
+---
+
+## Documentation
+
+Comprehensive documentation is available in the `/docs` directory:
+
+### Getting Started
+- [Prerequisites](./docs/getting-started/01-prerequisites.md) - System requirements and dependencies
+- [Installation](./docs/getting-started/02-installation.md) - Docker, manual, and PM2 installation guides
+- [Configuration](./docs/getting-started/03-configuration.md) - Environment setup and configuration options
+
+### User Guide
+- [Dashboard Basics](./docs/user-guide/01-dashboard-basics.md) - Learn to use the dashboard
+- [Widgets Guide](./docs/user-guide/02-widgets/) - Complete widget documentation
+- [Settings](./docs/user-guide/03-settings.md) - Customize your dashboard
+
+### Developer Guide
+- [Introduction](./docs/developer-guide/01-introduction.md) - Architecture and development overview
+- [Extension Structure](./docs/developer-guide/02-extension-structure.md) - Create custom widgets
+- [API Reference](./docs/developer-guide/03-api-reference.md) - Frontend and backend APIs
+- [Theming Guide](./docs/developer-guide/04-theming-guide.md) - Customize colors and styles
+
+### Contributing
+- [How to Contribute](./docs/contributing/01-how-to-contribute.md) - Contribution guidelines
+- [Code of Conduct](./docs/contributing/02-code-of-conduct.md) - Community standards
+- [Development Setup](./docs/contributing/03-development-setup.md) - Setup your dev environment
+
+### Extensions
+- [Extension Development](./docs/extensions/) - Complete extension development documentation
+
+For a complete overview, visit the [Documentation Home](./docs/README.md).
 
 ---
 
