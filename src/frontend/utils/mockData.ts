@@ -137,6 +137,67 @@ export const getMockDataForWidget = (widgetType: string): any => {
             showLabel: true
         };
 
+    case ITEM_TYPE.IFRAME_WIDGET:
+        return {
+            url: 'https://example.com',
+            interactive: true,
+            displayName: 'Iframe Preview',
+            showLabel: true
+        };
+
+    case ITEM_TYPE.VIDEO_STREAM_WIDGET:
+        return {
+            feedUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+            autoplay: true,
+            muted: true,
+            showControls: false,
+            displayName: 'Video Stream Preview',
+            showLabel: true
+        };
+
+    case ITEM_TYPE.CALENDAR_WIDGET:
+        return {
+            enableIcal: true,
+            icalUrl: 'https://calendar.google.com/calendar/ical/...',
+            displayName: 'Calendar Preview',
+            showLabel: true,
+            events: [
+                {
+                    id: '1',
+                    title: 'Team Meeting',
+                    start: new Date(),
+                    end: new Date(Date.now() + 3600000),
+                    description: 'Weekly team sync',
+                    allDay: false
+                },
+                {
+                    id: '2',
+                    title: 'Project Deadline',
+                    start: new Date(Date.now() + 86400000),
+                    end: new Date(Date.now() + 86400000),
+                    description: 'Submit final deliverables',
+                    allDay: true
+                }
+            ]
+        };
+
+    case ITEM_TYPE.BOOKMARKS_WIDGET:
+        return {
+            title: 'My Bookmarks',
+            layout: 'vertical',
+            hideTitle: false,
+            hideIcons: false,
+            hideHostnames: false,
+            openInNewTab: true,
+            displayName: 'Bookmarks Preview',
+            showLabel: true,
+            bookmarks: [
+                { id: '1', name: 'Google', url: 'https://google.com' },
+                { id: '2', name: 'GitHub', url: 'https://github.com' },
+                { id: '3', name: 'Stack Overflow', url: 'https://stackoverflow.com' }
+            ]
+        };
+
     default:
         return null;
     }

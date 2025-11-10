@@ -111,8 +111,8 @@ export const SettingsModal: React.FC = () => {
         >
             <Box
                 sx={{
-                    width: 'min(90vw, 1200px)',
-                    height: 'min(85vh, 800px)',
+                    width: 'min(92vw, 1300px)',
+                    height: 'min(88vh, 850px)',
                     backgroundColor: 'var(--color-background)',
                     border: '2px solid var(--color-border)',
                     borderRadius: '1rem',

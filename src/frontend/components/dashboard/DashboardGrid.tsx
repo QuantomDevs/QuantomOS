@@ -31,6 +31,10 @@ import { SortableSystemMonitorWidget } from './sortable-items/widgets/SortableSy
 import { SortableTransmission } from './sortable-items/widgets/SortableTransmission';
 import { SortableWeatherWidget } from './sortable-items/widgets/SortableWeather';
 import { SortableCustomExtension } from './sortable-items/widgets/SortableCustomExtension';
+import { SortableIframeWidget } from './sortable-items/widgets/SortableIframe';
+import { SortableVideoStreamWidget } from './sortable-items/widgets/SortableVideoStream';
+import { SortableCalendarWidget } from './sortable-items/widgets/SortableCalendar';
+import { SortableBookmarksWidget } from './sortable-items/widgets/SortableBookmarks';
 import { theme } from '../../theme/theme';
 import { GRID_CONFIG } from '../../config/gridConfig';
 import { getDefaultHeight, getDefaultWidth, getWidgetConstraints } from '../../utils/gridPositioning';
@@ -447,6 +451,46 @@ export const DashboardGrid: React.FC = () => {
             return <BlankAppShortcut key={item.id} id={item.id} editMode={editMode} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         case ITEM_TYPE.BLANK_ROW:
             return <BlankWidget key={item.id} id={item.id} label={item.label} editMode={editMode} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} row/>;
+        case ITEM_TYPE.IFRAME_WIDGET:
+            return <SortableIframeWidget
+                key={item.id}
+                id={item.id}
+                editMode={editMode}
+                config={item.config}
+                onDelete={() => handleDelete(item.id)}
+                onEdit={() => handleEdit(item)}
+                onDuplicate={() => handleDuplicate(item)}
+            />;
+        case ITEM_TYPE.VIDEO_STREAM_WIDGET:
+            return <SortableVideoStreamWidget
+                key={item.id}
+                id={item.id}
+                editMode={editMode}
+                config={item.config}
+                onDelete={() => handleDelete(item.id)}
+                onEdit={() => handleEdit(item)}
+                onDuplicate={() => handleDuplicate(item)}
+            />;
+        case ITEM_TYPE.CALENDAR_WIDGET:
+            return <SortableCalendarWidget
+                key={item.id}
+                id={item.id}
+                editMode={editMode}
+                config={item.config}
+                onDelete={() => handleDelete(item.id)}
+                onEdit={() => handleEdit(item)}
+                onDuplicate={() => handleDuplicate(item)}
+            />;
+        case ITEM_TYPE.BOOKMARKS_WIDGET:
+            return <SortableBookmarksWidget
+                key={item.id}
+                id={item.id}
+                editMode={editMode}
+                config={item.config}
+                onDelete={() => handleDelete(item.id)}
+                onEdit={() => handleEdit(item)}
+                onDuplicate={() => handleDuplicate(item)}
+            />;
         default:
             return <BlankWidget key={item.id} id={item.id} label={item.label} editMode={editMode} onDelete={() => handleDelete(item.id)} onEdit={() => handleEdit(item)} onDuplicate={() => handleDuplicate(item)} />;
         }

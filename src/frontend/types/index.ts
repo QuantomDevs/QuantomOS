@@ -19,6 +19,11 @@ export enum ITEM_TYPE {
     CUSTOM_EXTENSION = 'custom-extension',
     APP_SHORTCUT = 'app-shortcut',
     PLACEHOLDER = 'placeholder',
+    // New widgets - Phase 1.15
+    IFRAME_WIDGET = 'iframe-widget',
+    VIDEO_STREAM_WIDGET = 'video-stream-widget',
+    CALENDAR_WIDGET = 'calendar-widget',
+    BOOKMARKS_WIDGET = 'bookmarks-widget',
     // Legacy placeholder types - keeping for backward compatibility
     BLANK_APP = 'blank-app',
     BLANK_WIDGET = 'blank-widget',
@@ -106,6 +111,10 @@ export type Config = {
     pages?: Page[];
     title?: string;
     backgroundImage?: string;
+    background?: {
+        type: 'image' | 'color';
+        value: string;
+    };
     search?: boolean;
     searchProvider?: SearchProvider;
     showInternetIndicator?: boolean;

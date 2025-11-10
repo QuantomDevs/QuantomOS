@@ -1,11 +1,14 @@
 import { UseFormReturn } from 'react-hook-form';
 
 import { AdGuardWidgetConfig } from './AdGuardWidgetConfig';
+import { BookmarksWidgetConfig } from './BookmarksWidgetConfig';
+import { CalendarWidgetConfig } from './CalendarWidgetConfig';
 import { DateTimeWidgetConfig } from './DateTimeWidgetConfig';
 import { DiskMonitorWidgetConfig } from './DiskMonitorWidgetConfig';
 import { DownloadClientWidgetConfig } from './DownloadClientWidgetConfig';
 import { DualWidgetConfig } from './DualWidgetConfig';
 import { GroupWidgetConfig } from './GroupWidgetConfig';
+import { IframeWidgetConfig } from './IframeWidgetConfig';
 import { MediaRequestManagerWidgetConfig } from './MediaRequestManagerWidgetConfig';
 import { MediaServerWidgetConfig } from './MediaServerWidgetConfig';
 import { NotesWidgetConfig } from './NotesWidgetConfig';
@@ -13,6 +16,7 @@ import { PiholeWidgetConfig } from './PiholeWidgetConfig';
 import { RadarrWidgetConfig } from './RadarrWidgetConfig';
 import { SonarrWidgetConfig } from './SonarrWidgetConfig';
 import { SystemMonitorWidgetConfig } from './SystemMonitorWidgetConfig';
+import { VideoStreamWidgetConfig } from './VideoStreamWidgetConfig';
 import { WeatherWidgetConfig } from './WeatherWidgetConfig';
 import { DashboardItem, ITEM_TYPE } from '../../../types';
 import { FormValues } from '../AddEditForm/types';
@@ -55,6 +59,15 @@ export const WidgetConfig = ({ formContext, widgetType, existingItem }: WidgetCo
         return <SonarrWidgetConfig formContext={formContext} />;
     case ITEM_TYPE.RADARR_WIDGET:
         return <RadarrWidgetConfig formContext={formContext} />;
+    // New widgets - Phase 1.15
+    case ITEM_TYPE.IFRAME_WIDGET:
+        return <IframeWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.VIDEO_STREAM_WIDGET:
+        return <VideoStreamWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.CALENDAR_WIDGET:
+        return <CalendarWidgetConfig formContext={formContext} />;
+    case ITEM_TYPE.BOOKMARKS_WIDGET:
+        return <BookmarksWidgetConfig formContext={formContext} />;
     default:
         return null;
     }

@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaTrashCan, FaUpload } from 'react-icons/fa6';
 
@@ -131,9 +131,11 @@ const ImagePreviewCard = ({ image, onDelete, formatFileSize }: {
 };
 
 export const BackgroundIconsSettings: React.FC = () => {
-    const { updateConfig } = useAppContext();
+    const { updateConfig, config } = useAppContext();
     const [uploadedImages, setUploadedImages] = useState<any[]>([]);
     const [loadingImages, setLoadingImages] = useState(false);
+    const [backgroundType, setBackgroundType] = useState<'image' | 'color'>('image');
+    const [backgroundColor, setBackgroundColor] = useState<string>('#1a1a1a');
     const backgroundFileInputRef = useRef<HTMLInputElement>(null);
     const iconFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -280,6 +282,57 @@ export const BackgroundIconsSettings: React.FC = () => {
         loadUploadedImages();
     }, []);
 
+    // Initialize background type and color from config
+    useEffect(() => {
+        if (config?.background) {
+            setBackgroundType(config.background.type);
+            setBackgroundColor(config.background.value);
+        } else {
+            // Default to image if no background config exists
+            setBackgroundType('image');
+        }
+    }, [config]);
+
+    // Handle background type toggle
+    const handleBackgroundTypeChange = async (_event: React.MouseEvent<HTMLElement>, newType: 'image' | 'color' | null) => {
+        if (newType === null) return; // Prevent deselection
+
+        setBackgroundType(newType);
+
+        try {
+            await updateConfig({
+                background: {
+                    type: newType,
+                    value: newType === 'color' ? backgroundColor : (config?.backgroundImage || '')
+                }
+            });
+            ToastManager.success(`Switched to ${newType === 'image' ? 'background image' : 'background color'} mode`);
+        } catch (error) {
+            console.error('Error updating background type:', error);
+            ToastManager.error('Failed to update background type');
+        }
+    };
+
+    // Handle background color change
+    const handleBackgroundColorChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newColor = event.target.value;
+        setBackgroundColor(newColor);
+
+        try {
+            await updateConfig({
+                background: {
+                    type: 'color',
+                    value: newColor
+                }
+            });
+            // Apply the color to the CSS variable immediately
+            document.documentElement.style.setProperty('--color-background', newColor);
+        } catch (error) {
+            console.error('Error updating background color:', error);
+            ToastManager.error('Failed to update background color');
+        }
+    };
+
     return (
         <Box>
             <Typography variant='h6' sx={{ mb: 3, fontWeight: 600 }}>
@@ -287,36 +340,105 @@ export const BackgroundIconsSettings: React.FC = () => {
             </Typography>
 
             <Typography variant='body2' sx={{ mb: 4, opacity: 0.8 }}>
-                Set your dashboard background image and upload custom app icons. All changes are saved automatically.
+                Set your dashboard background image or color, and upload custom app icons. All changes are saved automatically.
             </Typography>
 
-            {/* Background Image Upload */}
+            {/* Background Type Toggle */}
             <Box sx={{ mb: 3 }}>
-                <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
-                    Background Image
+                <Typography variant='body2' sx={{ mb: 1.5, fontWeight: 500 }}>
+                    Background Type
                 </Typography>
-                <Typography variant='caption' sx={{ display: 'block', mb: 1.5, opacity: 0.7 }}>
-                    Upload a background image for your dashboard
-                </Typography>
-                <input
-                    type='file'
-                    ref={backgroundFileInputRef}
-                    onChange={handleBackgroundUpload}
-                    accept='image/*'
-                    style={{ display: 'none' }}
-                />
-                <Button
-                    variant='contained'
-                    startIcon={<FaUpload />}
-                    onClick={() => backgroundFileInputRef.current?.click()}
+                <ToggleButtonGroup
+                    value={backgroundType}
+                    exclusive
+                    onChange={handleBackgroundTypeChange}
                     sx={{
-                        textTransform: 'none',
-                        fontWeight: 500
+                        mb: 2,
+                        '& .MuiToggleButton-root': {
+                            color: 'var(--color-primary-text)',
+                            borderColor: 'var(--color-border)',
+                            textTransform: 'none',
+                            fontWeight: 500,
+                            '&.Mui-selected': {
+                                backgroundColor: 'var(--color-primary-accent)',
+                                color: 'var(--color-primary-text)',
+                                '&:hover': {
+                                    backgroundColor: 'var(--color-secondary-accent)',
+                                }
+                            },
+                            '&:hover': {
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            }
+                        }
                     }}
                 >
-                    Upload Background
-                </Button>
+                    <ToggleButton value='image'>
+                        Background Image
+                    </ToggleButton>
+                    <ToggleButton value='color'>
+                        Background Color
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </Box>
+
+            {/* Background Color Picker - Only show when color mode is active */}
+            {backgroundType === 'color' && (
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
+                        Background Color
+                    </Typography>
+                    <Typography variant='caption' sx={{ display: 'block', mb: 1.5, opacity: 0.7 }}>
+                        Choose a solid color for your dashboard background
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <TextField
+                            type='color'
+                            value={backgroundColor}
+                            onChange={handleBackgroundColorChange}
+                            sx={{
+                                width: '100px',
+                                '& input': {
+                                    height: '50px',
+                                    cursor: 'pointer'
+                                }
+                            }}
+                        />
+                        <Typography variant='body2' sx={{ fontFamily: 'monospace' }}>
+                            {backgroundColor}
+                        </Typography>
+                    </Box>
+                </Box>
+            )}
+
+            {/* Background Image Upload - Only show when image mode is active */}
+            {backgroundType === 'image' && (
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant='body2' sx={{ mb: 1, fontWeight: 500 }}>
+                        Background Image
+                    </Typography>
+                    <Typography variant='caption' sx={{ display: 'block', mb: 1.5, opacity: 0.7 }}>
+                        Upload a background image for your dashboard
+                    </Typography>
+                    <input
+                        type='file'
+                        ref={backgroundFileInputRef}
+                        onChange={handleBackgroundUpload}
+                        accept='image/*'
+                        style={{ display: 'none' }}
+                    />
+                    <Button
+                        variant='contained'
+                        startIcon={<FaUpload />}
+                        onClick={() => backgroundFileInputRef.current?.click()}
+                        sx={{
+                            textTransform: 'none',
+                            fontWeight: 500
+                        }}
+                    >
+                        Upload Background
+                    </Button>
+                </Box>
+            )}
 
             {/* App Icons Upload */}
             <Box sx={{ mb: 3 }}>

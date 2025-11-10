@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { nanoid } from 'nanoid';
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -21,15 +21,18 @@ import { COLORS, styles } from '../../theme/styles';
 import { theme } from '../../theme/theme';
 import { DashboardItem, ITEM_TYPE } from '../../types';
 import { getAppVersion } from '../../utils/version';
-import { AddEditForm } from '../forms/AddEditForm/AddEditForm';
 import { Logo } from '../Logo';
 import { CenteredModal } from '../modals/CenteredModal';
-import { SettingsModal } from '../modals/SettingsModal';
 import { UpdateModal } from '../modals/UpdateModal';
 import { VersionModal } from '../modals/VersionModal';
 import { GlobalSearch } from '../search/GlobalSearch';
 import { ToastManager } from '../toast/ToastManager';
 import { UserDropdownMenu } from '../header/UserDropdownMenu';
+import { LoadingSpinner } from '../common/LoadingSpinner';
+
+// Lazy-load heavy components
+const AddEditForm = lazy(() => import('../forms/AddEditForm/AddEditForm').then(module => ({ default: module.AddEditForm })));
+const SettingsModal = lazy(() => import('../modals/SettingsModal').then(module => ({ default: module.SettingsModal })));
 
 type Props = {
     children: React.ReactNode;
@@ -499,22 +502,26 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                     </Toolbar>
                 </Container>
                 <CenteredModal open={openAddModal} handleClose={handleClose} title='Add Item'>
-                    <AddEditForm handleClose={handleClose}/>
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <AddEditForm handleClose={handleClose}/>
+                    </Suspense>
                 </CenteredModal>
                 <CenteredModal open={openEditPageModal} handleClose={handleCloseEditPage} title='Edit Page'>
-                    <AddEditForm
-                        handleClose={handleCloseEditPage}
-                        existingItem={selectedPageForEdit ? {
-                            id: selectedPageForEdit.id,
-                            type: ITEM_TYPE.PAGE,
-                            label: selectedPageForEdit.name,
-                            url: '',
-                            icon: undefined,
-                            config: {},
-                            adminOnly: selectedPageForEdit.adminOnly || false
-                        } : null}
-                        onSubmit={handlePageUpdate}
-                    />
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <AddEditForm
+                            handleClose={handleCloseEditPage}
+                            existingItem={selectedPageForEdit ? {
+                                id: selectedPageForEdit.id,
+                                type: ITEM_TYPE.PAGE,
+                                label: selectedPageForEdit.name,
+                                url: '',
+                                icon: undefined,
+                                config: {},
+                                adminOnly: selectedPageForEdit.adminOnly || false
+                            } : null}
+                            onSubmit={handlePageUpdate}
+                        />
+                    </Suspense>
                 </CenteredModal>
                 {/* Update Modal - Replaced with component */}
                 <UpdateModal
@@ -529,7 +536,9 @@ export const ResponsiveAppBar = ({ children }: Props) => {
                     handleClose={handleCloseVersionModal}
                 />
                 {/* Settings Modal */}
-                <SettingsModal />
+                <Suspense fallback={null}>
+                    <SettingsModal />
+                </Suspense>
             </AppBar>
             <Box sx={{
                 display: 'flex',

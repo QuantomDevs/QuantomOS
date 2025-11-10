@@ -152,6 +152,26 @@ export type FormValues = {
     bottom_adguardPassword?: string;
     bottom_adguardName?: string;
     bottom_showLabel?: boolean;
+    // Iframe widget
+    interactive?: boolean;
+
+    // Video Stream widget
+    feedUrl?: string;
+    autoplay?: boolean;
+    muted?: boolean;
+    showControls?: boolean;
+
+    // Calendar widget
+    enableIcal?: boolean;
+    icalUrl?: string;
+
+    // Bookmarks widget
+    title?: string;
+    hideTitle?: boolean;
+    hideIcons?: boolean;
+    hideHostnames?: boolean;
+    bookmarks?: Array<{ id: string; name: string; url: string; icon?: string }>;
+
     // Other fields
     adminOnly?: boolean;
     isWol?: boolean;

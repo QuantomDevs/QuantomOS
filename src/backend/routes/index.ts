@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { adguardRoute } from './adguard.route';
 import { appShortcutRoute } from './app-shortcut.route';
 import { authRoute } from './auth.route';
+import { calendarRoute } from './calendar.route';
 import { configRoute } from './config.route';
 import { delugeRoute } from './deluge.route';
 import { extensionsRoute } from './extensions.route';
@@ -63,6 +64,9 @@ router.use('/widgets', apiLimiter, widgetsRoute);
 
 // Notes routes
 router.use('/notes', apiLimiter, notesRoute);
+
+// Calendar routes
+router.use('/calendar', apiLimiter, calendarRoute);
 
 // Torrent client routes
 router.use('/qbittorrent', torrentApiLimiter, qbittorrentRoute);

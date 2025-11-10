@@ -5,8 +5,11 @@ import {
     Widgets as WidgetIcon
 } from '@mui/icons-material';
 import {
+    FaBookmark,
+    FaCalendar,
     FaClock,
     FaCloudSun,
+    FaDesktop,
     FaDownload,
     FaFilm,
     FaHdd,
@@ -29,6 +32,18 @@ export const WIDGET_OPTIONS = [
         label: 'AdGuard Home',
         icon: FaShieldAlt,
         description: 'Monitor AdGuard Home DNS blocking statistics'
+    },
+    {
+        id: ITEM_TYPE.BOOKMARKS_WIDGET,
+        label: 'Bookmarks',
+        icon: FaBookmark,
+        description: 'Quick access to your favorite websites and applications'
+    },
+    {
+        id: ITEM_TYPE.CALENDAR_WIDGET,
+        label: 'Calendar',
+        icon: FaCalendar,
+        description: 'Monthly calendar view with iCal integration support'
     },
     {
         id: ITEM_TYPE.DATE_TIME_WIDGET,
@@ -60,6 +75,12 @@ export const WIDGET_OPTIONS = [
         label: 'Group',
         icon: FaLayerGroup,
         description: 'Group multiple shortcuts together in a container'
+    },
+    {
+        id: ITEM_TYPE.IFRAME_WIDGET,
+        label: 'Iframe',
+        icon: FaDesktop,
+        description: 'Embed external web content and applications'
     },
     {
         id: ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET,
@@ -102,6 +123,12 @@ export const WIDGET_OPTIONS = [
         label: 'System Monitor',
         icon: FaMicrochip,
         description: 'Monitor CPU, RAM, temperature, network speed and more'
+    },
+    {
+        id: ITEM_TYPE.VIDEO_STREAM_WIDGET,
+        label: 'Video Stream',
+        icon: FaVideo,
+        description: 'Display video feeds and camera streams'
     },
     {
         id: ITEM_TYPE.WEATHER_WIDGET,
