@@ -1,34 +1,24 @@
-# Build (Backend)
-FROM node:lts-slim AS backend-build
+# Build Stage
+FROM node:lts-slim AS build
 
 WORKDIR /usr/src/app
-COPY ./backend ./
 
-# Check architecture and install Python 3 for ARM
-RUN apt-get update && \
-    ARCH=$(uname -m) && \
-    echo "Detected architecture: $ARCH" && \
-    if [ "$ARCH" = "armv7l" ] || [ "$ARCH" = "armhf" ] || [ "$ARCH" = "arm" ]; then \
-      echo "Installing Python 3 for ARM architecture" && \
-      apt-get install -y python3 python3-pip; \
-    else \
-      echo "Skipping Python 3 installation for architecture: $ARCH"; \
-    fi
+# Copy package files
+COPY package*.json ./
 
-RUN npm install --omit-optional
-RUN npm run build
-
-# Build (Frontend)
-FROM node:lts-slim AS frontend-build
-WORKDIR /usr/src/app
-# Copy root package.json for version access
-COPY ./package.json ../package.json
-COPY ./frontend ./
+# Install all dependencies (including devDependencies needed for build)
 RUN npm install
-ENV NODE_ENV=production
+
+# Copy source code and build configurations
+COPY src ./src
+COPY tsconfig*.json ./
+COPY esbuild.config.js ./
+COPY vite.config.ts ./
+
+# Build both backend and frontend
 RUN npm run build
 
-# Deploy (Backend)
+# Deploy Stage (Backend)
 FROM node:lts-slim AS backend-deploy
 
 WORKDIR /app
@@ -43,11 +33,17 @@ RUN apt-get update && \
     if [ "$ARCH" = "armv7l" ] || [ "$ARCH" = "armhf" ] || [ "$ARCH" = "arm" ]; then \
       echo "Installing Python 3 for ARM architecture" && \
       apt-get install -y python3 python3-pip; \
-    fi
+    fi && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-COPY --from=backend-build /usr/src/app/dist/config ../config
-COPY --from=backend-build /usr/src/app/dist/index.js ./
-COPY --from=backend-build /usr/src/app/dist/package.json ./
-COPY --from=frontend-build /usr/src/app/dist ./public
+# Copy built files from build stage
+COPY --from=build /usr/src/app/dist/backend/config ../config
+COPY --from=build /usr/src/app/dist/backend/index.js ./
+COPY --from=build /usr/src/app/dist/backend/package.json ./
+COPY --from=build /usr/src/app/dist/frontend ./public
+
+# Install only production dependencies
 RUN npm i --omit-dev --omit-optional
+
 CMD [ "node", "index.js" ]
