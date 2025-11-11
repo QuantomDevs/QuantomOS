@@ -358,41 +358,71 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                     vertical: 'top',
                     horizontal: 'center',
                 }}
+                slotProps={{
+                    backdrop: {
+                        sx: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.3)'
+                        }
+                    }
+                }}
                 PaperProps={{
                     sx: {
                         backgroundColor: 'var(--color-secondary-background)',
                         backgroundImage: 'none',
                         maxWidth: 300,
-                        maxHeight: 400
+                        maxHeight: 400,
+                        border: '1px solid var(--color-border)',
+                        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)'
                     }
                 }}
             >
                 <Box sx={{ p: 2 }}>
-                    <Typography variant="subtitle2" sx={{ color: 'var(--color-primary-text)', fontWeight: 600, mb: 1 }}>
-                        {selectedDate?.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                    </Typography>
-                    <List sx={{ p: 0 }}>
-                        {selectedDateEvents.map(event => (
-                            <ListItem key={event.id} sx={{ px: 0, py: 1, flexDirection: 'column', alignItems: 'flex-start' }}>
-                                <Typography variant="body2" sx={{ color: 'var(--color-primary-text)', fontWeight: 600 }}>
-                                    {event.title}
-                                </Typography>
-                                <Typography variant="caption" sx={{ color: 'var(--color-secondary-text)' }}>
-                                    {event.allDay ? 'All Day' : `${new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
-                                </Typography>
-                                {event.location && (
-                                    <Typography variant="caption" sx={{ color: 'var(--color-secondary-text)' }}>
-                                        📍 {event.location}
-                                    </Typography>
-                                )}
-                                {event.description && (
-                                    <Typography variant="caption" sx={{ color: 'var(--color-muted-text)', mt: 0.5 }}>
-                                        {event.description}
-                                    </Typography>
-                                )}
-                            </ListItem>
-                        ))}
-                    </List>
+                    {selectedDate && (
+                        <Typography variant="subtitle2" sx={{ color: 'var(--color-primary-text)', fontWeight: 600, mb: 1 }}>
+                            {selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                        </Typography>
+                    )}
+                    {selectedDateEvents.length > 0 ? (
+                        <List sx={{ p: 0 }}>
+                            {selectedDateEvents.map(event => {
+                                try {
+                                    return (
+                                        <ListItem key={event.id} sx={{ px: 0, py: 1, flexDirection: 'column', alignItems: 'flex-start', borderBottom: '1px solid var(--color-border)', '&:last-child': { borderBottom: 'none' } }}>
+                                            <Typography variant="body2" sx={{ color: 'var(--color-primary-text)', fontWeight: 600 }}>
+                                                {event.title || 'Untitled Event'}
+                                            </Typography>
+                                            <Typography variant="caption" sx={{ color: 'var(--color-secondary-text)' }}>
+                                                {event.allDay ? 'All Day' : `${new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                                            </Typography>
+                                            {event.location && (
+                                                <Typography variant="caption" sx={{ color: 'var(--color-secondary-text)', mt: 0.5 }}>
+                                                    📍 {event.location}
+                                                </Typography>
+                                            )}
+                                            {event.description && (
+                                                <Typography variant="caption" sx={{ color: 'var(--color-muted-text)', mt: 0.5, wordBreak: 'break-word' }}>
+                                                    {event.description}
+                                                </Typography>
+                                            )}
+                                        </ListItem>
+                                    );
+                                } catch (error) {
+                                    console.error('Error rendering event:', error, event);
+                                    return (
+                                        <ListItem key={event.id} sx={{ px: 0, py: 1 }}>
+                                            <Typography variant="caption" sx={{ color: 'var(--color-error)' }}>
+                                                Error displaying event
+                                            </Typography>
+                                        </ListItem>
+                                    );
+                                }
+                            })}
+                        </List>
+                    ) : (
+                        <Typography variant="body2" sx={{ color: 'var(--color-secondary-text)', textAlign: 'center', py: 2 }}>
+                            No events for this date
+                        </Typography>
+                    )}
                 </Box>
             </Popover>
         </Box>

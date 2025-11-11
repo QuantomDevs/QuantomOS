@@ -125,7 +125,7 @@ export const VideoStreamWidget: React.FC<VideoStreamWidgetProps> = ({ config, pr
                     position: 'relative',
                     width: '100%',
                     height: showLabel ? 'calc(100% - 48px)' : '100%',
-                    backgroundColor: '#000',
+                    backgroundColor: 'var(--color-secondary-background)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'

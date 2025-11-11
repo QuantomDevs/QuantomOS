@@ -28,7 +28,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
                                existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
                                existingItem?.type === ITEM_TYPE.GROUP_WIDGET ||
-                               existingItem?.type === ITEM_TYPE.CUSTOM_EXTENSION
+                               existingItem?.type === ITEM_TYPE.CUSTOM_EXTENSION ||
+                               existingItem?.type === ITEM_TYPE.IFRAME_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.CALENDAR_WIDGET ||
+                               existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET
             ? 'widget'
             : (existingItem?.type === ITEM_TYPE.BLANK_WIDGET ||
                existingItem?.type === ITEM_TYPE.BLANK_ROW ||
@@ -54,7 +58,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.NOTES_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.SONARR_WIDGET ||
-                                  existingItem?.type === ITEM_TYPE.RADARR_WIDGET
+                                  existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.IFRAME_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.CALENDAR_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET
             ? (existingItem?.type === ITEM_TYPE.TORRENT_CLIENT ? ITEM_TYPE.DOWNLOAD_CLIENT : existingItem?.type)
             : existingItem?.type === ITEM_TYPE.DUAL_WIDGET ||
                                     existingItem?.type === ITEM_TYPE.GROUP_WIDGET ||
@@ -70,7 +78,11 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
                                   existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.NOTES_WIDGET ||
                                   existingItem?.type === ITEM_TYPE.SONARR_WIDGET ||
-                                  existingItem?.type === ITEM_TYPE.RADARR_WIDGET)
+                                  existingItem?.type === ITEM_TYPE.RADARR_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.IFRAME_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.CALENDAR_WIDGET ||
+                                  existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET)
             ? (existingItem?.config?.showLabel !== undefined ? existingItem.config.showLabel : true)
             : (existingItem?.showLabel !== undefined ? existingItem.showLabel : false);
 
@@ -212,8 +224,33 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             mediaRequestManagerApiKey: existingItem?.type === ITEM_TYPE.MEDIA_REQUEST_MANAGER_WIDGET ? (existingItem?.config?._hasApiKey ? '**********' : '') : '',
 
             // Notes widget values
-            displayName: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.displayName || 'Notes') : 'Notes',
+            displayName: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.displayName || 'Notes')
+                : existingItem?.type === ITEM_TYPE.IFRAME_WIDGET ? (existingItem?.config?.displayName || 'Iframe')
+                    : existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ? (existingItem?.config?.displayName || 'Video Stream')
+                        : existingItem?.type === ITEM_TYPE.CALENDAR_WIDGET ? (existingItem?.config?.displayName || 'Calendar')
+                            : existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.displayName || 'Bookmarks')
+                                : 'Notes',
             defaultNoteFontSize: existingItem?.type === ITEM_TYPE.NOTES_WIDGET ? (existingItem?.config?.defaultNoteFontSize || '16px') : '16px',
+
+            // Iframe widget values
+            interactive: existingItem?.type === ITEM_TYPE.IFRAME_WIDGET ? (existingItem?.config?.interactive !== false) : true,
+
+            // Video Stream widget values
+            feedUrl: existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ? (existingItem?.config?.feedUrl || '') : '',
+            autoplay: existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ? (existingItem?.config?.autoplay !== false) : true,
+            muted: existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ? (existingItem?.config?.muted !== false) : true,
+            showControls: existingItem?.type === ITEM_TYPE.VIDEO_STREAM_WIDGET ? (existingItem?.config?.showControls === true) : false,
+
+            // Calendar widget values
+            enableIcal: existingItem?.type === ITEM_TYPE.CALENDAR_WIDGET ? (existingItem?.config?.enableIcal === true) : false,
+            icalUrl: existingItem?.type === ITEM_TYPE.CALENDAR_WIDGET ? (existingItem?.config?.icalUrl || '') : '',
+
+            // Bookmarks widget values
+            title: existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.title || 'Bookmarks') : 'Bookmarks',
+            hideTitle: existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.hideTitle === true) : false,
+            hideIcons: existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.hideIcons === true) : false,
+            hideHostnames: existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.hideHostnames === true) : false,
+            bookmarks: existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.bookmarks || []) : [],
 
             location: location,
             gauge1: systemMonitorGauges[0] || 'cpu',
@@ -227,7 +264,9 @@ export const useExistingItem = ({ existingItem, formContext, setCustomIconFile }
             // Disk monitor widget values
             selectedDisks: existingItem?.type === ITEM_TYPE.DISK_MONITOR_WIDGET ? (existingItem?.config?.selectedDisks || []) : [],
             showIcons: existingItem?.type === ITEM_TYPE.DISK_MONITOR_WIDGET ? (existingItem?.config?.showIcons !== false) : true,
-            layout: existingItem?.type === ITEM_TYPE.DISK_MONITOR_WIDGET ? (existingItem?.config?.layout || '2x2') : '2x2',
+            layout: existingItem?.type === ITEM_TYPE.DISK_MONITOR_WIDGET ? (existingItem?.config?.layout || '2x2')
+                : existingItem?.type === ITEM_TYPE.BOOKMARKS_WIDGET ? (existingItem?.config?.layout || 'vertical')
+                    : '2x2',
 
             // Dual widget configuration (initialized with extracted types)
             topWidgetType: topWidgetType,

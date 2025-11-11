@@ -52,6 +52,11 @@ export const App = () => {
             return;
         }
 
+        // Wait for config to load before making authentication decisions
+        if (!config) {
+            return;
+        }
+
         // Allow access to login and setup pages without authentication
         const publicRoutes = ['/login', '/signup', '/setup'];
         const isPublicRoute = publicRoutes.includes(location.pathname);
@@ -65,7 +70,7 @@ export const App = () => {
         }
 
         // Check if public access is enabled
-        const publicAccessEnabled = config?.publicAccess === true;
+        const publicAccessEnabled = config.publicAccess === true;
 
         // If setup is complete but user is not logged in
         if (!isLoggedIn && !isPublicRoute) {
