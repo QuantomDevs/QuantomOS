@@ -109,7 +109,7 @@ systemRoute.post('/clean-background', (req: Request, res: Response) => {
 systemRoute.post('/update-container', [authenticateToken, requireAdmin], async (req: Request, res: Response) => {
     try {
         // Execute Docker commands
-        await execAsync('docker pull ghcr.io/snenjih/quantomos:latest');
+        await execAsync('docker pull ghcr.io/quantomdevs/quantomos:latest');
 
         // Get the current container ID
         const { stdout: containerId } = await execAsync('cat /proc/self/cgroup | grep docker | head -n 1 | sed "s/.*\\///" | cut -c 1-12');

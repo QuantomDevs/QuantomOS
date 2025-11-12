@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { ErrorOutline, VideoLibrary } from '@mui/icons-material';
 import React, { useRef, useState } from 'react';
+import { responsiveTypography, responsiveSpacing, responsiveIcons } from '../../../../utils/responsiveStyles';
 
 interface VideoStreamWidgetProps {
     config?: {
@@ -47,7 +48,7 @@ export const VideoStreamWidget: React.FC<VideoStreamWidgetProps> = ({ config, pr
                     borderRadius: '8px'
                 }}
             >
-                <VideoLibrary sx={{ fontSize: 48, color: 'var(--color-secondary-text)', mb: 2 }} />
+                <VideoLibrary sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-secondary-text)', mb: 2 }} />
                 <Typography variant="h6" sx={{ color: 'var(--color-primary-text)', mb: 1 }}>
                     No Video URL Configured
                 </Typography>
@@ -76,7 +77,7 @@ export const VideoStreamWidget: React.FC<VideoStreamWidgetProps> = ({ config, pr
                     border: '1px solid var(--color-border)'
                 }}
             >
-                <VideoLibrary sx={{ fontSize: 48, color: 'var(--color-primary-accent)', mb: 1 }} />
+                <VideoLibrary sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-primary-accent)', mb: 1 }} />
                 <Typography variant="body2" sx={{ color: 'var(--color-secondary-text)' }}>
                     Video Stream Preview
                 </Typography>
@@ -102,7 +103,7 @@ export const VideoStreamWidget: React.FC<VideoStreamWidgetProps> = ({ config, pr
             {showLabel && (
                 <Box
                     sx={{
-                        padding: '8px 12px',
+                        padding: `${responsiveSpacing.sm} ${responsiveSpacing.md}`,
                         borderBottom: '1px solid var(--color-border)',
                         backgroundColor: 'var(--color-secondary-background)'
                     }}
@@ -111,7 +112,8 @@ export const VideoStreamWidget: React.FC<VideoStreamWidgetProps> = ({ config, pr
                         variant="subtitle2"
                         sx={{
                             color: 'var(--color-primary-text)',
-                            fontWeight: 600
+                            fontWeight: 600,
+                            fontSize: responsiveTypography.subtitle2
                         }}
                     >
                         {displayName}
@@ -143,7 +145,7 @@ export const VideoStreamWidget: React.FC<VideoStreamWidgetProps> = ({ config, pr
                             color: 'white'
                         }}
                     >
-                        <ErrorOutline sx={{ fontSize: 48, color: 'var(--color-error)', mb: 2 }} />
+                        <ErrorOutline sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-error)', mb: 2 }} />
                         <Typography variant="body1" sx={{ mb: 1 }}>
                             Failed to load video stream
                         </Typography>

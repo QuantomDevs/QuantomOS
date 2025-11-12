@@ -8,6 +8,7 @@ import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimen
 import { useAppContext } from '../../../../context/useAppContext';
 import { useTheme } from '../../../../context/ThemeContext';
 import { theme } from '../../../../theme/theme';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../utils/responsiveStyles';
 
 
 export type DownloadClientStats = {
@@ -263,7 +264,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             color: 'white',
-                            fontSize: isMobile ? '0.7rem' : '.8rem',
+                            fontSize: responsiveTypography.caption,
                             cursor: 'default'
                         }}
                     >
@@ -273,7 +274,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 <Typography
                     variant='caption'
                     sx={{
-                        fontSize: isMobile ? '0.7rem' : '0.75rem',
+                        fontSize: responsiveTypography.caption,
                         ml: 'auto',
                         color: 'white',
                         minWidth: '80px',
@@ -295,7 +296,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                             '&:hover': { opacity: 1 }
                         }}
                     >
-                        {isActionLoading ? <CircularProgress size={16} /> : <MoreVert fontSize='small' />}
+                        {isActionLoading ? <CircularProgress sx={{ fontSize: responsiveIcons.small }} /> : <MoreVert fontSize='small' />}
                     </IconButton>
                 )}
                 <Menu
@@ -324,7 +325,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 <MenuItem
                                     onClick={handleResume}
                                     disabled={!onResume}
-                                    sx={{ fontSize: '0.9rem', py: 1 }}
+                                    sx={{ fontSize: responsiveTypography.body1, py: 1 }}
                                 >
                                     <PlayArrow fontSize='small' sx={{ mr: 1 }} />
                                     Start
@@ -339,7 +340,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 <MenuItem
                                     onClick={handlePause}
                                     disabled={!onPause}
-                                    sx={{ fontSize: '0.9rem', py: 1 }}
+                                    sx={{ fontSize: responsiveTypography.body1, py: 1 }}
                                 >
                                     <Stop fontSize='small' sx={{ mr: 1 }} />
                                     Stop
@@ -354,7 +355,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 <MenuItem
                                     onClick={handleResume}
                                     disabled={!onResume}
-                                    sx={{ fontSize: '0.9rem', py: 1 }}
+                                    sx={{ fontSize: responsiveTypography.body1, py: 1 }}
                                 >
                                     <PlayArrow fontSize='small' sx={{ mr: 1 }} />
                                     Resume
@@ -366,7 +367,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 <MenuItem
                                     onClick={handlePause}
                                     disabled={!onPause}
-                                    sx={{ fontSize: '0.9rem', py: 1 }}
+                                    sx={{ fontSize: responsiveTypography.body1, py: 1 }}
                                 >
                                     <Pause fontSize='small' sx={{ mr: 1 }} />
                                     Pause
@@ -381,7 +382,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 <MenuItem
                                     onClick={handleResume}
                                     disabled={!onResume}
-                                    sx={{ fontSize: '0.9rem', py: 1 }}
+                                    sx={{ fontSize: responsiveTypography.body1, py: 1 }}
                                 >
                                     <PlayArrow fontSize='small' sx={{ mr: 1 }} />
                                     Start
@@ -393,7 +394,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                                 <MenuItem
                                     onClick={handleResume}
                                     disabled={!onResume}
-                                    sx={{ fontSize: '0.9rem', py: 1 }}
+                                    sx={{ fontSize: responsiveTypography.body1, py: 1 }}
                                 >
                                     <PlayArrow fontSize='small' sx={{ mr: 1 }} />
                                     Resume
@@ -434,16 +435,16 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 }}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.2 }}>
-                <Typography variant='caption' sx={{ fontSize: '0.7rem', color: 'white', minWidth: '100px' }}>
+                <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'white', minWidth: '100px' }}>
                     {torrent.state === 'downloading' && (
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <ArrowDownward sx={{ color: 'white', fontSize: '0.75rem', mr: 0.3 }} />
+                            <ArrowDownward sx={{ color: 'white', fontSize: responsiveIcons.small, mr: 0.3 }} />
                             <span>{formatBytes(torrent.dlspeed)}/s</span>
                         </Box>
                     )}
                     {(torrent.state === 'uploading' || torrent.state === 'seeding') && (
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <ArrowUpward sx={{ color: 'white', fontSize: '0.75rem', mr: 0.3 }} />
+                            <ArrowUpward sx={{ color: 'white', fontSize: responsiveIcons.small, mr: 0.3 }} />
                             <span>{formatBytes(torrent.upspeed)}/s</span>
                         </Box>
                     )}
@@ -453,7 +454,7 @@ const DownloadItem: React.FC<DownloadItemProps> = ({ torrent, clientName, isAdmi
                 </Typography>
                 <Typography
                     variant='caption'
-                    sx={{ ml: 'auto', color: 'white', fontSize: '.75rem', minWidth: '100px', textAlign: 'right' }}
+                    sx={{ ml: 'auto', color: 'white', fontSize: responsiveTypography.caption, minWidth: '100px', textAlign: 'right' }}
                 >
                     {formatProgress(torrent.progress)} / {formatBytes(torrent.size)}
                 </Typography>
@@ -516,7 +517,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
         return (
             <CardContent sx={{
                 height: '100%',
-                padding: 2,
+                padding: responsiveSpacing.md,
                 ...(isMobile ? {} : {
                     minHeight: DUAL_WIDGET_CONTAINER_HEIGHT.sm
                 })
@@ -536,8 +537,8 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                 src={`${BACKEND_URL}/icons/${clientName.toLowerCase().includes('qbittorrent') ? 'qbittorrent.svg' : clientName.toLowerCase().includes('transmission') ? 'transmission.svg' : clientName.toLowerCase().includes('sabnzbd') ? 'sabnzbd.svg' : clientName.toLowerCase().includes('nzbget') ? 'nzbget.svg' : 'deluge.svg'}`}
                                 alt={clientName}
                                 style={{
-                                    width: '24px',
-                                    height: '24px',
+                                    width: responsiveIcons.medium,
+                                    height: responsiveIcons.medium,
                                     marginRight: '8px'
                                 }}
                             />
@@ -585,7 +586,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
     return (
         <CardContent sx={{
             height: '100%',
-            padding: 2,
+            padding: responsiveSpacing.md,
             maxWidth: '100%',
             width: '100%',
             ...(isMobile ? {} : {
@@ -616,8 +617,8 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                 src={`${BACKEND_URL}/icons/${clientName.toLowerCase().includes('qbittorrent') ? 'qbittorrent.svg' : clientName.toLowerCase().includes('transmission') ? 'transmission.svg' : clientName.toLowerCase().includes('sabnzbd') ? 'sabnzbd.svg' : clientName.toLowerCase().includes('nzbget') ? 'nzbget.svg' : 'deluge.svg'}`}
                                 alt={clientName}
                                 style={{
-                                    width: '24px',
-                                    height: '24px',
+                                    width: responsiveIcons.medium,
+                                    height: responsiveIcons.medium,
                                     marginRight: '8px'
                                 }}
                             />
@@ -691,7 +692,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                             height: '100%',
                                             width: '100%',
                                             color: 'rgba(255,255,255,0.5)',
-                                            fontSize: '0.85rem',
+                                            fontSize: responsiveTypography.body1,
                                             position: 'absolute',
                                             top: 0,
                                             left: 0,
@@ -734,7 +735,7 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                                     <Typography
                                                         variant='caption'
                                                         sx={{
-                                                            fontSize: isMobile ? '0.7rem' : '0.75rem',
+                                                            fontSize: responsiveTypography.caption,
                                                             ml: 'auto',
                                                             color: 'white',
                                                             minWidth: '80px',
@@ -748,13 +749,13 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.2 }}>
                                                     <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '100px' }}>
                                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ArrowDownward sx={{ color: 'text.primary', fontSize: '0.75rem', mr: 0.3 }} />
+                                                            <ArrowDownward sx={{ color: 'text.primary', fontSize: responsiveIcons.small, mr: 0.3 }} />
                                                             <span>3.2 MB/s</span>
                                                         </Box>
                                                     </Typography>
                                                     <Typography
                                                         variant='caption'
-                                                        sx={{ ml: 'auto', color: 'white', fontSize: '.75rem', minWidth: '100px', textAlign: 'right' }}
+                                                        sx={{ ml: 'auto', color: 'white', fontSize: responsiveTypography.caption, minWidth: '100px', textAlign: 'right' }}
                                                     >
                                                         45.2% / 1.24 GB
                                                     </Typography>
@@ -769,24 +770,24 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                         <Box sx={{ mt: 'auto', pt: 1, borderTop: '1px solid rgba(255,255,255,0.1)', width: '100%' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                    <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', mb: 0.5 }}>
+                                    <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', mb: 0.5 }}>
                                         Current:
                                     </Typography>
-                                    <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary' }}>
+                                    <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary' }}>
                                         {clientName === 'SABnzbd' ? 'This month:' : 'Session:'}
                                     </Typography>
                                 </Box>
 
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                                        <ArrowDownward sx={{ color: 'text.primary', fontSize: '0.75rem', mr: 0.3 }} />
-                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
+                                        <ArrowDownward sx={{ color: 'text.primary', fontSize: responsiveIcons.small, mr: 0.3 }} />
+                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
                                             {formatBytes(stats.dl_info_speed)}/s
                                         </Typography>
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <ArrowDownward sx={{ color: 'text.primary', fontSize: '0.75rem', mr: 0.3 }} />
-                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
+                                        <ArrowDownward sx={{ color: 'text.primary', fontSize: responsiveIcons.small, mr: 0.3 }} />
+                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
                                             {formatBytes(stats.dl_info_data || 0)}
                                         </Typography>
                                     </Box>
@@ -795,14 +796,14 @@ export const DownloadClientWidget: React.FC<DownloadClientWidgetProps> = ({
                                 {clientName !== 'SABnzbd' && (
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                                            <ArrowUpward sx={{ color: 'text.primary', fontSize: '0.75rem', mr: 0.3 }} />
-                                            <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
+                                            <ArrowUpward sx={{ color: 'text.primary', fontSize: responsiveIcons.small, mr: 0.3 }} />
+                                            <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
                                                 {formatBytes(stats.up_info_speed)}/s
                                             </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                            <ArrowUpward sx={{ color: 'text.primary', fontSize: '0.75rem', mr: 0.3 }} />
-                                            <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
+                                            <ArrowUpward sx={{ color: 'text.primary', fontSize: responsiveIcons.small, mr: 0.3 }} />
+                                            <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
                                                 {formatBytes(stats.up_info_data || 0)}
                                             </Typography>
                                         </Box>

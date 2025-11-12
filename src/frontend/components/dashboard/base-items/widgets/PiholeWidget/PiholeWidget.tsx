@@ -7,6 +7,7 @@ import { DashApi } from '../../../../../api/dash-api';
 import { BACKEND_URL } from '../../../../../constants/constants';
 import { useAppContext } from '../../../../../context/useAppContext';
 import { formatNumber } from '../../../../../utils/utils';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../../utils/responsiveStyles';
 
 // Define our own Timeout type based on setTimeout's return type
 type TimeoutId = ReturnType<typeof setTimeout>;
@@ -935,7 +936,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                 <Typography variant='subtitle1' align='center'>
                     {error}
                 </Typography>
-                <Typography variant='caption' align='center' sx={{ mt: 1, fontSize: '0.8rem' }}>
+                <Typography variant='caption' align='center' sx={{ mt: 1, fontSize: responsiveTypography.caption }}>
                     {authFailed ?
                         `Using ${piholeConfig._hasApiToken ? 'API token' : 'password'} authentication` :
                         'Check your Pi-hole configuration and network connection'}
@@ -1030,7 +1031,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                                     height: '30px',
                                 }}
                             />
-                            <Typography variant='h6' sx={{ mb: 0, fontSize: '1rem', ml: 0.5 }}>
+                            <Typography variant='h6' sx={{ mb: 0, fontSize: responsiveTypography.h6, ml: 0.5 }}>
                                 {piholeConfig.displayName}
                             </Typography>
                         </Box>
@@ -1046,7 +1047,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                         disabled={isDisablingBlocking}
                         sx={{
                             height: 25,
-                            fontSize: '0.7rem',
+                            fontSize: responsiveTypography.caption,
                             color: 'white',
                             minWidth: '80px', // Add fixed minimum width to prevent size changes
                             '&:hover': {
@@ -1099,11 +1100,11 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                             }
                         }}
                     >
-                        <MdBlockFlipped style={{ fontSize: '1.6rem' }} />
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <MdBlockFlipped style={{ fontSize: responsiveIcons.large }} />
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Blocked Today
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {formatNumber(stats.ads_blocked_today || 0)}
                         </Typography>
                     </Paper>
@@ -1132,12 +1133,12 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <FaPercentage style={{ fontSize: '1.6rem' }} />
+                            <FaPercentage style={{ fontSize: responsiveIcons.large }} />
                         </Box>
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Percent Blocked
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {percentageText}%
                         </Typography>
                     </Paper>
@@ -1165,11 +1166,11 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                             }
                         }}
                     >
-                        <FaGlobe style={{ fontSize: '1.6rem' }} />
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <FaGlobe style={{ fontSize: responsiveIcons.large }} />
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Queries Today
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {formatNumber(stats.dns_queries_today || 0)}
                         </Typography>
                     </Paper>
@@ -1197,11 +1198,11 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
                             }
                         }}
                     >
-                        <FaList style={{ fontSize: '1.6rem' }} />
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <FaList style={{ fontSize: responsiveIcons.large }} />
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Domains on Adlists
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {formatNumber(stats.domains_being_blocked || 0)}
                         </Typography>
                     </Paper>
@@ -1211,7 +1212,7 @@ export const PiholeWidget = (props: { config?: PiholeWidgetConfig; id?: string }
             {/* Status indicator - only show when not in edit mode and blocking is disabled */}
             {!editMode && !isBlocking && (
                 <Box sx={{ mt: 0.2, textAlign: 'center' }}>
-                    <Typography variant='caption' color='white' sx={{ fontSize: '0.6rem' }}>
+                    <Typography variant='caption' color='white' sx={{ fontSize: responsiveTypography.small }}>
                         {remainingTime
                             ? `Blocking disabled. Will resume in ${remainingTime}`
                             : 'Blocking disabled indefinitely'}

@@ -6,6 +6,7 @@ import { DashApi } from '../../../../api/dash-api';
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimensions';
 import { theme } from '../../../../theme/theme';
 import { useTheme } from '../../../../context/ThemeContext';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../utils/responsiveStyles';
 
 interface DiskInfo {
     fs: string;
@@ -162,7 +163,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
         return (
             <Box
                 sx={{
-                    p: 1,
+                    p: responsiveSpacing.xs,
                     borderRadius: 1,
                     backgroundColor: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -178,14 +179,14 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                     <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
                         {showIcons && (
                             <Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
-                                <FaHdd size={16} color='white' />
+                                <FaHdd style={{ fontSize: responsiveIcons.small }} color='white' />
                             </Box>
                         )}
                         <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
                             <Typography
                                 variant='subtitle2'
                                 sx={{
-                                    fontSize: '0.7rem',
+                                    fontSize: responsiveTypography.caption,
                                     fontWeight: 600,
                                     color: 'white',
                                     overflow: 'hidden',
@@ -207,7 +208,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                         slotProps={{
                                             tooltip: {
                                                 sx: {
-                                                    fontSize: 14,
+                                                    fontSize: responsiveTypography.body1,
                                                 },
                                             },
                                         }}
@@ -216,7 +217,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                             ref={mountPathRef}
                                             variant='caption'
                                             sx={{
-                                                fontSize: '0.6rem',
+                                                fontSize: responsiveTypography.small,
                                                 color: 'rgba(255,255,255,0.7)',
                                                 overflow: 'hidden',
                                                 textOverflow: 'ellipsis',
@@ -232,7 +233,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                                         ref={mountPathRef}
                                         variant='caption'
                                         sx={{
-                                            fontSize: '0.6rem',
+                                            fontSize: responsiveTypography.small,
                                             color: 'rgba(255,255,255,0.7)',
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
@@ -249,7 +250,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                     <Typography
                         variant='body2'
                         sx={{
-                            fontSize: '0.65rem',
+                            fontSize: responsiveTypography.caption,
                             fontWeight: 600,
                             color: 'white',
                             ml: 1
@@ -295,7 +296,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                     <Typography
                         variant='caption'
                         sx={{
-                            fontSize: '0.65rem',
+                            fontSize: responsiveTypography.caption,
                             color: 'white',
                             flex: '0 1 auto',
                             overflow: 'hidden',
@@ -309,7 +310,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                         variant='caption'
                         sx={{
                             color: 'white',
-                            fontSize: '0.65rem',
+                            fontSize: responsiveTypography.caption,
                             flex: '0 0 auto',
                             textAlign: 'right'
                         }}
@@ -337,7 +338,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                 flex: 1,
                 color: 'white',
                 width: '100%',
-                padding: 2,
+                padding: responsiveSpacing.md,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -352,19 +353,19 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                             top: layout === '2x2' ? 0 : 3,
                             left: 16,
                             color: 'white',
-                            fontSize: '1.1rem',
+                            fontSize: responsiveTypography.h6,
                             zIndex: 1,
                             display: 'flex',
                             alignItems: 'center',
                             gap: 0.5
                         }}
                     >
-                        <FaHdd size={18} color='white' />
+                        <FaHdd style={{ fontSize: responsiveIcons.small }} color='white' />
                         <Typography
                             variant='h6'
                             sx={{
                                 color: 'white',
-                                fontSize: '1.1rem',
+                                fontSize: responsiveTypography.h6,
                             }}
                         >
                             Disk Monitor
@@ -387,7 +388,7 @@ export const DiskMonitorWidget = ({ config, editMode }: DiskMonitorWidgetProps) 
                 ) : (gridDisks.length === 0) ? (
                     <Box sx={{
                         color: 'rgba(255,255,255,0.5)',
-                        fontSize: '0.85rem'
+                        fontSize: responsiveTypography.body1
                     }}>
                         {isLoading ? 'Loading disks...' : 'No disks configured'}
                     </Box>

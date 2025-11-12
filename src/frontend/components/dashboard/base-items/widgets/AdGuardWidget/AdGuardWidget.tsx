@@ -8,6 +8,7 @@ import { DashApi } from '../../../../../api/dash-api';
 import { BACKEND_URL } from '../../../../../constants/constants';
 import { useAppContext } from '../../../../../context/useAppContext';
 import { formatNumber } from '../../../../../utils/utils';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../../utils/responsiveStyles';
 
 // Define our own Timeout type based on setTimeout's return type
 type TimeoutId = ReturnType<typeof setTimeout>;
@@ -416,7 +417,7 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                 <Typography variant='subtitle1' align='center'>
                     {error}
                 </Typography>
-                <Typography variant='caption' align='center' sx={{ mt: 1, fontSize: '0.8rem' }}>
+                <Typography variant='caption' align='center' sx={{ mt: 1, fontSize: responsiveTypography.caption }}>
                     {authFailed ?
                         'Using Basic Authentication' :
                         'Check your AdGuard Home configuration and network connection'}
@@ -513,7 +514,7 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                                     height: '30px',
                                 }}
                             />
-                            <Typography variant='h6' sx={{ mb: 0, fontSize: '1rem', ml: 0.5 }}>
+                            <Typography variant='h6' sx={{ mb: 0, fontSize: responsiveTypography.h6, ml: 0.5 }}>
                                 {adguardConfig.displayName}
                             </Typography>
                         </Box>
@@ -582,11 +583,11 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                             }
                         }}
                     >
-                        <MdBlockFlipped style={{ fontSize: '1.6rem' }} />
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <MdBlockFlipped style={{ fontSize: responsiveIcons.large }} />
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Blocked Today
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {formatNumber(stats.ads_blocked_today || 0)}
                         </Typography>
                     </Paper>
@@ -615,12 +616,12 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                         }}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <FaPercentage style={{ fontSize: '1.6rem' }} />
+                            <FaPercentage style={{ fontSize: responsiveIcons.large }} />
                         </Box>
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Percent Blocked
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {percentageText}%
                         </Typography>
                     </Paper>
@@ -648,11 +649,11 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                             }
                         }}
                     >
-                        <MdDns style={{ fontSize: '1.6rem' }} />
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <MdDns style={{ fontSize: responsiveIcons.large }} />
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Queries Today
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {formatNumber(stats.dns_queries_today || 0)}
                         </Typography>
                     </Paper>
@@ -680,11 +681,11 @@ export const AdGuardWidget = (props: { config?: AdGuardWidgetConfig; id?: string
                             }
                         }}
                     >
-                        <FaShield style={{ fontSize: '1.6rem' }} />
-                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: '0.75rem' }}>
+                        <FaShield style={{ fontSize: responsiveIcons.large }} />
+                        <Typography variant='body2' align='center' sx={{ mt: 0, mb: 0, fontSize: responsiveTypography.caption }}>
                             Blocked Malware
                         </Typography>
-                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: '0.95rem', lineHeight: 1 }}>
+                        <Typography variant='subtitle2' align='center' fontWeight='bold' sx={{ fontSize: responsiveTypography.body1, lineHeight: 1 }}>
                             {formatNumber(stats.domains_being_blocked || 0)}
                         </Typography>
                     </Paper>

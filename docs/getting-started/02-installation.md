@@ -30,7 +30,7 @@ The easiest and most reliable way to run QuantomOS is using Docker.
    services:
      quantomos:
        container_name: quantomos
-       image: ghcr.io/snenjih/quantomos:latest
+       image: ghcr.io/quantomdevs/quantomos:latest
        privileged: true
        # Uncomment for network monitoring stats
        # network_mode: host
@@ -84,7 +84,7 @@ docker run -d \
   -v ~/quantomos/uploads:/app/public/uploads \
   -v /var/run/docker.sock:/var/run/docker.sock \
   --restart unless-stopped \
-  ghcr.io/snenjih/quantomos:latest
+  ghcr.io/quantomdevs/quantomos:latest
 ```
 
 ### Volume Explanations

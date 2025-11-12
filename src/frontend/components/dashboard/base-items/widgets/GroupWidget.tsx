@@ -10,6 +10,7 @@ import { WidgetContainer } from './WidgetContainer';
 import { DUAL_WIDGET_CONTAINER_HEIGHT, STANDARD_WIDGET_HEIGHT } from '../../../../constants/widget-dimensions';
 import { GroupItem } from '../../../../types/group';
 import { AppShortcut } from '../apps/AppShortcut';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../utils/responsiveStyles';
 
 interface GroupWidgetProps {
     id: string;
@@ -639,7 +640,7 @@ const GroupWidget: React.FC<GroupWidgetProps> = ({
                                 pt: 0.5,
                                 pb: 0.5,
                                 fontWeight: 500,
-                                fontSize: '1rem',
+                                fontSize: responsiveTypography.body1,
                                 lineHeight: 1.2,
                                 height: gridSettings.titleHeight,
                                 overflow: 'hidden',

@@ -1,6 +1,7 @@
 import { Box, Typography, Link, Grid2 as Grid } from '@mui/material';
 import { Bookmarks as BookmarksIcon, Launch, ErrorOutline } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions } from '../../../../utils/responsiveStyles';
 
 interface Bookmark {
     id: string;
@@ -79,7 +80,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                     borderRadius: '8px'
                 }}
             >
-                <BookmarksIcon sx={{ fontSize: 48, color: 'var(--color-secondary-text)', mb: 2 }} />
+                <BookmarksIcon sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-secondary-text)', mb: 2 }} />
                 <Typography variant="h6" sx={{ color: 'var(--color-primary-text)', mb: 1 }}>
                     No Bookmarks Configured
                 </Typography>
@@ -112,13 +113,13 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    padding: layout === 'grid' || layout === 'grid-horizontal' ? 2 : 1.5,
+                    padding: layout === 'grid' || layout === 'grid-horizontal' ? responsiveSpacing.md : responsiveSpacing.sm,
                     backgroundColor: 'var(--color-secondary-background)',
                     borderRadius: '8px',
                     border: '1px solid var(--color-border)',
                     transition: 'all 0.2s ease',
                     cursor: 'pointer',
-                    gap: 1.5,
+                    gap: responsiveSpacing.sm,
                     '&:hover': {
                         backgroundColor: 'var(--color-hover-background)',
                         borderColor: 'var(--color-primary-accent)',
@@ -130,8 +131,8 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                 {!hideIcons && (
                     <Box
                         sx={{
-                            width: 32,
-                            height: 32,
+                            width: responsiveDimensions.sm,
+                            height: responsiveDimensions.sm,
                             flexShrink: 0,
                             display: 'flex',
                             alignItems: 'center',
@@ -139,7 +140,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                         }}
                     >
                         {hasFaviconError || !favicon ? (
-                            <Launch sx={{ fontSize: 24, color: 'var(--color-primary-accent)' }} />
+                            <Launch sx={{ fontSize: responsiveIcons.medium, color: 'var(--color-primary-accent)' }} />
                         ) : (
                             <img
                                 src={favicon}
@@ -162,6 +163,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                             sx={{
                                 color: 'var(--color-primary-text)',
                                 fontWeight: 600,
+                                fontSize: responsiveTypography.body1,
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap'
@@ -175,6 +177,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                             variant="caption"
                             sx={{
                                 color: 'var(--color-secondary-text)',
+                                fontSize: responsiveTypography.caption,
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
@@ -187,7 +190,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                 </Box>
 
                 {openInNewTab && (
-                    <Launch sx={{ fontSize: 16, color: 'var(--color-secondary-text)' }} />
+                    <Launch sx={{ fontSize: responsiveIcons.small, color: 'var(--color-secondary-text)' }} />
                 )}
             </Link>
         );
@@ -200,9 +203,9 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                 <Box
                     sx={{
                         display: 'flex',
-                        gap: 2,
+                        gap: responsiveSpacing.md,
                         overflowX: 'auto',
-                        padding: 1,
+                        padding: responsiveSpacing.sm,
                         '&::-webkit-scrollbar': {
                             height: 6
                         },
@@ -219,7 +222,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
         case 'grid':
         case 'grid-horizontal':
             return (
-                <Grid container spacing={2} sx={{ padding: 1 }}>
+                <Grid container spacing={2} sx={{ padding: responsiveSpacing.sm }}>
                     {displayBookmarks.map((bookmark) => (
                         <Grid key={bookmark.id} size={{ xs: 12, sm: 6, md: layout === 'grid-horizontal' ? 4 : 6 }}>
                             {renderBookmark(bookmark)}
@@ -231,7 +234,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
         case 'vertical':
         default:
             return (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, padding: 1 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: responsiveSpacing.sm, padding: responsiveSpacing.sm }}>
                     {displayBookmarks.map(renderBookmark)}
                 </Box>
             );
@@ -245,7 +248,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: 'var(--color-widget-background)',
+                backgroundColor: 'var(--color-widget-background-transparent)',
                 borderRadius: '8px',
                 overflow: 'hidden'
             }}
@@ -253,7 +256,7 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
             {showLabel && (
                 <Box
                     sx={{
-                        padding: '8px 12px',
+                        padding: `${responsiveSpacing.sm} ${responsiveSpacing.md}`,
                         borderBottom: '1px solid var(--color-border)',
                         backgroundColor: 'var(--color-secondary-background)'
                     }}
@@ -262,7 +265,8 @@ export const BookmarksWidget: React.FC<BookmarksWidgetProps> = ({ config, previe
                         variant="subtitle2"
                         sx={{
                             color: 'var(--color-primary-text)',
-                            fontWeight: 600
+                            fontWeight: 600,
+                            fontSize: responsiveTypography.subtitle2
                         }}
                     >
                         {displayName}

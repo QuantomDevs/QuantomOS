@@ -94,7 +94,7 @@ export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: Updat
 
             // Fetch all releases using fetch API instead of axios
             const response = await fetch(
-                'https://api.github.com/repos/snenjih/quantomos/releases',
+                'https://api.github.com/repos/quantomdevs/quantomos/releases',
                 {
                     method: 'GET',
                     credentials: 'omit' // Explicitly omit credentials
@@ -243,7 +243,7 @@ export const UpdateModal = ({ open, handleClose, latestVersion, isAdmin }: Updat
                             <Button
                                 variant='contained'
                                 onClick={() => {
-                                    window.open('https://github.com/snenjih/quantomos/blob/main/README.md#updating', '_blank');
+                                    window.open('https://github.com/quantomdevs/quantomos/blob/main/README.md#updating', '_blank');
                                     handleClose();
                                 }}
                             >

@@ -2,6 +2,7 @@ import { Box, Typography, IconButton, Popover, List, ListItem, CircularProgress 
 import { ChevronLeft, ChevronRight, Event as EventIcon, ErrorOutline } from '@mui/icons-material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveGap } from '../../../../utils/responsiveStyles';
 
 interface CalendarEvent {
     id: string;
@@ -185,7 +186,8 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                         variant="body2"
                         sx={{
                             color: isTodayDate ? 'white' : 'var(--color-primary-text)',
-                            fontWeight: isTodayDate ? 700 : 500
+                            fontWeight: isTodayDate ? 700 : 500,
+                            fontSize: responsiveTypography.body2
                         }}
                     >
                         {day}
@@ -226,7 +228,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                     borderRadius: '8px'
                 }}
             >
-                <EventIcon sx={{ fontSize: 48, color: 'var(--color-secondary-text)', mb: 2 }} />
+                <EventIcon sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-secondary-text)', mb: 2 }} />
                 <Typography variant="h6" sx={{ color: 'var(--color-primary-text)', mb: 1 }}>
                     Calendar Not Configured
                 </Typography>
@@ -244,7 +246,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: 'var(--color-widget-background)',
+                backgroundColor: 'var(--color-widget-background-transparent)',
                 borderRadius: '8px',
                 overflow: 'hidden'
             }}
@@ -252,7 +254,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
             {showLabel && (
                 <Box
                     sx={{
-                        padding: '8px 12px',
+                        padding: `${responsiveSpacing.sm} ${responsiveSpacing.md}`,
                         borderBottom: '1px solid var(--color-border)',
                         backgroundColor: 'var(--color-secondary-background)'
                     }}
@@ -261,7 +263,8 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                         variant="subtitle2"
                         sx={{
                             color: 'var(--color-primary-text)',
-                            fontWeight: 600
+                            fontWeight: 600,
+                            fontSize: responsiveTypography.subtitle2
                         }}
                     >
                         {displayName}
@@ -287,7 +290,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                         <ChevronLeft />
                     </IconButton>
 
-                    <Typography variant="subtitle1" sx={{ color: 'var(--color-primary-text)', fontWeight: 600 }}>
+                    <Typography variant="subtitle1" sx={{ color: 'var(--color-primary-text)', fontWeight: 600, fontSize: responsiveTypography.subtitle1 }}>
                         {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
                     </Typography>
 
@@ -301,7 +304,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                 </Box>
 
                 {/* Weekday Headers */}
-                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 0.5, marginBottom: 0.5 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: responsiveGap.sm, marginBottom: responsiveGap.sm }}>
                     {DAYS_OF_WEEK.map((day, index) => (
                         <Box
                             key={day}
@@ -317,7 +320,7 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                                 sx={{
                                     color: isWeekend(index) ? 'var(--color-primary-accent)' : 'var(--color-secondary-text)',
                                     fontWeight: 600,
-                                    fontSize: '0.7rem'
+                                    fontSize: responsiveTypography.small
                                 }}
                             >
                                 {day}
@@ -333,13 +336,13 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                     </Box>
                 ) : error ? (
                     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                        <ErrorOutline sx={{ fontSize: 32, color: 'var(--color-error)', mb: 1 }} />
+                        <ErrorOutline sx={{ fontSize: responsiveIcons.large, color: 'var(--color-error)', mb: 1 }} />
                         <Typography variant="caption" sx={{ color: 'var(--color-error)' }}>
                             {error}
                         </Typography>
                     </Box>
                 ) : (
-                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 0.5, flex: 1 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: responsiveGap.sm, flex: 1 }}>
                         {renderCalendar()}
                     </Box>
                 )}
@@ -386,13 +389,28 @@ export const CalendarWidget: React.FC<CalendarWidgetProps> = ({ config, previewM
                         <List sx={{ p: 0 }}>
                             {selectedDateEvents.map(event => {
                                 try {
+                                    // Ensure start and end are valid Date objects
+                                    const startDate = event.start instanceof Date ? event.start : new Date(event.start);
+                                    const endDate = event.end instanceof Date ? event.end : new Date(event.end);
+
+                                    // Check if dates are valid
+                                    const isValidStart = !isNaN(startDate.getTime());
+                                    const isValidEnd = !isNaN(endDate.getTime());
+
+                                    let timeDisplay = 'All Day';
+                                    if (!event.allDay && isValidStart && isValidEnd) {
+                                        const startTime = startDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+                                        const endTime = endDate.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+                                        timeDisplay = `${startTime} - ${endTime}`;
+                                    }
+
                                     return (
                                         <ListItem key={event.id} sx={{ px: 0, py: 1, flexDirection: 'column', alignItems: 'flex-start', borderBottom: '1px solid var(--color-border)', '&:last-child': { borderBottom: 'none' } }}>
                                             <Typography variant="body2" sx={{ color: 'var(--color-primary-text)', fontWeight: 600 }}>
                                                 {event.title || 'Untitled Event'}
                                             </Typography>
                                             <Typography variant="caption" sx={{ color: 'var(--color-secondary-text)' }}>
-                                                {event.allDay ? 'All Day' : `${new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                                                {timeDisplay}
                                             </Typography>
                                             {event.location && (
                                                 <Typography variant="caption" sx={{ color: 'var(--color-secondary-text)', mt: 0.5 }}>

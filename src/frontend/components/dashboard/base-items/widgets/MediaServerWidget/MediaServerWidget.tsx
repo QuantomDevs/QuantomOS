@@ -7,6 +7,7 @@ import { BACKEND_URL, FIFTEEN_MIN_IN_MS } from '../../../../../constants/constan
 import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../../constants/widget-dimensions';
 import { theme } from '../../../../../theme/theme';
 import { WidgetContainer } from '../WidgetContainer';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../../utils/responsiveStyles';
 
 interface JellyfinSession {
     Id: string;
@@ -98,14 +99,14 @@ const getMediaTypeDisplay = (type: string): string => {
 const getMediaIcon = (type: string) => {
     switch (type?.toLowerCase()) {
     case 'episode':
-        return <Tv sx={{ color: 'white', fontSize: '1rem' }} />;
+        return <Tv sx={{ color: 'white', fontSize: responsiveTypography.body1 }} />;
     case 'movie':
-        return <Movie sx={{ color: 'white', fontSize: '1rem' }} />;
+        return <Movie sx={{ color: 'white', fontSize: responsiveTypography.body1 }} />;
     case 'audio':
     case 'musicalbum':
-        return <MusicNote sx={{ color: 'white', fontSize: '1rem' }} />;
+        return <MusicNote sx={{ color: 'white', fontSize: responsiveTypography.body1 }} />;
     default:
-        return <PlayArrow sx={{ color: 'white', fontSize: '1rem' }} />;
+        return <PlayArrow sx={{ color: 'white', fontSize: responsiveTypography.body1 }} />;
     }
 };
 
@@ -213,7 +214,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 color: 'white',
-                                fontSize: isMobile ? '0.7rem' : '.8rem',
+                                fontSize: responsiveTypography.caption,
                                 fontWeight: 500
                             }}
                         >
@@ -223,7 +224,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                             <Typography
                                 variant='caption'
                                 sx={{
-                                    fontSize: '0.75rem',
+                                    fontSize: responsiveTypography.caption,
                                     color: 'white',
                                     minWidth: '60px',
                                     textAlign: 'right'
@@ -240,7 +241,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                             variant='caption'
                             sx={{
                                 color: 'rgba(255,255,255,0.7)',
-                                fontSize: '0.75rem',
+                                fontSize: responsiveTypography.caption,
                                 display: 'block',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
@@ -253,16 +254,16 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
 
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'white' }}>
+                            <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'white' }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <Person sx={{ color: 'white', fontSize: '1rem', mr: 0.3 }} />
+                                    <Person sx={{ color: 'white', fontSize: responsiveTypography.body1, mr: 0.3 }} />
                                     <span>{session.UserName}</span>
                                 </Box>
                             </Typography>
                             <Typography
                                 variant='caption'
                                 sx={{
-                                    fontSize: '0.75rem',
+                                    fontSize: responsiveTypography.caption,
                                     color: 'rgba(255,255,255,0.7)',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -275,7 +276,7 @@ const SessionItem: React.FC<SessionItemProps> = ({ session, clientType, config }
                         </Box>
                         <Typography
                             variant='caption'
-                            sx={{ ml: 'auto', color: 'white', fontSize: '.75rem', minWidth: '80px', textAlign: 'right' }}
+                            sx={{ ml: 'auto', color: 'white', fontSize: responsiveTypography.caption, minWidth: '80px', textAlign: 'right' }}
                         >
                             {session.NowPlayingItem?.RunTimeTicks && session.PlayState?.PositionTicks ? (
                                 `${formatProgress(session.PlayState.PositionTicks, session.NowPlayingItem.RunTimeTicks)} / ${formatDuration(session.NowPlayingItem.RunTimeTicks)}`
@@ -609,7 +610,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                                                 height: '100%',
                                                 width: '100%',
                                                 color: 'rgba(255,255,255,0.5)',
-                                                fontSize: '0.85rem',
+                                                fontSize: responsiveTypography.body1,
                                                 position: 'absolute',
                                                 top: 0,
                                                 left: 0,
@@ -644,7 +645,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                                                                 overflow: 'hidden',
                                                                 textOverflow: 'ellipsis',
                                                                 color: 'white',
-                                                                fontSize: isMobile ? '0.7rem' : '.8rem'
+                                                                fontSize: responsiveTypography.caption
                                                             }}
                                                         >
                                                             Sample Movie Title
@@ -652,7 +653,7 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                                                         <Typography
                                                             variant='caption'
                                                             sx={{
-                                                                fontSize: '0.75rem',
+                                                                fontSize: responsiveTypography.caption,
                                                                 ml: 'auto',
                                                                 color: 'white',
                                                                 minWidth: '80px',
@@ -664,15 +665,15 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                                                         </Typography>
                                                     </Box>
                                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.2 }}>
-                                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'white', minWidth: '100px' }}>
+                                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'white', minWidth: '100px' }}>
                                                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                                <Person sx={{ color: 'white', fontSize: '1rem', mr: 0.3 }} />
+                                                                <Person sx={{ color: 'white', fontSize: responsiveTypography.body1, mr: 0.3 }} />
                                                                 <span>User</span>
                                                             </Box>
                                                         </Typography>
                                                         <Typography
                                                             variant='caption'
-                                                            sx={{ ml: 'auto', color: 'white', fontSize: '.75rem', minWidth: '100px', textAlign: 'right' }}
+                                                            sx={{ ml: 'auto', color: 'white', fontSize: responsiveTypography.caption, minWidth: '100px', textAlign: 'right' }}
                                                         >
                                                             45% / 2h 15m
                                                         </Typography>
@@ -687,19 +688,19 @@ export const MediaServerWidget: React.FC<MediaServerWidgetProps> = ({
                             <Box sx={{ mt: 'auto', pt: 1, borderTop: '1px solid rgba(255,255,255,0.1)', width: '100%' }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', mb: 0.5 }}>
+                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', mb: 0.5 }}>
                                             Total TV Shows:
                                         </Typography>
-                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary' }}>
+                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary' }}>
                                             Total Movies:
                                         </Typography>
                                     </Box>
 
                                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '65px', textAlign: 'right', mb: 0.5 }}>
+                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', minWidth: '65px', textAlign: 'right', mb: 0.5 }}>
                                             {libraryStats.isLoading ? '...' : libraryStats.tvShows}
                                         </Typography>
-                                        <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
+                                        <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary', minWidth: '65px', textAlign: 'right' }}>
                                             {libraryStats.isLoading ? '...' : libraryStats.movies}
                                         </Typography>
                                     </Box>

@@ -34,6 +34,7 @@ import { DUAL_WIDGET_CONTAINER_HEIGHT } from '../../../../constants/widget-dimen
 import { useAppContext } from '../../../../context/useAppContext';
 import { COLORS } from '../../../../theme/styles';
 import { theme } from '../../../../theme/theme';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../utils/responsiveStyles';
 import { CenteredModal } from '../../../modals/CenteredModal';
 import { PopupManager } from '../../../modals/PopupManager';
 import { ToastManager } from '../../../toast/ToastManager';
@@ -669,7 +670,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                 label='Available'
                                                 size='small'
                                                 sx={{
-                                                    fontSize: '0.7rem',
+                                                    fontSize: responsiveTypography.caption,
                                                     height: '1rem',
                                                     backgroundColor: 'success.dark',
                                                     color: 'success.contrastText'
@@ -783,7 +784,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                             alignItems: 'center',
                                             height: '100%',
                                             color: 'rgba(255,255,255,0.5)',
-                                            fontSize: '0.85rem'
+                                            fontSize: responsiveTypography.body1
                                         }}>
                                             No requests found
                                         </Box>
@@ -848,7 +849,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                                 variant='caption'
                                                                                 sx={{
                                                                                     color: 'rgba(255,255,255,0.7)',
-                                                                                    fontSize: '0.75rem',
+                                                                                    fontSize: responsiveTypography.caption,
                                                                                     display: 'block',
                                                                                     mb: 0.05
                                                                                 }}
@@ -858,11 +859,11 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
 
                                                                             {/* Seasons or blank space for movies */}
                                                                             {request.type === 'tv' && request.seasons && request.seasons.length > 0 ? (
-                                                                                <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', display: 'block', mb: 0.05 }}>
+                                                                                <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'rgba(255,255,255,0.7)', display: 'block', mb: 0.05 }}>
                                                                                     {formatSeasons(request.seasons)}
                                                                                 </Typography>
                                                                             ) : (
-                                                                                <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'transparent', display: 'block', mb: 0.05 }}>
+                                                                                <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'transparent', display: 'block', mb: 0.05 }}>
                                                                                     &nbsp;
                                                                                 </Typography>
                                                                             )}
@@ -870,7 +871,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                     </Box>
 
                                                                     {/* Profile text */}
-                                                                    <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>
+                                                                    <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'rgba(255,255,255,0.7)' }}>
                                                                         Profile: {request.profileName || 'Default'}
                                                                     </Typography>
                                                                 </Box>
@@ -893,12 +894,12 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                                                             }}
                                                                         />
                                                                     ) : (
-                                                                        <PersonIcon sx={{ fontSize: '0.75rem', color: 'white' }} />
+                                                                        <PersonIcon sx={{ fontSize: responsiveTypography.caption, color: 'white' }} />
                                                                     )}
-                                                                    <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'text.primary' }}>
+                                                                    <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'text.primary' }}>
                                                                         {request.requestedBy.displayName}
                                                                     </Typography>
-                                                                    <Typography variant='caption' sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)' }}>
+                                                                    <Typography variant='caption' sx={{ fontSize: responsiveTypography.caption, color: 'rgba(255,255,255,0.6)' }}>
                                                                         • {formatDate(request.createdAt)}
                                                                     </Typography>
                                                                 </Box>
@@ -1032,7 +1033,7 @@ export const MediaRequestManagerWidget: React.FC<MediaRequestManagerWidgetProps>
                                         label='Already Available'
                                         size='small'
                                         sx={{
-                                            fontSize: '0.7rem',
+                                            fontSize: responsiveTypography.caption,
                                             height: '1.5rem',
                                             backgroundColor: 'success.dark',
                                             color: 'success.contrastText',

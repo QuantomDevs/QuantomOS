@@ -59,7 +59,7 @@ QuantomOS is an open-source user interface designed to be your internally hosted
 ## Project Links
 
 - [Main Repository](https://github.com/QuantomDevs/quantomos)
-- [Docker Image](https://ghcr.io/snenjih/quantomos)
+- [Docker Image](https://ghcr.io/quantomdevs/quantomos)
 - [License](../LICENSE)
 - [Changelog](../docs/changes/)
 

@@ -100,7 +100,7 @@ export const VersionModal = ({ open, handleClose }: VersionModalProps) => {
 
             // Fetch all releases using fetch API
             const response = await fetch(
-                'https://api.github.com/repos/snenjih/quantomos/releases',
+                'https://api.github.com/repos/quantomdevs/quantomos/releases',
                 {
                     method: 'GET',
                     credentials: 'omit' // Explicitly omit credentials

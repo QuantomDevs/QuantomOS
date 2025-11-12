@@ -13,6 +13,7 @@ import { useTheme } from '../../../../../context/ThemeContext';
 import { COLORS } from '../../../../../theme/styles';
 import { convertSecondsToUptime, formatBytes } from '../../../../../utils/utils';
 import { CenteredModal } from '../../../../modals/CenteredModal';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../../utils/responsiveStyles';
 
 // Gauge types for configuration
 export type GaugeType = 'cpu' | 'temp' | 'ram' | 'network' | 'none';
@@ -461,7 +462,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                p: 2
+                p: responsiveSpacing.md
             }}>
                 <Typography variant='subtitle1' align='center' sx={{ mb: 1 }}>
                     {!errorMessage || errorMessage === 'null' ? 'Error fetching system data' : errorMessage}
@@ -508,7 +509,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                         sx={infoButtonStyles}
                         onClick={() => setOpenSystemModal(true)}
                     >
-                        <IoInformationCircleOutline style={{ color: colorTheme.primaryText, fontSize: '1.5rem' }}/>
+                        <IoInformationCircleOutline style={{ color: colorTheme.primaryText, fontSize: responsiveIcons.medium }}/>
                     </IconButton>
                 </div>
             )}
@@ -537,7 +538,7 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                         slotProps={{
                             tooltip: {
                                 sx: {
-                                    fontSize: 14,
+                                    fontSize: responsiveTypography.body1,
                                 },
                             },
                         }}
@@ -555,11 +556,11 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                             }}
                         >
                             {internetStatus === 'online' ? (
-                                <PiGlobeSimple style={{ color: colorTheme.primaryText, fontSize: '1.4rem' }} />
+                                <PiGlobeSimple style={{ color: colorTheme.primaryText, fontSize: responsiveIcons.medium }} />
                             ) : internetStatus === 'offline' ? (
-                                <PiGlobeSimpleX style={{ color: colorTheme.primaryText, fontSize: '1.4rem' }} />
+                                <PiGlobeSimpleX style={{ color: colorTheme.primaryText, fontSize: responsiveIcons.medium }} />
                             ) : (
-                                <PiGlobeSimple style={{ color: 'gray', fontSize: '1.4rem' }} />
+                                <PiGlobeSimple style={{ color: 'gray', fontSize: responsiveIcons.medium }} />
                             )}
                         </IconButton>
                     </Tooltip>
@@ -587,11 +588,11 @@ export const SystemMonitorWidget = ({ config, editMode }: SystemMonitorWidgetPro
                     </Grid>
                 ))}
             </Grid>
-            <Box p={1} width={'92%'} mt={isDualWidget ? -2 : -1}>
+            <Box p={responsiveSpacing.xs} width={'92%'} mt={isDualWidget ? -2 : -1}>
                 {showDiskUsage && <DiskUsageBar totalSpace={diskInformation?.totalSpace ? diskInformation?.totalSpace : 0} usedSpace={diskInformation?.usedSpace ? diskInformation?.usedSpace : 0} usedPercentage={diskInformation?.usedPercentage ? diskInformation?.usedPercentage : 0}/>}
             </Box>
             <CenteredModal open={openSystemModal} handleClose={() => setOpenSystemModal(false)} title='System Information' width={isMobile ? '90vw' :'30vw'} height='60vh'>
-                <Box component={Paper} p={2} sx={{ backgroundColor: COLORS.GRAY }} elevation={0}>
+                <Box component={Paper} p={responsiveSpacing.md} sx={{ backgroundColor: COLORS.GRAY }} elevation={0}>
                     {showSystemInfo && (
                         <>
                             <Typography><b>Processor:</b> {systemInformation?.cpu?.physicalCores} Core {systemInformation?.cpu?.manufacturer} {systemInformation?.cpu?.brand}</Typography>

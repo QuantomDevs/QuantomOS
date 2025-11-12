@@ -183,6 +183,33 @@ This creates optimized production builds in:
 
 ## Docker Support
 
+### Supported Architectures
+
+QuantomOS Docker images support the following architectures:
+
+- **`linux/amd64`** - Standard x86-64 servers, PCs, and cloud instances
+- **`linux/arm64`** - ARM 64-bit devices including:
+  - Raspberry Pi 3/4/5 (64-bit OS)
+  - Apple Silicon Macs (M1/M2/M3)
+  - AWS Graviton instances
+  - ARM-based cloud servers
+- **`linux/arm/v7`** - ARM 32-bit devices including:
+  - Raspberry Pi 2/3/4 (32-bit OS)
+  - Older Raspberry Pi models
+  - IoT devices with ARMv7 processors
+
+Docker will automatically pull the correct architecture for your system.
+
+### Raspberry Pi Deployment
+
+QuantomOS runs on all Raspberry Pi models (2+) with both 32-bit and 64-bit operating systems.
+
+**Recommended Setup:**
+- Raspberry Pi 4/5 with 4GB+ RAM (64-bit OS recommended)
+- For older models (Pi 2/3), the `linux/arm/v7` (32-bit) variant is automatically used
+- Ensure at least 2GB free disk space
+- Use privileged mode for hardware monitoring features
+
 ### Using Docker Compose
 
 The easiest way to run QuantomOS is with Docker Compose:
@@ -194,7 +221,7 @@ The easiest way to run QuantomOS is with Docker Compose:
 services:
   quantomos:
       container_name: quantomos
-      image: ghcr.io/snenjih/quantomos:latest
+      image: ghcr.io/quantomdevs/quantomos:latest
       privileged: true
       #network_mode: host # for monitoring network usage stats
       ports:

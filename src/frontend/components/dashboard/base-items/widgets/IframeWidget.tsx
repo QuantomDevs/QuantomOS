@@ -1,6 +1,7 @@
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import React, { useState } from 'react';
+import { responsiveTypography, responsiveSpacing, responsiveIcons } from '../../../../utils/responsiveStyles';
 
 interface IframeWidgetProps {
     config?: {
@@ -49,7 +50,7 @@ export const IframeWidget: React.FC<IframeWidgetProps> = ({ config, previewMode 
                     borderRadius: '8px'
                 }}
             >
-                <ErrorOutline sx={{ fontSize: 48, color: 'var(--color-secondary-text)', mb: 2 }} />
+                <ErrorOutline sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-secondary-text)', mb: 2 }} />
                 <Typography variant="h6" sx={{ color: 'var(--color-primary-text)', mb: 1 }}>
                     No URL Configured
                 </Typography>
@@ -103,7 +104,7 @@ export const IframeWidget: React.FC<IframeWidgetProps> = ({ config, previewMode 
             {showLabel && (
                 <Box
                     sx={{
-                        padding: '8px 12px',
+                        padding: `${responsiveSpacing.sm} ${responsiveSpacing.md}`,
                         borderBottom: '1px solid var(--color-border)',
                         backgroundColor: 'var(--color-secondary-background)'
                     }}
@@ -112,7 +113,8 @@ export const IframeWidget: React.FC<IframeWidgetProps> = ({ config, previewMode 
                         variant="subtitle2"
                         sx={{
                             color: 'var(--color-primary-text)',
-                            fontWeight: 600
+                            fontWeight: 600,
+                            fontSize: responsiveTypography.subtitle2
                         }}
                     >
                         {displayName}
@@ -164,7 +166,7 @@ export const IframeWidget: React.FC<IframeWidgetProps> = ({ config, previewMode 
                             backgroundColor: 'var(--color-widget-background)'
                         }}
                     >
-                        <ErrorOutline sx={{ fontSize: 48, color: 'var(--color-error)', mb: 2 }} />
+                        <ErrorOutline sx={{ fontSize: responsiveIcons.xlarge, color: 'var(--color-error)', mb: 2 }} />
                         <Typography variant="body1" sx={{ color: 'var(--color-primary-text)', mb: 1 }}>
                             Failed to load content
                         </Typography>

@@ -4,6 +4,7 @@ import { BsGeoAltFill } from 'react-icons/bs';
 
 import { useIsMobile } from '../../../../hooks/useIsMobile';
 import { theme } from '../../../../theme/theme';
+import { responsiveTypography } from '../../../../utils/responsiveStyles';
 
 type DateTimeWidgetConfig = {
     location?: {
@@ -100,7 +101,7 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 mb: 0,
-                fontSize: '0.8rem',
+                fontSize: responsiveTypography.small,
                 color: 'rgba(255, 255, 255, 0.8)',
                 position: 'absolute',
                 top: isMobile ? 2.5 : 0,
@@ -111,7 +112,7 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
                 padding: '4px 0'
             }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <BsGeoAltFill style={{ marginRight: '2px', fontSize: '0.8rem' }} />
+                    <BsGeoAltFill style={{ marginRight: '2px', fontSize: responsiveTypography.small }} />
                     <Typography variant='body2' sx={{ fontWeight: 'medium' }}>
                         {displayLocation}
                     </Typography>
@@ -119,7 +120,7 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
 
                 {config?.timezone && (
                     <Typography
-                        fontSize={'0.75rem'}
+                        fontSize={responsiveTypography.small}
                         sx={{
                             opacity: 0.8,
                             mt: 0.3,
@@ -191,10 +192,10 @@ export const DateTimeWidget = ({ config }: DateTimeWidgetProps) => {
         <CardContent sx={{ position: 'relative' }}>
             {renderLocationName()}
             <Box height={'100%'} mt={locationName ? (config?.timezone ? 4 : 3) : 0}>
-                <Typography fontSize={'3rem'} align={'center'} fontWeight={600}>
+                <Typography fontSize={responsiveTypography.h1} align={'center'} fontWeight={600}>
                     {getFormattedTime()}
                 </Typography>
-                <Typography fontSize={'1.5rem'} align={'center'}>
+                <Typography fontSize={responsiveTypography.h4} align={'center'}>
                     {getFormattedDate()}
                 </Typography>
             </Box>

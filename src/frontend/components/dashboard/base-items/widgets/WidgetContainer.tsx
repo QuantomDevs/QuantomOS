@@ -3,7 +3,6 @@ import React from 'react';
 
 import { EditMenu } from './EditMenu';
 import { StatusIndicator } from './StatusIndicator';
-import { COLORS } from '../../../../theme/styles';
 
 type Props = {
     children: React.ReactNode;
@@ -47,6 +46,9 @@ export const WidgetContainer: React.FC<Props> = ({
                 maxWidth: '100%',
                 minWidth: 0,
                 height: '100%', // Fill the grid item height
+                // Enable container queries for responsive widget content
+                containerType: 'size',
+                containerName: 'widget',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

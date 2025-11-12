@@ -16,6 +16,7 @@ import { useTheme } from '../../../../../context/ThemeContext';
 import { theme } from '../../../../../theme/theme';
 import { CenteredModal } from '../../../../modals/CenteredModal';
 import { PopupManager } from '../../../../modals/PopupManager';
+import { responsiveTypography, responsiveSpacing, responsiveIcons, responsiveDimensions, responsiveGap } from '../../../../../utils/responsiveStyles';
 
 interface Note {
     id: string;
@@ -345,7 +346,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         color: 'white',
-                        fontSize: isMobile ? '0.9rem' : '1rem',
+                        fontSize: responsiveTypography.body1,
                         fontWeight: 500
                     }}
                 >
@@ -354,7 +355,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                 <Typography
                     variant='caption'
                     sx={{
-                        fontSize: '0.7rem',
+                        fontSize: responsiveTypography.caption,
                         ml: 'auto',
                         color: 'rgba(255,255,255,0.7)',
                         minWidth: '60px',
@@ -368,7 +369,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                 <Typography
                     variant='caption'
                     sx={{
-                        fontSize: isMobile ? '0.7rem' : '0.8rem',
+                        fontSize: responsiveTypography.caption,
                         color: 'rgba(255,255,255,0.6)',
                         display: '-webkit-box',
                         WebkitLineClamp: 1,
@@ -495,7 +496,7 @@ export const NotesWidget = ({ config }: NotesWidgetProps) => {
                             mb: 0.5,
                             '& .MuiOutlinedInput-root': {
                                 color: 'white',
-                                fontSize: isMobile ? '0.9rem' : '1rem',
+                                fontSize: responsiveTypography.body1,
                                 fontWeight: 500,
                                 padding: '4px 8px',
                                 '& fieldset': {
