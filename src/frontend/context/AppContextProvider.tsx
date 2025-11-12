@@ -574,8 +574,11 @@ export const AppContextProvider = ({ children }: Props) => {
         const { calculateNextAvailablePosition, getDefaultWidth, getDefaultHeight } = await import('../utils/gridPositioning');
         const nextPosition = calculateNextAvailablePosition(dashboardLayout);
 
+        // Generate temporary ID for optimistic update
+        const tempId = `temp-${Date.now()}-${shortid.generate()}`;
+
         const newItem: DashboardItem = {
-            id: `item-${shortid.generate()}`,
+            id: tempId, // Use temporary ID initially
             label: itemToAdd.label,
             icon: itemToAdd.icon,
             url: itemToAdd.url,
@@ -591,14 +594,22 @@ export const AppContextProvider = ({ children }: Props) => {
             }
         };
 
-        // Add to current view's layout (affects UI immediately)
+        // Step 1: Save previous state for rollback
+        const previousLayout = [...dashboardLayout];
+
+        // Step 2: Optimistically add to UI immediately
         setDashboardLayout((prevItems) => [...prevItems, newItem]);
+        ToastManager.success(`${itemToAdd.label || 'Widget'} added`);
 
         try {
+            // Step 3: Send to backend (background)
             // Refresh config state to ensure we have the latest state including any recent group changes
             const freshConfig = await DashApi.getConfig();
             if (!freshConfig) {
                 console.error('Failed to get fresh config for adding item');
+                // Rollback on error
+                setDashboardLayout(previousLayout);
+                ToastManager.error('Failed to add widget');
                 return;
             }
 
@@ -608,6 +619,12 @@ export const AppContextProvider = ({ children }: Props) => {
                 setPages(freshConfig.pages);
             }
 
+            // Create the item with a permanent ID
+            const permanentItem = {
+                ...newItem,
+                id: `item-${shortid.generate()}` // Generate permanent ID
+            };
+
             // If we're on a specific page, add to that page
             if (currentPageId) {
                 const updatedPages = freshConfig.pages?.map(page => {
@@ -615,8 +632,8 @@ export const AppContextProvider = ({ children }: Props) => {
                         return {
                             ...page,
                             layout: {
-                                desktop: [...page.layout.desktop, newItem],
-                                mobile: [...page.layout.mobile, newItem]
+                                desktop: [...page.layout.desktop, permanentItem],
+                                mobile: [...page.layout.mobile, permanentItem]
                             }
                         };
                     }
@@ -624,22 +641,27 @@ export const AppContextProvider = ({ children }: Props) => {
                 }) || [];
 
                 await DashApi.saveConfig({ pages: updatedPages });
-                return;
+            } else {
+                // Otherwise add to main dashboard
+                const updatedLayout = {
+                    layout: {
+                        desktop: [...freshConfig.layout.desktop, permanentItem],
+                        mobile: [...freshConfig.layout.mobile, permanentItem]
+                    }
+                };
+
+                await DashApi.saveConfig(updatedLayout);
             }
 
-            // Otherwise add to main dashboard
-            // Use fresh config layout and add the new item
-            const updatedLayout = {
-                layout: {
-                    desktop: [...freshConfig.layout.desktop, newItem],
-                    mobile: [...freshConfig.layout.mobile, newItem]
-                }
-            };
-
-            // Save the updated layout to the backend
-            await DashApi.saveConfig(updatedLayout);
+            // Step 4: Replace temp ID with permanent ID in UI
+            setDashboardLayout((prevItems) =>
+                prevItems.map(item => item.id === tempId ? permanentItem : item)
+            );
         } catch (error) {
+            // Step 5: Rollback on error
             console.error('Failed to add item to both layouts:', error);
+            setDashboardLayout(previousLayout);
+            ToastManager.error('Failed to add widget');
         }
     };
 
@@ -867,25 +889,47 @@ export const AppContextProvider = ({ children }: Props) => {
                         return;
                     }
 
-                    const updatedPages = (config.pages || []).filter(page => page.id !== pageId);
+                    // Step 1: Save previous state for rollback
+                    const previousPages = [...pages];
+                    const previousConfig = { ...config };
 
-                    // Update the full config with the new pages array
+                    // Step 2: Optimistically update UI
+                    const updatedPages = (config.pages || []).filter(page => page.id !== pageId);
                     const updatedConfig = { ...config, pages: updatedPages };
 
-                    await DashApi.saveConfig({ pages: updatedPages });
-
-                    // Update both config and pages state to ensure synchronization
                     setConfig(updatedConfig);
                     setPages(updatedPages);
 
-                    // If we're currently on the deleted page, switch to main dashboard
+                    // If we're currently on the deleted page, switch to main dashboard immediately
                     if (currentPageId === pageId) {
                         setCurrentPageId(null);
                         navigate('/', { replace: true });
-                        await refreshDashboard();
                     }
 
                     ToastManager.success(`Page "${pageName}" deleted successfully`);
+
+                    // Step 3: Send to backend (background)
+                    try {
+                        await DashApi.saveConfig({ pages: updatedPages });
+
+                        // Refresh dashboard if we were on the deleted page
+                        if (currentPageId === pageId) {
+                            await refreshDashboard();
+                        }
+                    } catch (error) {
+                        // Step 4: Rollback on error
+                        console.error('Failed to delete page:', error);
+                        setConfig(previousConfig);
+                        setPages(previousPages);
+
+                        // Navigate back if we navigated away
+                        if (currentPageId === pageId && pageToDelete) {
+                            const slug = pageNameToSlug(pageToDelete.name);
+                            navigate(`/${slug}`, { replace: true });
+                        }
+
+                        ToastManager.error('Failed to delete page. Changes reverted.');
+                    }
                 } catch (error) {
                     console.error('Failed to delete page:', error);
                     ToastManager.error('Failed to delete page. Please try again.');

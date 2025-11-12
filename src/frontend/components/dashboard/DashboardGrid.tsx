@@ -2,6 +2,7 @@ import { Box, useMediaQuery } from '@mui/material';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Responsive as ResponsiveGridLayout, Layout, Layouts } from 'react-grid-layout';
 import shortid from 'shortid';
+import { debounce } from '../../hooks/useOptimisticUpdate';
 
 import { SortableSabnzbd } from './sortable-items/widgets/SortableSabnzbd';
 import { SortableNzbget } from './sortable-items/widgets/SortableNzbget';
@@ -149,8 +150,26 @@ export const DashboardGrid: React.FC = () => {
         setDashboardLayout(updatedItems);
     }, [editMode, dashboardLayout, setDashboardLayout]);
 
+    // Debounced save function for drag/resize operations
+    const debouncedSave = useMemo(
+        () =>
+            debounce(async (items: DashboardItem[]) => {
+                try {
+                    await saveLayout(items);
+                } catch (err) {
+                    ToastManager.error('Failed to save layout changes');
+                    console.error('Failed to save layout:', err);
+                    // Note: We don't rollback here since the user has already seen the new position
+                    // and rollback would be jarring. The next refresh will restore the correct state.
+                }
+            }, 500),
+        [saveLayout]
+    );
+
     // Handle drag stop to save layout
     const handleDragStop = useCallback((layout: Layout[]) => {
+        const previousLayout = [...dashboardLayout];
+
         const updatedItems = dashboardLayout.map(item => {
             const layoutItem = layout.find(l => l.i === item.id);
             if (layoutItem) {
@@ -168,12 +187,17 @@ export const DashboardGrid: React.FC = () => {
             return item;
         });
 
+        // Update UI immediately (optimistic)
         setDashboardLayout(updatedItems);
-        saveLayout(updatedItems);
-    }, [dashboardLayout, setDashboardLayout, saveLayout]);
+
+        // Save to backend with debouncing (background)
+        debouncedSave(updatedItems);
+    }, [dashboardLayout, setDashboardLayout, debouncedSave]);
 
     // Handle resize stop to save layout
     const handleResizeStop = useCallback((layout: Layout[]) => {
+        const previousLayout = [...dashboardLayout];
+
         const updatedItems = dashboardLayout.map(item => {
             const layoutItem = layout.find(l => l.i === item.id);
             if (layoutItem) {
@@ -191,9 +215,12 @@ export const DashboardGrid: React.FC = () => {
             return item;
         });
 
+        // Update UI immediately (optimistic)
         setDashboardLayout(updatedItems);
-        saveLayout(updatedItems);
-    }, [dashboardLayout, setDashboardLayout, saveLayout]);
+
+        // Save to backend with debouncing (background)
+        debouncedSave(updatedItems);
+    }, [dashboardLayout, setDashboardLayout, debouncedSave]);
 
     const handleDelete = (id: string) => {
         const itemToDelete = dashboardLayout.find(item => item.id === id);
@@ -202,10 +229,23 @@ export const DashboardGrid: React.FC = () => {
         const options: ConfirmationOptions = {
             title: 'Delete Item?',
             confirmAction: async () => {
+                // Step 1: Save current state for potential rollback
+                const previousLayout = [...dashboardLayout];
+
+                // Step 2: Optimistically update UI
                 const updatedLayout = dashboardLayout.filter((item) => item.id !== id);
                 setDashboardLayout(updatedLayout);
-                saveLayout(updatedLayout);
                 ToastManager.success(`${itemName} deleted successfully`);
+
+                // Step 3: Send API request in background
+                try {
+                    await saveLayout(updatedLayout);
+                } catch (err) {
+                    // Step 4: Rollback on error
+                    setDashboardLayout(previousLayout);
+                    ToastManager.error(`Failed to delete ${itemName}`);
+                    console.error('Failed to delete widget:', err);
+                }
             }
         };
 

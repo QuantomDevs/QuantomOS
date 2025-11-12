@@ -19,6 +19,33 @@ interface LoginResponse {
 }
 
 export class DashApi {
+    // Active AbortControllers for request cancellation
+    private static abortControllers: Map<string, AbortController> = new Map();
+
+    /**
+     * Creates or gets an abort controller for a specific operation
+     * Cancels any existing controller for the same operation
+     */
+    private static getAbortController(key: string): AbortController {
+        // Cancel existing controller if any
+        const existing = this.abortControllers.get(key);
+        if (existing) {
+            existing.abort();
+        }
+
+        // Create new controller
+        const controller = new AbortController();
+        this.abortControllers.set(key, controller);
+        return controller;
+    }
+
+    /**
+     * Removes an abort controller after request completion
+     */
+    private static removeAbortController(key: string): void {
+        this.abortControllers.delete(key);
+    }
+
     // Authentication methods
     public static async signup(username: string, password: string): Promise<SignupResponse> {
         try {
@@ -331,20 +358,38 @@ export class DashApi {
         }
     }
 
-    public static async saveConfig(config: Partial<Config>): Promise<Config | null> {
+    public static async saveConfig(config: Partial<Config>, options?: { signal?: AbortSignal }): Promise<Config | null> {
+        const operationKey = 'saveConfig';
+
         try {
+            // Use provided signal or create a new abort controller
+            const controller = options?.signal ? null : this.getAbortController(operationKey);
+            const signal = options?.signal || controller?.signal;
+
             // Explicitly set withCredentials for this request
             // Clone and stringify-parse the config to ensure proper serialization of complex objects
             const preparedConfig = JSON.parse(JSON.stringify(config));
             const response = await axios.post(`${BACKEND_URL}/api/config`, preparedConfig, {
-                withCredentials: true
+                withCredentials: true,
+                signal
             });
 
             // Return the updated config from the backend response
             return response.data.updatedConfig || null;
-        } catch (error) {
+        } catch (error: any) {
+            // Don't log errors for cancelled requests
+            if (error.name === 'AbortError' || error.code === 'ERR_CANCELED') {
+                console.log('Save config request cancelled');
+                return null;
+            }
+
             console.error('Failed to save layout:', error);
             throw error; // Rethrow to allow handling in the UI
+        } finally {
+            // Clean up abort controller if we created it
+            if (!options?.signal) {
+                this.removeAbortController(operationKey);
+            }
         }
     }
 
