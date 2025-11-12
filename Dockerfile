@@ -37,12 +37,12 @@ WORKDIR /app
 ENV NODE_ENV=production
 EXPOSE 2022
 
-# Install runtime dependencies and Python 3 for ARM architectures
+# Install runtime dependencies and Python 3 for ARM64 architecture
 RUN apt-get update && \
     apt-get install -y iputils-ping lm-sensors ca-certificates && \
     # Use build arguments for reliable architecture detection
-    if [ "$TARGETARCH" = "arm" ] || [ "$TARGETARCH" = "arm64" ]; then \
-      echo "Installing Python 3 for ARM architecture ($TARGETARCH${TARGETVARIANT})" && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+      echo "Installing Python 3 for ARM64 architecture" && \
       apt-get install -y python3 python3-pip; \
     fi && \
     apt-get clean && \
@@ -59,12 +59,7 @@ COPY --from=build /usr/src/app/dist/backend/index.js ./
 COPY --from=build /usr/src/app/dist/backend/package.json ./
 COPY --from=build /usr/src/app/dist/frontend ./public
 
-# Install only production dependencies with architecture-specific optimizations
-RUN if [ "$TARGETARCH" = "arm" ] && [ "$TARGETVARIANT" = "v7" ]; then \
-      # For ARMv7, use fewer concurrent jobs to avoid memory issues
-      npm i --omit-dev --omit-optional --maxsockets=1; \
-    else \
-      npm i --omit-dev --omit-optional; \
-    fi
+# Install only production dependencies
+RUN npm i --omit-dev --omit-optional
 
 CMD [ "node", "index.js" ]
