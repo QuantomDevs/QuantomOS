@@ -1,6 +1,6 @@
 {
   "name": "quantomos",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "QuantomOS - An open-source user interface designed to manage your server and homelab",
   "main": "index.js",
   "private": true,

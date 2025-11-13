@@ -57,7 +57,10 @@ RUN echo "Built for platform: ${TARGETPLATFORM}" && \
 COPY --from=build /usr/src/app/dist/backend/config ../config
 COPY --from=build /usr/src/app/dist/backend/index.js ./
 COPY --from=build /usr/src/app/dist/backend/package.json ./
-COPY --from=build /usr/src/app/dist/frontend ./public
+COPY --from=build /usr/src/app/dist/frontend ../frontend
+
+# Create uploads directory for runtime
+RUN mkdir -p public/uploads
 
 # Install only production dependencies
 RUN npm i --omit-dev --omit-optional
