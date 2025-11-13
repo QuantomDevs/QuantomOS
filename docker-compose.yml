@@ -3,7 +3,7 @@ services:
   quantomos:
       container_name: quantomos
       # Multi-architecture image - Docker automatically selects the correct variant
-      # Supports: linux/amd64, linux/arm64, linux/arm/v7
+      # Supports: linux/amd64, linux/arm64, linux/arm/v8
       image: ghcr.io/quantomdevs/quantomos:latest
       privileged: true
       #network_mode: host # for monitoring network usage stats. run `sudo ufw allow 2022/tcp` on ubuntu to allow access through firewall
