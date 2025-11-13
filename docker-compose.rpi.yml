@@ -1,14 +1,11 @@
 ---
+# Docker Compose configuration for Raspberry Pi
+# Use this with: docker compose -f docker-compose.rpi.yml up -d
 services:
   quantomos:
       container_name: quantomos
-      # Multi-architecture image - Docker automatically selects the correct variant
-      # Supports: linux/amd64 (Intel/AMD), linux/arm64 (Raspberry Pi 3/4/5 64-bit)
-      #
-      # IMPORTANT FOR RASPBERRY PI USERS:
-      # If you get "no matching manifest for linux/arm/v8" error, uncomment the line below:
-      # platform: linux/arm64
       image: ghcr.io/quantomdevs/quantomos:latest
+      platform: linux/arm64  # Explicitly set for Raspberry Pi
       privileged: true
       #network_mode: host # for monitoring network usage stats. run `sudo ufw allow 2022/tcp` on ubuntu to allow access through firewall
       ports:
